@@ -14,7 +14,7 @@ import {
     LimitOrderData,
     LimitOrderHash,
     LimitOrderSignature
-} from './model/limit-order-contract.model';
+} from './model/limit-order-protocol.model';
 import {EIP712TypedData} from './model/eip712.model';
 import {TypedDataUtils} from 'eth-sig-util';
 import {ProviderConnector} from './provider-connector';
