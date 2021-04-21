@@ -2,13 +2,13 @@
 
 ## How to start
 
-Create `LimitOrderContract` instance:
+Create `LimitOrderProtocolUtils` instance:
 ```typescript
 const contractAddress = '0xabc...';
 const chainId = 1;
 const web3 = new Web3();
 
-const limitorderContract = new LimitOrderContract(
+const limitOrderProtocolUtils = new LimitOrderProtocolUtils(
     contractAddress,
     chainId,
     new Web3ProviderConnector(web3)
@@ -27,7 +27,7 @@ class MyProviderConnector implements ProviderConnector {
 ## Create a limit order
 ```typescript
 class LimitOrderManager {
-    limitorderContract: LimitOrderContract;
+    limitOrderProtocolUtils: LimitOrderProtocolUtils;
     walletAddress: string;
 
     async createOrder(
@@ -39,7 +39,7 @@ class LimitOrderManager {
     ): Promise<void> {
         const predicate = await this.buildNewOrderPredicate(expireTimeSeconds);
 
-        const order = this.limitorderContract.buildOrder({
+        const order = this.limitOrderProtocolUtils.buildOrder({
             makerAddress: this.walletAddress,
             makerAssetAddress,
             takerAssetAddress,
@@ -48,11 +48,11 @@ class LimitOrderManager {
             predicate
         });
 
-        const typedData = this.limitorderContract.buildOrderTypedData(order);
+        const typedData = this.limitOrderProtocolUtils.buildOrderTypedData(order);
 
-        const hash = this.limitorderContract.getOrderHash(typedData);
+        const hash = this.limitOrderProtocolUtils.getOrderHash(typedData);
 
-        const signature = await this.limitorderContract.getOrderSignature(this.walletAddress, typedData);
+        const signature = await this.limitOrderProtocolUtils.getOrderSignature(this.walletAddress, typedData);
 
         console.log('New order: ', {order, hash, signature});
     }
@@ -60,13 +60,13 @@ class LimitOrderManager {
     async buildNewOrderPredicate(expireTimeSeconds: number): Promise<string> {
         const timestampBelow = Math.floor(Date.now() / 1000) + expireTimeSeconds;
 
-        const nonce = await this.limitorderContract.nonces(this.walletAddress);
+        const nonce = await this.limitOrderProtocolUtils.nonces(this.walletAddress);
 
-        const noncePredicate = this.limitorderContract.nonceEquals(this.walletAddress, nonce);
+        const noncePredicate = this.limitOrderProtocolUtils.nonceEquals(this.walletAddress, nonce);
 
-        const timestampPredicate = this.limitorderContract.timestampBelow(timestampBelow);
+        const timestampPredicate = this.limitOrderProtocolUtils.timestampBelow(timestampBelow);
 
-        return this.limitorderContract.andPredicate([
+        return this.limitOrderProtocolUtils.andPredicate([
             noncePredicate,
             timestampPredicate
         ]);
@@ -92,7 +92,7 @@ class LimitOrderManager {
     fillOrder(orderHash: LimitOrderHash, makerAmount: number, takerAmount: number): void {
         const {order, signature} = this.getEntity(orderHash);
 
-        const callData = this.limitorderContract.fillOrder(
+        const callData = this.limitOrderProtocolUtils.fillOrder(
             order,
             signature,
             this.tokenAmountToUnits(order.makerAsset, makerAmount),
@@ -116,13 +116,13 @@ class LimitOrderManager {
     }
 
     cancelOrder(orderHash: LimitOrderHash): void {
-        if (this.limitorderContract === null) {
+        if (this.limitOrderProtocolUtils === null) {
             return;
         }
 
         const {order} = this.getEntity(orderHash);
 
-        const callData = this.limitorderContract.cancelOrder(order);
+        const callData = this.limitOrderProtocolUtils.cancelOrder(order);
 
         this.sendTransaction(callData);
     }
@@ -137,7 +137,7 @@ class LimitOrderManager {
     }
 
     cancelAllOrders(): void {
-        const callData = this.limitorderContract.advanceNonce();
+        const callData = this.limitOrderProtocolUtils.advanceNonce();
 
         this.sendTransaction(callData);
     }
@@ -148,7 +148,7 @@ class LimitOrderManager {
 ```typescript
 class LimitOrderManager {
     async remaining(orderHash: LimitOrderHash): Promise<void> {
-        const remaining = await this.limitorderContract.remaining(orderHash);
+        const remaining = await this.limitOrderProtocolUtils.remaining(orderHash);
 
         console.log('Order remaining', remaining);
     }

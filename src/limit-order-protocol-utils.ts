@@ -6,7 +6,7 @@ import {
     PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
     ERC20_ABI, ZX
-} from './limit-order-contract.const';
+} from './limit-order-protocol.const';
 import {
     ChainId,
     LimitOrder,
@@ -19,7 +19,7 @@ import {TypedDataUtils} from 'eth-sig-util';
 import {ProviderConnector} from './provider-connector';
 import {BigNumber} from '@ethersproject/bignumber';
 
-export class LimitOrderContract {
+export class LimitOrderProtocolUtils {
     constructor(
         private readonly contractAddress: string,
         private readonly chainId: ChainId,
