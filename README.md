@@ -1,4 +1,4 @@
-# SDK for limit orders protocol
+# Utils for limit orders protocol
 
 ## How to start
 
