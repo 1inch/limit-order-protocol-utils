@@ -34,7 +34,7 @@ export interface LimitOrder extends EIP712Object {
     interaction: string;
 }
 
-export enum LimitOrderContractMethods {
+export enum LimitOrderProtocolMethods {
     getMakerAmount = 'getMakerAmount',
     getTakerAmount = 'getTakerAmount',
     fillOrder = 'fillOrder',

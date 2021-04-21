@@ -10,7 +10,8 @@ import {
 import {
     ChainId,
     LimitOrder,
-    LimitOrderContractMethods, LimitOrderData,
+    LimitOrderProtocolMethods,
+    LimitOrderData,
     LimitOrderHash,
     LimitOrderSignature
 } from './model/limit-order-contract.model';
@@ -71,8 +72,8 @@ export class LimitOrderProtocolUtils {
             takerAsset: takerAssetAddress,
             makerAssetData: this.transferFrom(makerAssetAddress, makerAddress, takerAddress, makerAmount),
             takerAssetData: this.transferFrom(makerAssetAddress, takerAddress, makerAddress, takerAmount),
-            getMakerAmount: this.getAmountData(LimitOrderContractMethods.getMakerAmount, makerAmount, takerAmount),
-            getTakerAmount: this.getAmountData(LimitOrderContractMethods.getTakerAmount, makerAmount, takerAmount),
+            getMakerAmount: this.getAmountData(LimitOrderProtocolMethods.getMakerAmount, makerAmount, takerAmount),
+            getTakerAmount: this.getAmountData(LimitOrderProtocolMethods.getTakerAmount, makerAmount, takerAmount),
             predicate,
             permit,
             interaction
@@ -85,7 +86,7 @@ export class LimitOrderProtocolUtils {
         makerAmount: string,
         takerAmount: string
     ): string {
-        return this.getContractCallData(LimitOrderContractMethods.fillOrder, [
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
             order,
             signature,
             makerAmount,
@@ -94,13 +95,13 @@ export class LimitOrderProtocolUtils {
     }
 
     cancelOrder(order: LimitOrder): string {
-        return this.getContractCallData(LimitOrderContractMethods.cancelOrder, [
+        return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
             order
         ]);
     }
 
     nonces(makerAddress: string): Promise<number> {
-        const callData = this.getContractCallData(LimitOrderContractMethods.nonces, [
+        const callData = this.getContractCallData(LimitOrderProtocolMethods.nonces, [
             makerAddress
         ]);
 
@@ -109,31 +110,31 @@ export class LimitOrderProtocolUtils {
     }
 
     advanceNonce(): string {
-        return this.getContractCallData(LimitOrderContractMethods.advanceNonce);
+        return this.getContractCallData(LimitOrderProtocolMethods.advanceNonce);
     }
 
     andPredicate(predicates: string[]): string {
-        return this.getContractCallData(LimitOrderContractMethods.and, [
+        return this.getContractCallData(LimitOrderProtocolMethods.and, [
             predicates.map(() => this.contractAddress),
             predicates
         ]);
     }
 
     timestampBelow(timestamp: number): string {
-        return this.getContractCallData(LimitOrderContractMethods.timestampBelow, [
+        return this.getContractCallData(LimitOrderProtocolMethods.timestampBelow, [
             timestamp
         ]);
     }
 
     nonceEquals(makerAddress: string, makerNonce: number): string {
-        return this.getContractCallData(LimitOrderContractMethods.nonceEquals, [
+        return this.getContractCallData(LimitOrderProtocolMethods.nonceEquals, [
             makerAddress,
             makerNonce
         ]);
     }
 
     remaining(hash: LimitOrderHash): Promise<BigNumber | string> {
-        const callData = this.getContractCallData(LimitOrderContractMethods.remaining, [
+        const callData = this.getContractCallData(LimitOrderProtocolMethods.remaining, [
             hash
         ]);
 
@@ -154,7 +155,7 @@ export class LimitOrderProtocolUtils {
         return this.providerConnector.contractCall<string[]>(
             LIMIT_ORDER_PROTOCOL_ABI,
             this.contractAddress,
-            LimitOrderContractMethods.remainingsRaw,
+            LimitOrderProtocolMethods.remainingsRaw,
             [hashes],
             'latest'
         );
@@ -184,7 +185,7 @@ export class LimitOrderProtocolUtils {
 
     // Get nonce from contract (nonces method) and put it to predicate on order creating
     private getAmountData(
-        methodName: LimitOrderContractMethods,
+        methodName: LimitOrderProtocolMethods,
         makerAmount: string,
         takerAmount: string,
         swapTakerAmount = '0'
@@ -196,7 +197,7 @@ export class LimitOrderProtocolUtils {
         ]).substr(0, 2 + 68 * 2);
     }
 
-    private getContractCallData(methodName: LimitOrderContractMethods, methodParams: any[] = []): string {
+    private getContractCallData(methodName: LimitOrderProtocolMethods, methodParams: any[] = []): string {
         return this.providerConnector.contractEncodeABI(
             LIMIT_ORDER_PROTOCOL_ABI,
             this.contractAddress,
