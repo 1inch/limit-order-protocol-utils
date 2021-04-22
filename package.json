@@ -2,7 +2,12 @@
   "name": "@1inch/limit-order-protocol-utils",
   "version": "0.0.1",
   "description": "SDK for limit order protocol",
-  "repository": "https://github.com/1inch/limit-order-protocol-utils.git",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:1inch/limit-order-protocol-utils.git",
+    "directory": "@1inch/limit-order-protocol-utils"
+  },
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
@@ -23,5 +28,8 @@
   "peerDependencies": {
     "stream": "^0.0.2",
     "assert": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/1inch"
   }
 }
