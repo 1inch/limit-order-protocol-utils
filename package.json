@@ -10,6 +10,7 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
+    "postbuild": "cp package.json dist && cp README.md dist",
     "lint": "eslint"
   },
   "dependencies": {
