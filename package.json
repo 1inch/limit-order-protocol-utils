@@ -1,8 +1,8 @@
 {
-  "name": "limit-orders-sdk",
+  "name": "@1inch/limit-order-protocol-utils",
   "version": "0.0.1",
   "description": "SDK for limit order protocol",
-  "repository": "https://github.com/1inch/limit-orders-sdk.git",
+  "repository": "https://github.com/1inch/limit-order-protocol-utils.git",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
