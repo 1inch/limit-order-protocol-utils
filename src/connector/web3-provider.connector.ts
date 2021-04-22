@@ -1,7 +1,7 @@
-import {ProviderConnector} from './provider-connector';
+import {ProviderConnector} from './provider.connector';
 import Web3 from 'web3';
-import {EIP712TypedData} from './model/eip712.model';
-import {AbiItem} from './model/abi.model';
+import {EIP712TypedData} from '../model/eip712.model';
+import {AbiItem} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
 
 export class Web3ProviderConnector implements ProviderConnector {

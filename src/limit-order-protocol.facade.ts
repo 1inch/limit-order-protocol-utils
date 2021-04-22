@@ -8,7 +8,7 @@ import {
     LimitOrderHash,
     LimitOrderSignature
 } from './model/limit-order-protocol.model';
-import {ProviderConnector} from './provider-connector';
+import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 
 export class LimitOrderProtocolFacade {

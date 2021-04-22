@@ -17,7 +17,7 @@ import {
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData} from './model/eip712.model';
 import {TypedDataUtils} from 'eth-sig-util';
-import {ProviderConnector} from './provider-connector';
+import {ProviderConnector} from './connector/provider.connector';
 
 export class LimitOrderBuilder {
     constructor(
