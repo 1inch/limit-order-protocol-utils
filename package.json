@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "webpack",
+    "build": "tsc",
     "lint": "eslint"
   },
   "dependencies": {
