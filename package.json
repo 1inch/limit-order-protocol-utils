@@ -13,7 +13,8 @@
     "postbuild": "cp package.json dist && cp README.md dist",
     "lint": "eslint ./src --ext .js,.ts",
     "release": "standard-version",
-    "test": "jest"
+    "test": "jest",
+    "ci": "yarn run lint && yarn run test && yarn run build"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.1.1",
