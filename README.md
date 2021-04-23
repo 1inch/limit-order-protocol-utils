@@ -39,6 +39,9 @@ class LimitOrderManager {
     ): Promise<void> {
         const predicate = await this.buildNewOrderPredicate(expireTimeSeconds);
 
+        /**
+         * Note: you can pass takerAddress, by default it set to 0x0000000000000000000000000000000000000000
+         */
         const order = this.limitOrderProtocolUtils.buildOrder({
             makerAddress: this.walletAddress,
             makerAssetAddress,

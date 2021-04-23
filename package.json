@@ -11,7 +11,10 @@
     "prebuild": "rm -rf dist",
     "build": "tsc",
     "postbuild": "cp package.json dist && cp README.md dist",
-    "lint": "eslint"
+    "lint": "eslint ./src --ext .js,.ts",
+    "release": "standard-version",
+    "test": "jest",
+    "ci": "yarn run lint && yarn run test && yarn run build"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.1.1",
@@ -19,15 +22,29 @@
     "web3": "^2.0.0-alpha.1"
   },
   "devDependencies": {
-    "eslint": "^7.24.0",
-    "eslint-config-airbnb": "^18.2.1",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.22",
+    "@typescript-eslint/eslint-plugin": "4",
+    "babel-jest": "^26.6.3",
+    "eslint": "7",
+    "eslint-config-standard-with-typescript": "^20.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "11",
+    "eslint-plugin-promise": "4",
+    "eslint-plugin-unused-imports": "^1.1.1",
+    "jest": "^26.6.3",
+    "standard-version": "^9.2.0",
     "ts-loader": "^9.0.2",
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4"
   },
   "peerDependencies": {
-    "stream": "^0.0.2",
-    "assert": "^2.0.0"
+    "assert": "^2.0.0",
+    "stream": "^0.0.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/1inch"
