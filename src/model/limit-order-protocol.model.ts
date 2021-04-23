@@ -46,5 +46,6 @@ export enum LimitOrderProtocolMethods {
     nonceEquals = 'nonceEquals',
     remaining = 'remaining',
     transferFrom = 'transferFrom',
-    remainingsRaw = 'remainingsRaw'
+    checkPredicate = 'checkPredicate',
+    remainingsRaw = 'remainingsRaw',
 }
