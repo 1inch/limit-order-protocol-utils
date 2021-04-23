@@ -1,6 +1,6 @@
 {
   "name": "@1inch/limit-order-protocol-utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "SDK for limit order protocol",
   "repository": {
     "type": "git",
