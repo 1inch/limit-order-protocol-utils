@@ -71,6 +71,22 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
+    checkPredicate(order: LimitOrder): Promise<boolean> {
+        const callData = this.getContractCallData(LimitOrderProtocolMethods.checkPredicate, [
+            order
+        ]);
+
+        return this.providerConnector.ethCall(this.contractAddress, callData).then(result => {
+            try {
+                return BigNumber.from(result).toNumber() === 1;
+            } catch (e) {
+                console.error(e);
+
+                return false;
+            }
+        });
+    }
+
     remaining(hash: LimitOrderHash): Promise<BigNumber | string> {
         const callData = this.getContractCallData(LimitOrderProtocolMethods.remaining, [
             hash
@@ -98,7 +114,7 @@ export class LimitOrderProtocolFacade {
         );
     }
 
-    private getContractCallData(methodName: LimitOrderProtocolMethods, methodParams: any[] = []): string {
+    getContractCallData(methodName: LimitOrderProtocolMethods, methodParams: any[] = []): string {
         return this.providerConnector.contractEncodeABI(
             LIMIT_ORDER_PROTOCOL_ABI,
             this.contractAddress,
