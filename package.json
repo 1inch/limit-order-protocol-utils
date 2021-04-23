@@ -1,11 +1,11 @@
 {
-  "name": "@1inch/limit-order-protocol-utils",
-  "version": "0.0.5",
-  "description": "SDK for limit order protocol",
+  "name": "@1inch/limit-order-protocol",
+  "version": "0.0.1",
+  "description": "Utility for limit order protocol",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com:1inch/limit-order-protocol-utils.git",
-    "directory": "@1inch/limit-order-protocol-utils"
+    "directory": "@1inch/limit-order-protocol"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
