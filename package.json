@@ -14,7 +14,7 @@
     "lint": "eslint ./src --ext .js,.ts",
     "release": "standard-version",
     "test": "jest",
-    "ci": "yarn run lint && yarn run test && yarn run build"
+    "ci-pipeline": "yarn run lint && yarn run test && yarn run build"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.1.1",

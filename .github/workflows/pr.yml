@@ -21,4 +21,4 @@ jobs:
         run: yarn install
 
       - name: CI
-        run: yarn run ci
+        run: yarn run ci-pipeline
