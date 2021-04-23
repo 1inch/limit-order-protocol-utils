@@ -60,7 +60,7 @@ export class LimitOrderProtocolFacade {
 
     timestampBelow(timestamp: number): string {
         return this.getContractCallData(LimitOrderProtocolMethods.timestampBelow, [
-            timestamp
+            ZX + timestamp.toString(16)
         ]);
     }
 
