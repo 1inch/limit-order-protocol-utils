@@ -11,6 +11,13 @@ import {
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 
+/**
+ * TODO: create PredicateBuilder:
+ * const predicate = new PredicateBuilder()
+ * .timestampBelow(600)
+ * .nonceEquals(1)
+ * .build();
+ */
 export class LimitOrderProtocolFacade {
     constructor(
         private readonly contractAddress: string,
