@@ -5,7 +5,8 @@ import {
     ZERO_ADDRESS,
     PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ERC20_ABI, ZX
+    ERC20_ABI,
+    ZX,
 } from './limit-order-protocol.const';
 import {
     ChainId,
@@ -13,71 +14,94 @@ import {
     LimitOrderProtocolMethods,
     LimitOrderData,
     LimitOrderHash,
-    LimitOrderSignature
+    LimitOrderSignature,
 } from './model/limit-order-protocol.model';
-import {EIP712TypedData} from './model/eip712.model';
-import {TypedDataUtils} from 'eth-sig-util';
+import {EIP712TypedData, MessageTypes} from './model/eip712.model';
+import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
 
 export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
         private readonly chainId: ChainId,
-        private readonly providerConnector: ProviderConnector,
-    ) {
-    }
+        private readonly providerConnector: ProviderConnector
+    ) {}
 
-    buildOrderSignature(walletAddress: string, typedData: EIP712TypedData): Promise<LimitOrderSignature> {
+    buildOrderSignature(
+        walletAddress: string,
+        typedData: EIP712TypedData
+    ): Promise<LimitOrderSignature> {
         return this.providerConnector.signTypedData(walletAddress, typedData);
     }
 
     buildOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
-        return ZX + TypedDataUtils.sign(orderTypedData as any).toString('hex');
+        const message = orderTypedData as TypedMessage<MessageTypes>;
+
+        return ZX + TypedDataUtils.sign(message).toString('hex');
     }
 
+    // TODO: extend type regarding MessageTypes
     buildOrderTypedData(order: LimitOrder): EIP712TypedData {
         return {
             primaryType: 'Order',
             types: {
                 EIP712Domain: EIP712_DOMAIN,
-                Order: ORDER_STRUCTURE
+                Order: ORDER_STRUCTURE,
             },
             domain: {
                 name: PROTOCOL_NAME,
                 version: PROTOCOL_VERSION,
                 chainId: this.chainId,
-                verifyingContract: this.contractAddress
+                verifyingContract: this.contractAddress,
             },
             message: order,
         };
     }
 
-    buildOrder(data: LimitOrderData): LimitOrder {
-        const {
-            makerAssetAddress,
-            takerAssetAddress,
-            makerAddress,
-            takerAddress = ZERO_ADDRESS,
-            makerAmount,
-            takerAmount,
-            predicate = ZX,
-            permit = ZX,
-            interaction = ZX
-        } = data;
-
+    /* eslint-disable max-lines-per-function */
+    buildOrder({
+        makerAssetAddress,
+        takerAssetAddress,
+        makerAddress,
+        takerAddress = ZERO_ADDRESS,
+        makerAmount,
+        takerAmount,
+        predicate = ZX,
+        permit = ZX,
+        interaction = ZX,
+    }: LimitOrderData): LimitOrder {
         return {
             salt: this.generateSalt(),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
-            makerAssetData: this.transferFrom(makerAssetAddress, makerAddress, takerAddress, makerAmount),
-            takerAssetData: this.transferFrom(makerAssetAddress, takerAddress, makerAddress, takerAmount),
-            getMakerAmount: this.getAmountData(LimitOrderProtocolMethods.getMakerAmount, makerAmount, takerAmount),
-            getTakerAmount: this.getAmountData(LimitOrderProtocolMethods.getTakerAmount, makerAmount, takerAmount),
+            makerAssetData: this.transferFrom(
+                makerAssetAddress,
+                makerAddress,
+                takerAddress,
+                makerAmount
+            ),
+            takerAssetData: this.transferFrom(
+                makerAssetAddress,
+                takerAddress,
+                makerAddress,
+                takerAmount
+            ),
+            getMakerAmount: this.getAmountData(
+                LimitOrderProtocolMethods.getMakerAmount,
+                makerAmount,
+                takerAmount
+            ),
+            getTakerAmount: this.getAmountData(
+                LimitOrderProtocolMethods.getTakerAmount,
+                makerAmount,
+                takerAmount
+            ),
             predicate,
             permit,
-            interaction
+            interaction,
         };
     }
+    /* eslint-enable max-lines-per-function */
 
     private generateSalt(): string {
         return Math.round(Math.random() * Date.now()) + '';
@@ -93,11 +117,7 @@ export class LimitOrderBuilder {
             ERC20_ABI,
             makerAssetAddress,
             'transferFrom',
-            [
-                fromAddress,
-                toAddress,
-                value,
-            ]
+            [fromAddress, toAddress, value]
         );
     }
 
@@ -111,11 +131,14 @@ export class LimitOrderBuilder {
         return this.getContractCallData(methodName, [
             makerAmount,
             takerAmount,
-            swapTakerAmount
+            swapTakerAmount,
         ]).substr(0, 2 + 68 * 2);
     }
 
-    private getContractCallData(methodName: LimitOrderProtocolMethods, methodParams: any[] = []): string {
+    private getContractCallData(
+        methodName: LimitOrderProtocolMethods,
+        methodParams: unknown[] = []
+    ): string {
         return this.providerConnector.contractEncodeABI(
             LIMIT_ORDER_PROTOCOL_ABI,
             this.contractAddress,

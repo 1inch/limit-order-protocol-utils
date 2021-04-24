@@ -19,3 +19,13 @@ export declare type EIP712ObjectValue = string | number | EIP712Object;
 export interface EIP712Object {
     [key: string]: EIP712ObjectValue;
 }
+
+export interface MessageTypes {
+    [additionalProperties: string]: MessageTypeProperty[];
+    EIP712Domain: MessageTypeProperty[];
+}
+
+export interface MessageTypeProperty {
+    name: string;
+    type: string;
+}

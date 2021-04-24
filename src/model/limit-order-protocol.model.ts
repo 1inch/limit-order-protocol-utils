@@ -2,7 +2,7 @@ import {EIP712Object} from './eip712.model';
 
 export enum ChainId {
     etherumMainnet = 1,
-    binanceMainnet = 56
+    binanceMainnet = 56,
 }
 
 export type LimitOrderSignature = string;

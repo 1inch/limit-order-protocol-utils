@@ -6,20 +6,23 @@ export interface ProviderConnector {
         abi: AbiItem[],
         address: string | null,
         methodName: string,
-        methodParams: any[]
+        methodParams: unknown[]
     ): string;
 
     contractCall<T>(
         abi: AbiItem[],
         contractAddress: string,
         methodName: string,
-        methodParams: any[],
+        methodParams: unknown[],
         blockNumber: 'pending' | 'latest' | number
     ): Promise<T>;
 
-    signTypedData(walletAddress: string, typedData: EIP712TypedData): Promise<string>;
+    signTypedData(
+        walletAddress: string,
+        typedData: EIP712TypedData
+    ): Promise<string>;
 
     ethCall(contractAddress: string, callData: string): Promise<string>;
 
-    decodeABIParameter(type: string, hex: string): {[key: string]: any};
+    decodeABIParameter(type: string, hex: string): {[key: string]: unknown};
 }
