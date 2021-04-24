@@ -3,6 +3,7 @@
 ## How to start
 
 Create `LimitOrderProtocolUtils` instance:
+
 ```typescript
 const contractAddress = '0xabc...';
 const chainId = 1;
@@ -15,9 +16,9 @@ const limitOrderProtocolUtils = new LimitOrderProtocolUtils(
 );
 ```
 
-
 **Note:** you can use any implementation for the provider.  
 Just implement `ProviderConnector` interface:
+
 ```typescript
 class MyProviderConnector implements ProviderConnector {
     //...
@@ -25,6 +26,7 @@ class MyProviderConnector implements ProviderConnector {
 ```
 
 ## Create a limit order
+
 ```typescript
 class LimitOrderManager {
     limitOrderProtocolUtils: LimitOrderProtocolUtils;
@@ -46,41 +48,63 @@ class LimitOrderManager {
             makerAddress: this.walletAddress,
             makerAssetAddress,
             takerAssetAddress,
-            makerAmount: this.tokenAmountToUnits(makerAssetAddress, makerAmount).toString(),
-            takerAmount: this.tokenAmountToUnits(takerAssetAddress, takerAmount).toString(),
-            predicate
+            makerAmount: this.tokenAmountToUnits(
+                makerAssetAddress,
+                makerAmount
+            ).toString(),
+            takerAmount: this.tokenAmountToUnits(
+                takerAssetAddress,
+                takerAmount
+            ).toString(),
+            predicate,
         });
 
-        const typedData = this.limitOrderProtocolUtils.buildOrderTypedData(order);
+        const typedData = this.limitOrderProtocolUtils.buildOrderTypedData(
+            order
+        );
 
         const hash = this.limitOrderProtocolUtils.getOrderHash(typedData);
 
-        const signature = await this.limitOrderProtocolUtils.getOrderSignature(this.walletAddress, typedData);
+        const signature = await this.limitOrderProtocolUtils.getOrderSignature(
+            this.walletAddress,
+            typedData
+        );
 
         console.log('New order: ', {order, hash, signature});
     }
 
     async buildNewOrderPredicate(expireTimeSeconds: number): Promise<string> {
-        const timestampBelow = Math.floor(Date.now() / 1000) + expireTimeSeconds;
+        const timestampBelow =
+            Math.floor(Date.now() / 1000) + expireTimeSeconds;
 
-        const nonce = await this.limitOrderProtocolUtils.nonces(this.walletAddress);
+        const nonce = await this.limitOrderProtocolUtils.nonces(
+            this.walletAddress
+        );
 
-        const noncePredicate = this.limitOrderProtocolUtils.nonceEquals(this.walletAddress, nonce);
+        const noncePredicate = this.limitOrderProtocolUtils.nonceEquals(
+            this.walletAddress,
+            nonce
+        );
 
-        const timestampPredicate = this.limitOrderProtocolUtils.timestampBelow(timestampBelow);
+        const timestampPredicate = this.limitOrderProtocolUtils.timestampBelow(
+            timestampBelow
+        );
 
         return this.limitOrderProtocolUtils.andPredicate([
             noncePredicate,
-            timestampPredicate
+            timestampPredicate,
         ]);
     }
 }
 ```
 
 ## Fill a limit order:
+
 ```typescript
 class LimitOrderManager {
-    getEntity(orderHash: LimitOrderHash): {order: LimitOrder, signature: LimitOrderSignature} {
+    getEntity(
+        orderHash: LimitOrderHash
+    ): {order: LimitOrder; signature: LimitOrderSignature} {
         // Get limit order by hash
     }
 
@@ -92,7 +116,11 @@ class LimitOrderManager {
         // Send transaction to blockchain
     }
 
-    fillOrder(orderHash: LimitOrderHash, makerAmount: number, takerAmount: number): void {
+    fillOrder(
+        orderHash: LimitOrderHash,
+        makerAmount: number,
+        takerAmount: number
+    ): void {
         const {order, signature} = this.getEntity(orderHash);
 
         const callData = this.limitOrderProtocolUtils.fillOrder(
@@ -108,9 +136,12 @@ class LimitOrderManager {
 ```
 
 ## Cancel a limit order:
+
 ```typescript
 class LimitOrderManager {
-    getEntity(orderHash: LimitOrderHash): {order: LimitOrder, signature: LimitOrderSignature} {
+    getEntity(
+        orderHash: LimitOrderHash
+    ): {order: LimitOrder; signature: LimitOrderSignature} {
         // Get limit order by hash
     }
 
@@ -133,6 +164,7 @@ class LimitOrderManager {
 ```
 
 ## Cancel all orders:
+
 ```typescript
 class LimitOrderManager {
     sendTransaction(callData: string): void {
@@ -148,10 +180,13 @@ class LimitOrderManager {
 ```
 
 ## Get the remainder of a limit order:
+
 ```typescript
 class LimitOrderManager {
     async remaining(orderHash: LimitOrderHash): Promise<void> {
-        const remaining = await this.limitOrderProtocolUtils.remaining(orderHash);
+        const remaining = await this.limitOrderProtocolUtils.remaining(
+            orderHash
+        );
 
         console.log('Order remaining', remaining);
     }
