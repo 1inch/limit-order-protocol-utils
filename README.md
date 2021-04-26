@@ -211,7 +211,8 @@ class LimitOrderManager {
         const data = [order.predicate, order.makerAssetData];
 
         const isValid = this.limitOrderProtocolFacade.simulateTransferFroms(
-            order
+            tokens,
+            data
         );
 
         console.log(isValid);
