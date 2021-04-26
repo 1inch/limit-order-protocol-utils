@@ -12,6 +12,8 @@ on:
 jobs:
   release:
     runs-on: self-hosted
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
@@ -24,14 +26,14 @@ jobs:
       - name: Install yarn
         run: npm install --global yarn
 
+      - name: Set npm auth
+        run: echo //npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> .npmrc
+
       - name: Install dependency
         run: yarn install
 
       - name: Set git credentials
         uses: fregante/setup-git-user@v1
-
-      - name: Set npm auth
-        run: echo //npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> .npmrc
 
       - name: Release
         run: yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
