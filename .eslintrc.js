@@ -26,6 +26,7 @@ module.exports = {
             files: ['src/**/*.test.ts'],
             rules: {
                 'max-lines-per-function': ['error', 400],
+                'max-len': ['error', {code: 130}],
             },
         },
     ],

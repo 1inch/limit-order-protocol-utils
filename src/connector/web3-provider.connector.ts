@@ -61,7 +61,7 @@ export class Web3ProviderConnector implements ProviderConnector {
         });
     }
 
-    decodeABIParameter(type: string, hex: string): {[key: string]: unknown} {
-        return this.web3Provider.eth.abi.decodeParameter(type, hex);
+    decodeABIParameter<T>(type: string, hex: string): T {
+        return this.web3Provider.eth.abi.decodeParameter(type, hex) as T;
     }
 }

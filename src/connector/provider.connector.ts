@@ -24,5 +24,5 @@ export interface ProviderConnector {
 
     ethCall(contractAddress: string, callData: string): Promise<string>;
 
-    decodeABIParameter(type: string, hex: string): {[key: string]: unknown};
+    decodeABIParameter<T>(type: string, hex: string): T;
 }

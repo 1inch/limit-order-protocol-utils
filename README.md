@@ -2,14 +2,14 @@
 
 ## How to start
 
-Create `LimitOrderProtocolUtils` instance:
+Create `LimitOrderProtocolFacade` instance:
 
 ```typescript
 const contractAddress = '0xabc...';
 const chainId = 1;
 const web3 = new Web3();
 
-const limitOrderProtocolUtils = new LimitOrderProtocolUtils(
+const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     contractAddress,
     chainId,
     new Web3ProviderConnector(web3)
@@ -29,7 +29,7 @@ class MyProviderConnector implements ProviderConnector {
 
 ```typescript
 class LimitOrderManager {
-    limitOrderProtocolUtils: LimitOrderProtocolUtils;
+    limitOrderProtocolFacade: LimitOrderProtocolFacade;
     walletAddress: string;
 
     async createOrder(
@@ -44,7 +44,7 @@ class LimitOrderManager {
         /**
          * Note: you can pass takerAddress, by default it set to 0x0000000000000000000000000000000000000000
          */
-        const order = this.limitOrderProtocolUtils.buildOrder({
+        const order = this.limitOrderProtocolFacade.buildOrder({
             makerAddress: this.walletAddress,
             makerAssetAddress,
             takerAssetAddress,
@@ -59,13 +59,13 @@ class LimitOrderManager {
             predicate,
         });
 
-        const typedData = this.limitOrderProtocolUtils.buildOrderTypedData(
+        const typedData = this.limitOrderProtocolFacade.buildOrderTypedData(
             order
         );
 
-        const hash = this.limitOrderProtocolUtils.getOrderHash(typedData);
+        const hash = this.limitOrderProtocolFacade.getOrderHash(typedData);
 
-        const signature = await this.limitOrderProtocolUtils.getOrderSignature(
+        const signature = await this.limitOrderProtocolFacade.getOrderSignature(
             this.walletAddress,
             typedData
         );
@@ -77,20 +77,20 @@ class LimitOrderManager {
         const timestampBelow =
             Math.floor(Date.now() / 1000) + expireTimeSeconds;
 
-        const nonce = await this.limitOrderProtocolUtils.nonces(
+        const nonce = await this.limitOrderProtocolFacade.nonces(
             this.walletAddress
         );
 
-        const noncePredicate = this.limitOrderProtocolUtils.nonceEquals(
+        const noncePredicate = this.limitOrderProtocolFacade.nonceEquals(
             this.walletAddress,
             nonce
         );
 
-        const timestampPredicate = this.limitOrderProtocolUtils.timestampBelow(
+        const timestampPredicate = this.limitOrderProtocolFacade.timestampBelow(
             timestampBelow
         );
 
-        return this.limitOrderProtocolUtils.andPredicate([
+        return this.limitOrderProtocolFacade.andPredicate([
             noncePredicate,
             timestampPredicate,
         ]);
@@ -123,7 +123,7 @@ class LimitOrderManager {
     ): void {
         const {order, signature} = this.getEntity(orderHash);
 
-        const callData = this.limitOrderProtocolUtils.fillOrder(
+        const callData = this.limitOrderProtocolFacade.fillOrder(
             order,
             signature,
             this.tokenAmountToUnits(order.makerAsset, makerAmount),
@@ -150,13 +150,9 @@ class LimitOrderManager {
     }
 
     cancelOrder(orderHash: LimitOrderHash): void {
-        if (this.limitOrderProtocolUtils === null) {
-            return;
-        }
-
         const {order} = this.getEntity(orderHash);
 
-        const callData = this.limitOrderProtocolUtils.cancelOrder(order);
+        const callData = this.limitOrderProtocolFacade.cancelOrder(order);
 
         this.sendTransaction(callData);
     }
@@ -172,7 +168,7 @@ class LimitOrderManager {
     }
 
     cancelAllOrders(): void {
-        const callData = this.limitOrderProtocolUtils.advanceNonce();
+        const callData = this.limitOrderProtocolFacade.advanceNonce();
 
         this.sendTransaction(callData);
     }
@@ -184,11 +180,41 @@ class LimitOrderManager {
 ```typescript
 class LimitOrderManager {
     async remaining(orderHash: LimitOrderHash): Promise<void> {
-        const remaining = await this.limitOrderProtocolUtils.remaining(
+        const remaining = await this.limitOrderProtocolFacade.remaining(
             orderHash
         );
 
         console.log('Order remaining', remaining);
+    }
+}
+```
+
+## Validate order:
+
+### Validate by simulateTransferFroms:
+
+```typescript
+class LimitOrderManager {
+    walletAddress: string;
+
+    getEntity(
+        orderHash: LimitOrderHash
+    ): {order: LimitOrder; signature: LimitOrderSignature} {
+        // Get limit order by hash
+    }
+
+    simulateTransferFroms(orderHash: LimitOrderHash): void {
+        const {order} = this.getEntity(orderHash);
+        const {contractAddress} = limitOrderProtocolFacade;
+
+        const tokens = [contractAddress, this.walletAddress];
+        const data = [order.predicate, order.makerAssetData];
+
+        const isValid = this.limitOrderProtocolFacade.simulateTransferFroms(
+            order
+        );
+
+        console.log(isValid);
     }
 }
 ```
