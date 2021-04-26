@@ -36,7 +36,7 @@ jobs:
         uses: fregante/setup-git-user@v1
 
       - name: Release
-        run: yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
+        run: git tag -d 0.0.3 && yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
 
       - name: Build
         run: yarn run build
