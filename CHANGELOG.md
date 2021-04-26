@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.5...v0.0.6) (2021-04-26)
+
+
+### Features
+
+* **limit-order-protocol-facade:** methods for parse contract response ([ff00a78](https://github.com/1inch/limit-order-protocol-utils/commit/ff00a7809ef56b153500d6fef1d2543944285f24))
+* **limit-order-protocol-facade:** methods for parse remaining response ([b3f9912](https://github.com/1inch/limit-order-protocol-utils/commit/b3f99126c1d0ab15e4a2aa63d3e68a591ddfa675))
+
 ### [0.0.5](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.4...v0.0.5) (2021-04-26)
 
 
