@@ -16,7 +16,7 @@ jobs:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - name: Clean local tags
-        uses: git tag -d $(git tag -l)
+        run: git tag -d $(git tag -l)
 
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
