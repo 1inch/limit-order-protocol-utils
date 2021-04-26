@@ -107,8 +107,10 @@ export class LimitOrderProtocolFacade {
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
             .then((result) => {
-                if (result.length === 66) {
-                    return BigNumber.from(result);
+                const response = this.parseRemainingResponse(result);
+
+                if (response !== null) {
+                    return response;
                 }
 
                 // Parse error
@@ -116,6 +118,14 @@ export class LimitOrderProtocolFacade {
 
                 return Promise.reject(parsed);
             });
+    }
+
+    parseRemainingResponse(response: string): BigNumber | null {
+        if (response.length === 66) {
+            return BigNumber.from(response);
+        }
+
+        return null;
     }
 
     simulateTransferFroms(tokens: string[], data: unknown[]): Promise<boolean> {
@@ -137,8 +147,8 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    parseSimulateTransferResponse(result: string): boolean | null {
-        const parsed = this.parseContractResponse(result);
+    parseSimulateTransferResponse(response: string): boolean | null {
+        const parsed = this.parseContractResponse(response);
 
         if (parsed.startsWith(SIMULATE_TRANSFER_PREFIX)) {
             const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
@@ -149,10 +159,10 @@ export class LimitOrderProtocolFacade {
         return null;
     }
 
-    parseContractResponse(callData: string): string {
+    parseContractResponse(response: string): string {
         return this.providerConnector.decodeABIParameter<string>(
             'string',
-            ZX + callData.slice(10)
+            ZX + response.slice(10)
         );
     }
 
