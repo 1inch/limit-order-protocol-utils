@@ -10,8 +10,10 @@ on:
         default: 'patch'
 
 jobs:
-  ci:
+  release:
     runs-on: self-hosted
+    env:
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
@@ -26,6 +28,9 @@ jobs:
 
       - name: Install dependency
         run: yarn install
+
+      - name: Set npm auth
+        run: yarn run set-npm-auth
 
       - name: Release
         run: yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
