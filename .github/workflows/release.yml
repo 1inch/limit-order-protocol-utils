@@ -8,12 +8,16 @@ on:
         description: 'Bump type (path, minor, major)'
         required: true
         default: 'patch'
+      name:
+        description: 'Your name'
+        required: true
+      email:
+        description: 'Your email'
+        required: true
 
 jobs:
   release:
     runs-on: self-hosted
-    env:
-      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
@@ -30,7 +34,11 @@ jobs:
         run: yarn install
 
       - name: Set npm auth
-        run: yarn run set-npm-auth
+        run: |
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> .npmrc \
+          && echo email=${{ github.event.inputs.email }} >> .npmrc \
+          && echo name=${{ github.event.inputs.name }} >> .npmrc \
+          && cat .npmrc
 
       - name: Release
         run: yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
