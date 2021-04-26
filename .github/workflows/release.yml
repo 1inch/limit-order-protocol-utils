@@ -40,4 +40,4 @@ jobs:
         run: yarn run build
 
       - name: Publish
-        run: git push --follow-tags origin master && cd dist && yarn run publish
+        run: git push --follow-tags origin master && cd dist && npm publish
