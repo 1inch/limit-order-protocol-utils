@@ -21,24 +21,6 @@ export class Web3ProviderConnector implements ProviderConnector {
         return contract.methods[methodName](...methodParams).encodeABI();
     }
 
-    contractCall<T>(
-        abi: AbiItem[],
-        contractAddress: string,
-        methodName: string,
-        methodParams: unknown[],
-        blockNumber: 'pending' | 'latest' | number
-    ): Promise<T> {
-        const contract = new this.web3Provider.eth.Contract(
-            abi as Web3AbiItem[],
-            contractAddress
-        );
-
-        return contract.methods[methodName](...methodParams).call(
-            null,
-            blockNumber
-        );
-    }
-
     signTypedData(
         walletAddress: string,
         typedData: EIP712TypedData

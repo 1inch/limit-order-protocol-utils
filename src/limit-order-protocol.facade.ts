@@ -121,16 +121,6 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    remainingsRaw(hashes: LimitOrderHash[]): Promise<string[]> {
-        return this.providerConnector.contractCall<string[]>(
-            LIMIT_ORDER_PROTOCOL_ABI,
-            this.contractAddress,
-            LimitOrderProtocolMethods.remainingsRaw,
-            [hashes],
-            'latest'
-        );
-    }
-
     simulateTransferFroms(tokens: string[], data: unknown[]): Promise<boolean> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.simulateTransferFroms,

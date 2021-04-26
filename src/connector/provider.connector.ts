@@ -9,14 +9,6 @@ export interface ProviderConnector {
         methodParams: unknown[]
     ): string;
 
-    contractCall<T>(
-        abi: AbiItem[],
-        contractAddress: string,
-        methodName: string,
-        methodParams: unknown[],
-        blockNumber: 'pending' | 'latest' | number
-    ): Promise<T>;
-
     signTypedData(
         walletAddress: string,
         typedData: EIP712TypedData
