@@ -34,11 +34,8 @@ jobs:
         run: yarn install
 
       - name: Set npm auth
-        run: |
-          echo //npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> .npmrc \
-          && echo email=${{ github.event.inputs.email }} >> .npmrc \
-          && echo name=${{ github.event.inputs.name }} >> .npmrc \
-          && cat .npmrc
+        uses: fregante/setup-git-user@v1
+        run: echo //npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> .npmrc
 
       - name: Release
         run: yarn run release -- --release-as ${{ github.event.inputs.bumpType }}
