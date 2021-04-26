@@ -16,7 +16,7 @@
         "test": "jest",
         "typecheck": "tsc --noEmit --skipLibCheck",
         "ci-pipeline": "yarn run lint && yarn run test && yarn run typecheck",
-        "prepare": "husky install",
+        "postinstall": "husky install",
         "set-npm-auth": "echo \"//npm.pkg.github.com/:_authToken=${NPM_AUTH_TOKEN}\" >> .npmrc"
     },
     "dependencies": {
