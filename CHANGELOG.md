@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.4...v0.0.5) (2021-04-26)
+
+
+### Features
+
+* **limit-order-protocol-facade:** remove unused remainingsRaw() method ([627e084](https://github.com/1inch/limit-order-protocol-utils/commit/627e084b2df6072e920e04e9900a973bd4e60f05))
+
+
+### Bug Fixes
+
+* **limit-order-protocol-facade:** fix return type of remaining() method ([4cbcc5d](https://github.com/1inch/limit-order-protocol-utils/commit/4cbcc5d1d8254ac1af90085b960746300b680fe8))
+
 ### [0.0.4](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.3...v0.0.4) (2021-04-26)
 
 ### [0.0.3](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.2...v0.0.3) (2021-04-26)
