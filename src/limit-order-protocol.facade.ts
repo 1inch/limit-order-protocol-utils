@@ -112,10 +112,7 @@ export class LimitOrderProtocolFacade {
                 }
 
                 // Parse error
-                const parsed = this.providerConnector.decodeABIParameter<string>(
-                    'string',
-                    ZX + result.slice(10)
-                );
+                const parsed = this.parseContractResponse(result);
 
                 return Promise.reject(parsed);
             });
@@ -130,19 +127,33 @@ export class LimitOrderProtocolFacade {
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
             .then((result) => {
-                const parsed = this.providerConnector.decodeABIParameter<string>(
-                    'string',
-                    ZX + result.slice(10)
-                );
+                const parsed = this.parseSimulateTransferResponse(result);
 
-                if (parsed.startsWith(SIMULATE_TRANSFER_PREFIX)) {
-                    const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
-
-                    return !data.includes('0');
+                if (parsed !== null) {
+                    return parsed;
                 }
 
                 return Promise.reject(result);
             });
+    }
+
+    parseSimulateTransferResponse(result: string): boolean | null {
+        const parsed = this.parseContractResponse(result);
+
+        if (parsed.startsWith(SIMULATE_TRANSFER_PREFIX)) {
+            const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
+
+            return !data.includes('0');
+        }
+
+        return null;
+    }
+
+    parseContractResponse(callData: string): string {
+        return this.providerConnector.decodeABIParameter<string>(
+            'string',
+            ZX + callData.slice(10)
+        );
     }
 
     getContractCallData(
