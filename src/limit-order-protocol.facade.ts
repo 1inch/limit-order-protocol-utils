@@ -8,6 +8,8 @@ import {
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 
+const SIMULATE_TRANSFER_PREFIX = 'TRANSFERS_SUCCESSFUL_';
+
 /**
  * TODO: create PredicateBuilder:
  * const predicate = new PredicateBuilder()
@@ -17,8 +19,8 @@ import {BigNumber} from '@ethersproject/bignumber';
  */
 export class LimitOrderProtocolFacade {
     constructor(
-        private readonly contractAddress: string,
-        private readonly providerConnector: ProviderConnector
+        public readonly contractAddress: string,
+        public readonly providerConnector: ProviderConnector
     ) {}
 
     fillOrder(
@@ -110,7 +112,7 @@ export class LimitOrderProtocolFacade {
                 }
 
                 // Parse error
-                const parsed = this.providerConnector.decodeABIParameter(
+                const parsed = this.providerConnector.decodeABIParameter<string>(
                     'string',
                     ZX + result.slice(10)
                 );
@@ -127,6 +129,30 @@ export class LimitOrderProtocolFacade {
             [hashes],
             'latest'
         );
+    }
+
+    simulateTransferFroms(tokens: string[], data: unknown[]): Promise<boolean> {
+        const callData = this.getContractCallData(
+            LimitOrderProtocolMethods.simulateTransferFroms,
+            [tokens, data]
+        );
+
+        return this.providerConnector
+            .ethCall(this.contractAddress, callData)
+            .then((result) => {
+                const parsed = this.providerConnector.decodeABIParameter<string>(
+                    'string',
+                    ZX + result.slice(10)
+                );
+
+                if (parsed.startsWith(SIMULATE_TRANSFER_PREFIX)) {
+                    const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
+
+                    return !data.includes('0');
+                }
+
+                return Promise.reject(result);
+            });
     }
 
     getContractCallData(

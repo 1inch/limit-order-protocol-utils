@@ -9,15 +9,27 @@ import {LimitOrderBuilder} from './limit-order.builder';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const contractAddress = '0x0e6b8845f6a316f92efbaf30af21ff9e78f0008f';
+    const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
     const chainId = 56;
     const web3 = new Web3('https://bsc-node.1inch.exchange');
     const providerConnector = new Web3ProviderConnector(web3);
 
-    let limitOrderProtocolFacade: LimitOrderProtocolFacade;
+    let facade: LimitOrderProtocolFacade;
     let limitOrderBuilder: LimitOrderBuilder;
 
+    function createOrderWithPredicate(predicate: string): LimitOrder {
+        return limitOrderBuilder.buildOrder({
+            makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+            takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
+            makerAddress: walletAddress,
+            makerAmount: '1000000000000000000',
+            takerAmount: '1000000000000000000',
+            predicate,
+        });
+    }
+
     beforeEach(() => {
-        limitOrderProtocolFacade = new LimitOrderProtocolFacade(
+        facade = new LimitOrderProtocolFacade(
             contractAddress,
             providerConnector
         );
@@ -31,47 +43,87 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it('checkPredicate() when order predicates are valid then return true', async () => {
         const timestamp = Math.floor(Date.now() / 1000) + 600;
-        const timestampBelow = limitOrderProtocolFacade.timestampBelow(
-            timestamp
-        ); // valid value
-        const predicate = await limitOrderProtocolFacade.andPredicate([
-            timestampBelow,
-        ]);
+        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const predicate = await facade.andPredicate([timestampBelow]);
 
-        const order: LimitOrder = limitOrderBuilder.buildOrder({
-            makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-            takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
-            makerAddress: '0xfb3c7eb936cAA12B5A884d612393969A557d4307',
-            makerAmount: '1000000000000000000',
-            takerAmount: '1000000000000000000',
-            predicate,
-        });
+        const order = createOrderWithPredicate(predicate);
 
-        const result = await limitOrderProtocolFacade.checkPredicate(order);
+        const result = await facade.checkPredicate(order);
 
         expect(result).toBe(true);
     });
 
     it('checkPredicate() when order predicates are NOT valid then return false', async () => {
-        const timestampBelow = limitOrderProtocolFacade.getContractCallData(
+        const timestampBelow = facade.getContractCallData(
             LimitOrderProtocolMethods.timestampBelow,
             [12000000] // must be 0x0000...
         );
-        const predicate = await limitOrderProtocolFacade.andPredicate([
-            timestampBelow,
-        ]);
+        const predicate = await facade.andPredicate([timestampBelow]);
 
-        const order: LimitOrder = limitOrderBuilder.buildOrder({
-            makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-            takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
-            makerAddress: '0xfb3c7eb936cAA12B5A884d612393969A557d4307',
-            makerAmount: '1000000000000000000',
-            takerAmount: '1000000000000000000',
-            predicate,
-        });
+        const order = createOrderWithPredicate(predicate);
 
-        const result = await limitOrderProtocolFacade.checkPredicate(order);
+        const result = await facade.checkPredicate(order);
 
         expect(result).toBe(false);
+    });
+
+    it('simulateTransferFroms() when order is invalid by nonce predicate then must return false', async () => {
+        const timestamp = Math.floor(Date.now() / 1000) + 100;
+        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const nonce = await facade.nonces(walletAddress); // real nonce
+        const nonceEquals = facade.nonceEquals(walletAddress, nonce + 1); // invalid value
+
+        const predicate = await facade.andPredicate([
+            timestampBelow,
+            nonceEquals,
+        ]);
+        const order = createOrderWithPredicate(predicate);
+
+        const tokens = [contractAddress, walletAddress];
+        const data = [order.predicate, order.makerAssetData];
+
+        const result = await facade.simulateTransferFroms(tokens, data);
+
+        expect(result).toBe(false);
+    });
+
+    it('simulateTransferFroms() when order is invalid by timestamp predicate then must return false', async () => {
+        const timestamp = Math.floor(Date.now() / 1000) - 100; // invalid value
+        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const nonce = await facade.nonces(walletAddress); // real nonce
+        const nonceEquals = facade.nonceEquals(walletAddress, nonce); // valid value
+
+        const predicate = await facade.andPredicate([
+            timestampBelow,
+            nonceEquals,
+        ]);
+        const order = createOrderWithPredicate(predicate);
+
+        const tokens = [contractAddress, walletAddress];
+        const data = [order.predicate, order.makerAssetData];
+
+        const result = await facade.simulateTransferFroms(tokens, data);
+
+        expect(result).toBe(false);
+    });
+
+    it('simulateTransferFroms() when order is valid by all predicates then must return true', async () => {
+        const timestamp = Math.floor(Date.now() / 1000) + 100; // valid value
+        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const nonce = await facade.nonces(walletAddress); // real nonce
+        const nonceEquals = facade.nonceEquals(walletAddress, nonce); // valid value
+
+        const predicate = await facade.andPredicate([
+            timestampBelow,
+            nonceEquals,
+        ]);
+        const order = createOrderWithPredicate(predicate);
+
+        const tokens = [contractAddress, walletAddress];
+        const data = [order.predicate, order.makerAssetData];
+
+        const result = await facade.simulateTransferFroms(tokens, data);
+
+        expect(result).toBe(true);
     });
 });

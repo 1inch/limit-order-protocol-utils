@@ -48,4 +48,5 @@ export enum LimitOrderProtocolMethods {
     transferFrom = 'transferFrom',
     checkPredicate = 'checkPredicate',
     remainingsRaw = 'remainingsRaw',
+    simulateTransferFroms = 'simulateTransferFroms',
 }
