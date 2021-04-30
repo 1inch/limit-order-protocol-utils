@@ -139,11 +139,16 @@ export class LimitOrderProtocolFacade {
             .then((result) => {
                 const parsed = this.parseSimulateTransferResponse(result);
 
-                if (parsed !== null) {
-                    return parsed;
-                }
+                if (parsed !== null) return parsed;
 
                 return Promise.reject(result);
+            })
+            .catch((error) => {
+                const parsed = this.parseSimulateTransferError(error);
+
+                if (parsed !== null) return parsed;
+
+                return Promise.reject(error);
             });
     }
 
@@ -154,6 +159,16 @@ export class LimitOrderProtocolFacade {
             const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
 
             return !data.includes('0');
+        }
+
+        return null;
+    }
+
+    parseSimulateTransferError(error: Error | string): boolean | null {
+        const message = typeof error === 'string' ? error : error.message;
+
+        if (message.includes(SIMULATE_TRANSFER_PREFIX)) {
+            return !message.includes('0');
         }
 
         return null;
