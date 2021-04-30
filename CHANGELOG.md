@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.6...v0.0.7) (2021-04-30)
+
+
+### Features
+
+* **limit-order-protocol-facade:** improve parsing result of simulateTransferFroms for ethereum mainnet ([69b41ac](https://github.com/1inch/limit-order-protocol-utils/commit/69b41ac54e5ffbe29715652c84dc8c3190fb23da))
+
 ### [0.0.6](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.5...v0.0.6) (2021-04-26)
 
 
