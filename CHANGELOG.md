@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.7...v0.1.0) (2021-05-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **limit-order-predicate-builder:** LimitOrderProtocolFacade now doesn't include methods: andPredicate, timestampBelow, nonceEquals. Use LimitOrderPredicateBuilder instead
+
+### Features
+
+* **limit-order-predicate-builder:** LimitOrderPredicateBuilder for create predicates for limit orders ([881beb0](https://github.com/1inch/limit-order-protocol-utils/commit/881beb0acc50c210befa310d02092e83b346dcbd))
+
 ### [0.0.7](https://github.com/1inch/limit-order-protocol-utils/compare/v0.0.6...v0.0.7) (2021-04-30)
 
 
