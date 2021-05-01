@@ -25,6 +25,31 @@ class MyProviderConnector implements ProviderConnector {
 }
 ```
 
+## Create a limit order predicate
+
+```typescript
+class LimitOrderManager {
+    limitOrderProtocolFacade: LimitOrderProtocolFacade;
+    walletAddress: string;
+
+    buildLimitOrderPredicate(): void {
+        const nonce = 15;
+        const timestampBelow = 1619860038;
+
+        const predicateBuilder = new LimitOrderPredicateBuilder(
+            this.limitOrderProtocolFacade
+        );
+
+        const predicate = predicateBuilder.and(
+            predicateBuilder.nonceEquals(this.walletAddress, nonce),
+            predicateBuilder.timestampBelow(timestampBelow)
+        );
+
+        console.log(predicate);
+    }
+}
+```
+
 ## Create a limit order
 
 ```typescript

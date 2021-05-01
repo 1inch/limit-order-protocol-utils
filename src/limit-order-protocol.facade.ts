@@ -1,4 +1,8 @@
-import {LIMIT_ORDER_PROTOCOL_ABI, ZX} from './limit-order-protocol.const';
+import {
+    LIMIT_ORDER_PROTOCOL_ABI,
+    SIMULATE_TRANSFER_PREFIX,
+    ZX,
+} from './limit-order-protocol.const';
 import {
     LimitOrder,
     LimitOrderProtocolMethods,
@@ -8,15 +12,6 @@ import {
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 
-const SIMULATE_TRANSFER_PREFIX = 'TRANSFERS_SUCCESSFUL_';
-
-/**
- * TODO: create PredicateBuilder:
- * const predicate = new PredicateBuilder()
- * .timestampBelow(600)
- * .nonceEquals(1)
- * .build();
- */
 export class LimitOrderProtocolFacade {
     constructor(
         public readonly contractAddress: string,
@@ -56,27 +51,6 @@ export class LimitOrderProtocolFacade {
 
     advanceNonce(): string {
         return this.getContractCallData(LimitOrderProtocolMethods.advanceNonce);
-    }
-
-    andPredicate(predicates: string[]): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.and, [
-            predicates.map(() => this.contractAddress),
-            predicates,
-        ]);
-    }
-
-    timestampBelow(timestamp: number): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.timestampBelow,
-            [ZX + timestamp.toString(16)]
-        );
-    }
-
-    nonceEquals(makerAddress: string, makerNonce: number): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.nonceEquals, [
-            makerAddress,
-            makerNonce,
-        ]);
     }
 
     checkPredicate(order: LimitOrder): Promise<boolean> {
@@ -120,14 +94,6 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    parseRemainingResponse(response: string): BigNumber | null {
-        if (response.length === 66) {
-            return BigNumber.from(response);
-        }
-
-        return null;
-    }
-
     simulateTransferFroms(tokens: string[], data: unknown[]): Promise<boolean> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.simulateTransferFroms,
@@ -150,6 +116,26 @@ export class LimitOrderProtocolFacade {
 
                 return Promise.reject(error);
             });
+    }
+
+    getContractCallData(
+        methodName: LimitOrderProtocolMethods,
+        methodParams: unknown[] = []
+    ): string {
+        return this.providerConnector.contractEncodeABI(
+            LIMIT_ORDER_PROTOCOL_ABI,
+            this.contractAddress,
+            methodName,
+            methodParams
+        );
+    }
+
+    parseRemainingResponse(response: string): BigNumber | null {
+        if (response.length === 66) {
+            return BigNumber.from(response);
+        }
+
+        return null;
     }
 
     parseSimulateTransferResponse(response: string): boolean | null {
@@ -178,18 +164,6 @@ export class LimitOrderProtocolFacade {
         return this.providerConnector.decodeABIParameter<string>(
             'string',
             ZX + response.slice(10)
-        );
-    }
-
-    getContractCallData(
-        methodName: LimitOrderProtocolMethods,
-        methodParams: unknown[] = []
-    ): string {
-        return this.providerConnector.contractEncodeABI(
-            LIMIT_ORDER_PROTOCOL_ABI,
-            this.contractAddress,
-            methodName,
-            methodParams
         );
     }
 }
