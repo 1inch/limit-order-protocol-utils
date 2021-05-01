@@ -15,6 +15,7 @@
         "release": "standard-version",
         "test": "jest",
         "typecheck": "tsc --noEmit --skipLibCheck",
+        "prettier": "prettier --write .",
         "ci-pipeline": "yarn run lint && yarn run test && yarn run typecheck",
         "set-npm-auth": "echo \"//npm.pkg.github.com/:_authToken=${NPM_AUTH_TOKEN}\" >> .npmrc"
     },
@@ -62,7 +63,7 @@
     },
     "lint-staged": {
         "*.{js,ts,md,json}": [
-            "prettier --write ."
+            "yarn run prettier"
         ],
         "*.{js,ts}": [
             "yarn run lint"

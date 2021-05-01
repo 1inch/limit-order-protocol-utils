@@ -6,6 +6,7 @@ import {
     LimitOrderProtocolMethods,
 } from './model/limit-order-protocol.model';
 import {LimitOrderBuilder} from './limit-order.builder';
+import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const contractAddress = '0x0e6b8845f6a316f92efbaf30af21ff9e78f0008f';
@@ -15,6 +16,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     const providerConnector = new Web3ProviderConnector(web3);
 
     let facade: LimitOrderProtocolFacade;
+    let limitOrderPredicateBuilder: LimitOrderPredicateBuilder;
     let limitOrderBuilder: LimitOrderBuilder;
 
     function createOrderWithPredicate(predicate: string): LimitOrder {
@@ -34,6 +36,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             providerConnector
         );
 
+        limitOrderPredicateBuilder = new LimitOrderPredicateBuilder(facade);
+
         limitOrderBuilder = new LimitOrderBuilder(
             contractAddress,
             chainId,
@@ -43,8 +47,10 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it('checkPredicate() when order predicates are valid then return true', async () => {
         const timestamp = Math.floor(Date.now() / 1000) + 600;
-        const timestampBelow = facade.timestampBelow(timestamp); // valid value
-        const predicate = await facade.andPredicate([timestampBelow]);
+        const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+            timestamp
+        ); // valid value
+        const predicate = await limitOrderPredicateBuilder.and(timestampBelow);
 
         const order = createOrderWithPredicate(predicate);
 
@@ -58,7 +64,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             LimitOrderProtocolMethods.timestampBelow,
             [12000000] // must be 0x0000...
         );
-        const predicate = await facade.andPredicate([timestampBelow]);
+        const predicate = await limitOrderPredicateBuilder.and(timestampBelow);
 
         const order = createOrderWithPredicate(predicate);
 
@@ -69,14 +75,19 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it('simulateTransferFroms() when order is invalid by nonce predicate then must return false', async () => {
         const timestamp = Math.floor(Date.now() / 1000) + 100;
-        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+            timestamp
+        ); // valid value
         const nonce = await facade.nonces(walletAddress); // real nonce
-        const nonceEquals = facade.nonceEquals(walletAddress, nonce + 1); // invalid value
+        const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
+            walletAddress,
+            nonce + 1
+        ); // invalid value
 
-        const predicate = await facade.andPredicate([
+        const predicate = await limitOrderPredicateBuilder.and(
             timestampBelow,
-            nonceEquals,
-        ]);
+            nonceEquals
+        );
         const order = createOrderWithPredicate(predicate);
 
         const tokens = [contractAddress, walletAddress];
@@ -89,14 +100,19 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it('simulateTransferFroms() when order is invalid by timestamp predicate then must return false', async () => {
         const timestamp = Math.floor(Date.now() / 1000) - 100; // invalid value
-        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+            timestamp
+        ); // valid value
         const nonce = await facade.nonces(walletAddress); // real nonce
-        const nonceEquals = facade.nonceEquals(walletAddress, nonce); // valid value
+        const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
+            walletAddress,
+            nonce
+        ); // valid value
 
-        const predicate = await facade.andPredicate([
+        const predicate = await limitOrderPredicateBuilder.and(
             timestampBelow,
-            nonceEquals,
-        ]);
+            nonceEquals
+        );
         const order = createOrderWithPredicate(predicate);
 
         const tokens = [contractAddress, walletAddress];
@@ -109,14 +125,19 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it('simulateTransferFroms() when order is valid by all predicates then must return true', async () => {
         const timestamp = Math.floor(Date.now() / 1000) + 100; // valid value
-        const timestampBelow = facade.timestampBelow(timestamp); // valid value
+        const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+            timestamp
+        ); // valid value
         const nonce = await facade.nonces(walletAddress); // real nonce
-        const nonceEquals = facade.nonceEquals(walletAddress, nonce); // valid value
+        const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
+            walletAddress,
+            nonce
+        ); // valid value
 
-        const predicate = await facade.andPredicate([
+        const predicate = await limitOrderPredicateBuilder.and(
             timestampBelow,
-            nonceEquals,
-        ]);
+            nonceEquals
+        );
         const order = createOrderWithPredicate(predicate);
 
         const tokens = [contractAddress, walletAddress];

@@ -1,4 +1,5 @@
 import {EIP712Object} from './eip712.model';
+import {LimitOrderPredicateCallData} from '../limit-order-predicate.builder';
 
 export enum ChainId {
     etherumMainnet = 1,
@@ -16,7 +17,7 @@ export interface LimitOrderData {
     takerAssetAddress: string;
     makerAmount: string;
     takerAmount: string;
-    predicate?: string;
+    predicate?: LimitOrderPredicateCallData;
     permit?: string;
     interaction?: string;
 }
@@ -42,6 +43,10 @@ export enum LimitOrderProtocolMethods {
     nonces = 'nonces',
     advanceNonce = 'advanceNonce',
     and = 'and',
+    or = 'or',
+    eq = 'eq',
+    lt = 'lt',
+    gt = 'gt',
     timestampBelow = 'timestampBelow',
     nonceEquals = 'nonceEquals',
     remaining = 'remaining',

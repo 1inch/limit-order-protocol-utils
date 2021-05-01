@@ -1,4 +1,6 @@
+export * from './erc20.facade';
 export * from './limit-order.builder';
+export * from './limit-order-predicate.builder';
 export * from './limit-order-protocol.const';
 export * from './limit-order-protocol.facade';
 

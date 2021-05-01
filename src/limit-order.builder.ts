@@ -5,7 +5,6 @@ import {
     ZERO_ADDRESS,
     PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ERC20_ABI,
     ZX,
 } from './limit-order-protocol.const';
 import {
@@ -19,13 +18,18 @@ import {
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
+import {Erc20Facade} from './erc20.facade';
 
 export class LimitOrderBuilder {
+    private readonly erc20Facade: Erc20Facade;
+
     constructor(
         private readonly contractAddress: string,
         private readonly chainId: ChainId,
         private readonly providerConnector: ProviderConnector
-    ) {}
+    ) {
+        this.erc20Facade = new Erc20Facade(this.providerConnector);
+    }
 
     buildOrderSignature(
         walletAddress: string,
@@ -74,13 +78,13 @@ export class LimitOrderBuilder {
             salt: this.generateSalt(),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
-            makerAssetData: this.transferFrom(
+            makerAssetData: this.erc20Facade.transferFrom(
                 makerAssetAddress,
                 makerAddress,
                 takerAddress,
                 makerAmount
             ),
-            takerAssetData: this.transferFrom(
+            takerAssetData: this.erc20Facade.transferFrom(
                 makerAssetAddress,
                 takerAddress,
                 makerAddress,
@@ -105,20 +109,6 @@ export class LimitOrderBuilder {
 
     private generateSalt(): string {
         return Math.round(Math.random() * Date.now()) + '';
-    }
-
-    private transferFrom(
-        makerAssetAddress: string,
-        fromAddress: string,
-        toAddress: string,
-        value: string
-    ): string {
-        return this.providerConnector.contractEncodeABI(
-            ERC20_ABI,
-            makerAssetAddress,
-            'transferFrom',
-            [fromAddress, toAddress, value]
-        );
     }
 
     // Get nonce from contract (nonces method) and put it to predicate on order creating
