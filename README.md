@@ -1,4 +1,16 @@
+<p align="center">
+  <img src="https://app.1inch.io/assets/images/logo.svg" width="200" alt="1inch network" />
+</p>
+
 # Utils for limit orders protocol
+
+This is the package of utilities for working with the `1inch limit orders protocol`
+
+[LimitOrderBuilder](./src/limit-order.builder.ts) - to create a limit order  
+[LimitOrderPredicateBuilder](./src/limit-order-predicate.builder.ts) - to create a predicates for limit order  
+[LimitOrderProtocolFacade](./src/limit-order-protocol.facade.ts) - to interact with the protocol on the blockchain
+
+---
 
 ## Test coverage
 
@@ -6,20 +18,99 @@
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | ![Statements](https://img.shields.io/badge/Coverage-98.94%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-96.83%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-98.94%25-brightgreen.svg) |
 
-## How to start
+## Installation
 
-Create `LimitOrderProtocolFacade` instance:
+### Node
+
+```
+npm install web3
+```
+
+### Yarn
+
+```
+yarn install web3
+```
+
+## Protocol addresses
+
+-   Ethereum mainnet: `0x94a68df7e81b90a9007db9db7ffb3e6a2f1e6c1b`
+-   BSC mainnet: `0x0e6b8845f6a316f92efbaf30af21ff9e78f0008f`
+
+---
+
+## Contents
+
+0. [Quick start](#Quick-start)
+1. [Create a limit order](#Create-a-limit-order)
+2. [Check a limit order remaining](#Check-a-limit-order-remaining)
+3. [Validate a limit order](#Validate-a-limit-order)
+4. [Create a predicate for limit order](#Create-a-predicate-for-limit-order)
+5. [Check a limit order predicate](#Check-a-limit-order-predicate)
+6. [Fill a limit order](#Fill-a-limit-order)
+7. [Cancel a limit order](#Cancel-a-limit-order)
+8. [Cancel all limit orders](#Cancel-all-limit-orders)
+9. [Get the current nonce](#Get-the-current-nonce)
+
+## Quick start
 
 ```typescript
+import {
+    LimitOrderBuilder,
+    LimitOrderProtocolFacade,
+} from '@1inch/limit-order-protocol';
+
 const contractAddress = '0xabc...';
+const walletAddress = '0xzxy...';
 const chainId = 1;
-const web3 = new Web3();
+
+const web3 = new Web3('...');
+// You can create and use a custom provider connector (for example: ethers)
+const connector = new Web3ProviderConnector(web3);
+
+const limitOrderBuilder = new LimitOrderBuilder(
+    contractAddress,
+    chainId,
+    connector
+);
 
 const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     contractAddress,
-    chainId,
-    new Web3ProviderConnector(web3)
+    connector
 );
+
+// Create a limit order and signature
+const limitOrder = limitOrderBuilder.buildOrder({
+    makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
+    makerAddress: walletAddress,
+    makerAmount: '100',
+    takerAmount: '200',
+    predicate: '0x0',
+    permit: '0x0',
+    interaction: '0x0',
+});
+const limitOrderTypedData = limitOrderBuilder.buildOrderTypedData(limitOrder);
+const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
+    walletAddress,
+    limitOrderTypedData
+);
+
+// Fill the limit order
+const callData = limitOrderProtocolFacade.fillOrder(
+    limitOrder,
+    limitOrderSignature,
+    '100',
+    '0'
+);
+
+sendTransaction({
+    from: walletAddress,
+    gas: 210_000, // Set your gas limit
+    gasPrice: 40000, // Set your gas price
+    to: contractAddress,
+    data: callData,
+});
 ```
 
 **Note:** you can use any implementation for the provider.  
@@ -31,222 +122,72 @@ class MyProviderConnector implements ProviderConnector {
 }
 ```
 
-## Create a limit order predicate
-
-```typescript
-class LimitOrderManager {
-    limitOrderProtocolFacade: LimitOrderProtocolFacade;
-    walletAddress: string;
-
-    buildLimitOrderPredicate(): void {
-        const nonce = 15;
-        const timestampBelow = 1619860038;
-
-        const predicateBuilder = new LimitOrderPredicateBuilder(
-            this.limitOrderProtocolFacade
-        );
-
-        const predicate = predicateBuilder.and(
-            predicateBuilder.nonceEquals(this.walletAddress, nonce),
-            predicateBuilder.timestampBelow(timestampBelow)
-        );
-
-        console.log(predicate);
-    }
-}
-```
-
 ## Create a limit order
 
-```typescript
-class LimitOrderManager {
-    limitOrderProtocolFacade: LimitOrderProtocolFacade;
-    walletAddress: string;
+Parameters for creating a limit order:
 
-    async createOrder(
-        makerAssetAddress: string,
-        takerAssetAddress: string,
-        makerAmount: number,
-        takerAmount: number,
-        expireTimeSeconds: number
-    ): Promise<void> {
-        const predicate = await this.buildNewOrderPredicate(expireTimeSeconds);
+-   `makerAssetAddress` - address of maker token
+-   `takerAssetAddress` - address of taker token
+-   `makerAddress` - address of maker
+-   `takerAddress` - address of taker. Default: `0x0000000000000000000000000000000000000000`
+-   `makerAmount` - amount of maker token, in wei units
+-   `takerAmount` - amount of taker token, in wei units
+-   `predicate` - predicate call data. Default: `0x`
+-   `permit` - permit call data. Default: `0x`
+-   `interaction` - interaction call data. Default: `0x`
 
-        /**
-         * Note: you can pass takerAddress, by default it set to 0x0000000000000000000000000000000000000000
-         */
-        const order = this.limitOrderProtocolFacade.buildOrder({
-            makerAddress: this.walletAddress,
-            makerAssetAddress,
-            takerAssetAddress,
-            makerAmount: this.tokenAmountToUnits(
-                makerAssetAddress,
-                makerAmount
-            ).toString(),
-            takerAmount: this.tokenAmountToUnits(
-                takerAssetAddress,
-                takerAmount
-            ).toString(),
-            predicate,
-        });
-
-        const typedData = this.limitOrderProtocolFacade.buildOrderTypedData(
-            order
-        );
-
-        const hash = this.limitOrderProtocolFacade.getOrderHash(typedData);
-
-        const signature = await this.limitOrderProtocolFacade.getOrderSignature(
-            this.walletAddress,
-            typedData
-        );
-
-        console.log('New order: ', {order, hash, signature});
-    }
-
-    async buildNewOrderPredicate(expireTimeSeconds: number): Promise<string> {
-        const timestampBelow =
-            Math.floor(Date.now() / 1000) + expireTimeSeconds;
-
-        const nonce = await this.limitOrderProtocolFacade.nonces(
-            this.walletAddress
-        );
-
-        const noncePredicate = this.limitOrderProtocolFacade.nonceEquals(
-            this.walletAddress,
-            nonce
-        );
-
-        const timestampPredicate = this.limitOrderProtocolFacade.timestampBelow(
-            timestampBelow
-        );
-
-        return this.limitOrderProtocolFacade.andPredicate([
-            noncePredicate,
-            timestampPredicate,
-        ]);
-    }
-}
-```
-
-## Fill a limit order:
+### Example:
 
 ```typescript
-class LimitOrderManager {
-    getEntity(
-        orderHash: LimitOrderHash
-    ): {order: LimitOrder; signature: LimitOrderSignature} {
-        // Get limit order by hash
-    }
+const limitOrderBuilder = new LimitOrderBuilder();
+// ...
 
-    tokenAmountToUnits(tokenAddress: string, amount: number): string {
-        // Format token amount to units
-    }
-
-    sendTransaction(callData: string): void {
-        // Send transaction to blockchain
-    }
-
-    fillOrder(
-        orderHash: LimitOrderHash,
-        makerAmount: number,
-        takerAmount: number
-    ): void {
-        const {order, signature} = this.getEntity(orderHash);
-
-        const callData = this.limitOrderProtocolFacade.fillOrder(
-            order,
-            signature,
-            this.tokenAmountToUnits(order.makerAsset, makerAmount),
-            this.tokenAmountToUnits(order.takerAsset, takerAmount)
-        );
-
-        this.sendTransaction(callData);
-    }
-}
+const limitOrder = limitOrderBuilder.buildOrder({
+    makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
+    makerAddress: '0xfb3c7ebccccAA12B5A884d612393969Adddddddd',
+    makerAmount: '100',
+    takerAmount: '200',
+    predicate: '0x0',
+    permit: '0x0',
+    interaction: '0x0',
+});
+const limitOrderTypedData = limitOrderBuilder.buildOrderTypedData(limitOrder);
+const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
+    walletAddress,
+    limitOrderTypedData
+);
+const limitOrderHash = limitOrderBuilder.buildOrderHash(limitOrderTypedData);
 ```
 
-## Cancel a limit order:
+## Check a limit order remaining
 
-```typescript
-class LimitOrderManager {
-    getEntity(
-        orderHash: LimitOrderHash
-    ): {order: LimitOrder; signature: LimitOrderSignature} {
-        // Get limit order by hash
-    }
+`TODO`
 
-    sendTransaction(callData: string): void {
-        // Send transaction to blockchain
-    }
+## Validate a limit order
 
-    cancelOrder(orderHash: LimitOrderHash): void {
-        const {order} = this.getEntity(orderHash);
+`TODO`
 
-        const callData = this.limitOrderProtocolFacade.cancelOrder(order);
+## Create a predicate for limit order
 
-        this.sendTransaction(callData);
-    }
-}
-```
+`TODO`
 
-## Cancel all orders:
+## Check a limit order predicate
 
-```typescript
-class LimitOrderManager {
-    sendTransaction(callData: string): void {
-        // Send transaction to blockchain
-    }
+`TODO`
 
-    cancelAllOrders(): void {
-        const callData = this.limitOrderProtocolFacade.advanceNonce();
+## Fill a limit order
 
-        this.sendTransaction(callData);
-    }
-}
-```
+`TODO`
 
-## Get the remainder of a limit order:
+## Cancel a limit order
 
-```typescript
-class LimitOrderManager {
-    async remaining(orderHash: LimitOrderHash): Promise<void> {
-        const remaining = await this.limitOrderProtocolFacade.remaining(
-            orderHash
-        );
+`TODO`
 
-        console.log('Order remaining', remaining);
-    }
-}
-```
+## Cancel all limit orders
 
-## Validate order:
+`TODO`
 
-### Validate by simulateTransferFroms:
+## Get the current nonce
 
-```typescript
-class LimitOrderManager {
-    walletAddress: string;
-
-    getEntity(
-        orderHash: LimitOrderHash
-    ): {order: LimitOrder; signature: LimitOrderSignature} {
-        // Get limit order by hash
-    }
-
-    simulateTransferFroms(orderHash: LimitOrderHash): void {
-        const {order} = this.getEntity(orderHash);
-        const {contractAddress} = limitOrderProtocolFacade;
-
-        const tokens = [contractAddress, this.walletAddress];
-        const data = [order.predicate, order.makerAssetData];
-
-        const isValid = this.limitOrderProtocolFacade.simulateTransferFroms(
-            tokens,
-            data
-        );
-
-        console.log(isValid);
-    }
-}
-```
+`TODO`
