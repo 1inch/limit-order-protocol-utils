@@ -29,7 +29,6 @@ export class Web3ProviderConnector implements ProviderConnector {
             throw new Error('Web3 currentProvider is null');
         }
 
-        // TODO: add fallback for other wallets
         return this.web3Provider.currentProvider.send('eth_signTypedData_v4', [
             walletAddress,
             JSON.stringify(typedData),

@@ -72,10 +72,10 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    remaining(hash: LimitOrderHash): Promise<BigNumber> {
+    remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.remaining,
-            [hash]
+            [orderHash]
         );
 
         return this.providerConnector

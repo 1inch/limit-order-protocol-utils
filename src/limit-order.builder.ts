@@ -44,7 +44,6 @@ export class LimitOrderBuilder {
         return ZX + TypedDataUtils.sign(message).toString('hex');
     }
 
-    // TODO: extend type regarding MessageTypes
     buildOrderTypedData(order: LimitOrder): EIP712TypedData {
         return {
             primaryType: 'Order',
