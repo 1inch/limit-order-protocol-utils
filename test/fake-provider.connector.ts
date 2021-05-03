@@ -1,4 +1,4 @@
-import {EIP712TypedData, Web3ProviderConnector} from '../dist';
+import {EIP712TypedData, Web3ProviderConnector} from '../src';
 import {signTypedData_v4} from 'eth-sig-util';
 import Web3 from 'web3';
 
