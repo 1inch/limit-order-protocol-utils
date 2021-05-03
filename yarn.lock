@@ -4118,6 +4118,11 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
+istanbul-badges-readme@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/istanbul-badges-readme/-/istanbul-badges-readme-1.2.1.tgz#aea1891f4515ddfe7f62704cba87bd25cccfcce0"
+  integrity sha512-/rXtmpI0bzdmgaeZrutA5vL6c0NikSRRfBmjVxS0yJgU1o5elQARXiFQTiakkxGCrI2vS/k4X6zjGrV+32FJFQ==
+
 istanbul-lib-coverage@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.0.0.tgz#f5944a37c70b550b02a78a5c3b2055b280cec8ec"

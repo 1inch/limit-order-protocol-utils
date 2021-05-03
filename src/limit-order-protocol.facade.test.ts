@@ -189,6 +189,23 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             expect(result).toBe(false);
         });
+
+        it('When provider returns invalid value, then return true', async () => {
+            const predicate = await limitOrderPredicateBuilder.eq(
+                '1',
+                walletAddress,
+                '0x000'
+            );
+
+            const order = createOrderWithPredicate(predicate);
+
+            console.log(
+                'This is ok! Error "overflow (fault="overflow", operation="toNumber"..." must be shown!'
+            );
+            const result = await facade.checkPredicate(order);
+
+            expect(result).toBe(false);
+        });
     });
 
     describe('simulateTransferFroms()', () => {
@@ -266,5 +283,38 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             expect(result).toBe(true);
         });
+    });
+
+    it("parseSimulateTransferResponse() return null when response doesn't contain special prefix", () => {
+        const input =
+            '1111111111' +
+            '000000000000000000000000000000000000000000000000000000000000002' +
+            '000000000000000000000000000000000000000000000000000000000000000' +
+            '124c4f503a20556e6b6e6f776e206f726465720000000000000000000000000000';
+
+        const result = facade.parseSimulateTransferResponse(input);
+
+        expect(result).toBe(null);
+    });
+
+    it("parseSimulateTransferError() return null when response doesn't contain special prefix", () => {
+        const input = 'dddddddddd';
+        const result = facade.parseSimulateTransferError(input);
+
+        expect(result).toBe(null);
+    });
+
+    it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
+        const input = 'TRANSFERS_SUCCESSFUL_11';
+        const result = facade.parseSimulateTransferError(input);
+
+        expect(result).toBe(true);
+    });
+
+    it('parseSimulateTransferError() return false when response contain zero chars', () => {
+        const input = 'TRANSFERS_SUCCESSFUL_01';
+        const result = facade.parseSimulateTransferError(input);
+
+        expect(result).toBe(false);
     });
 });
