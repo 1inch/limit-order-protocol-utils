@@ -23,13 +23,13 @@ This is the package of utilities for working with the `1inch limit orders protoc
 ### Node
 
 ```
-npm install web3
+npm install @1inch/limit-order-protocol
 ```
 
 ### Yarn
 
 ```
-yarn install web3
+yarn install @1inch/limit-order-protocol
 ```
 
 ## Protocol addresses
