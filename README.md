@@ -39,6 +39,16 @@ yarn install web3
 
 ---
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md)
+
+---
+
 ## Contents
 
 0. [Quick start](#Quick-start)
