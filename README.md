@@ -49,7 +49,7 @@ See [CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
-## Contents
+## Docs
 
 0. [Quick start](#Quick-start)
 1. [Create a limit order](#Create-a-limit-order)
