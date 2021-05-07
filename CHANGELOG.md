@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/1inch/limit-order-protocol-utils/compare/v0.1.2...v0.1.3) (2021-05-07)
+
+
+### Bug Fixes
+
+* **limit-order-protocol-facade:** improved parsing of simulate transfer error ([34bb9d3](https://github.com/1inch/limit-order-protocol-utils/commit/34bb9d355c1e0a581f21536b1848af53a90ccb62))
+
 ### [0.1.2](https://github.com/1inch/limit-order-protocol-utils/compare/v0.1.1...v0.1.2) (2021-05-04)
 
 ### [0.1.1](https://github.com/1inch/limit-order-protocol-utils/compare/v0.1.0...v0.1.1) (2021-05-04)
