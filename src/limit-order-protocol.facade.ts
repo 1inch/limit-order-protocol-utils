@@ -152,9 +152,11 @@ export class LimitOrderProtocolFacade {
 
     parseSimulateTransferError(error: Error | string): boolean | null {
         const message = typeof error === 'string' ? error : error.message;
+        const regex = new RegExp('(' + SIMULATE_TRANSFER_PREFIX + '\\d+)');
+        const match = message.match(regex);
 
-        if (message.includes(SIMULATE_TRANSFER_PREFIX)) {
-            return !message.includes('0');
+        if (match) {
+            return !match[0].includes('0');
         }
 
         return null;
