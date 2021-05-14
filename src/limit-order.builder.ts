@@ -35,7 +35,18 @@ export class LimitOrderBuilder {
         walletAddress: string,
         typedData: EIP712TypedData
     ): Promise<LimitOrderSignature> {
-        return this.providerConnector.signTypedData(walletAddress, typedData);
+        const dataHash = TypedDataUtils.hashStruct(
+            typedData.primaryType,
+            typedData.message,
+            typedData.types,
+            true
+        ).toString('hex');
+
+        return this.providerConnector.signTypedData(
+            walletAddress,
+            typedData,
+            dataHash
+        );
     }
 
     buildOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {

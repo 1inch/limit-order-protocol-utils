@@ -5,7 +5,7 @@ import {AbiItem} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
 
 export class Web3ProviderConnector implements ProviderConnector {
-    constructor(private readonly web3Provider: Web3) {}
+    constructor(protected readonly web3Provider: Web3) {}
 
     contractEncodeABI(
         abi: AbiItem[],
@@ -23,7 +23,9 @@ export class Web3ProviderConnector implements ProviderConnector {
 
     signTypedData(
         walletAddress: string,
-        typedData: EIP712TypedData
+        typedData: EIP712TypedData,
+        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+        _typedDataHash: string
     ): Promise<string> {
         if (!this.web3Provider.currentProvider) {
             throw new Error('Web3 currentProvider is null');

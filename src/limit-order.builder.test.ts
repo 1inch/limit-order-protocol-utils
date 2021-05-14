@@ -29,6 +29,8 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             '0x526dfdcecc99e2f9cc823042cd177' +
             'd22c1c86923a4c577dda58c0a7f18365a884325b07acc' +
             'd1b5cae4272fbd591418026508243c18774a468d968f1fe09341991b';
+        const dataHash =
+            'c2664ebe815297a7ec0dce88b9879bd5b0ca47345a188a80f1a2eef1b59deb26';
 
         const order: LimitOrder = {
             salt: '1',
@@ -56,7 +58,11 @@ describe('LimitOrderBuilder - for build new limit order', () => {
 
         expect(signature).toBe(expectedSignature);
         expect(signTypedDataSpy).toHaveBeenCalledTimes(1);
-        expect(signTypedDataSpy).toHaveBeenCalledWith(walletAddress, typedData);
+        expect(signTypedDataSpy).toHaveBeenCalledWith(
+            walletAddress,
+            typedData,
+            dataHash
+        );
     });
 
     it('buildOrderHash() must create a hash of order with 0x prefix', () => {
