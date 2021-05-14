@@ -285,6 +285,14 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
+    it('domainSeparator() return domain separator (used for signing typed data by Ledger)', async () => {
+        const result = await facade.domainSeparator();
+
+        expect(result).toBe(
+            '0x962a9cc803d5846904fc4b4ff693f86ae185c1071fc66b0f4ab0a97d0578212f'
+        );
+    });
+
     it("parseSimulateTransferResponse() return null when response doesn't contain special prefix", () => {
         const input =
             '1111111111' +

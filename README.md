@@ -16,7 +16,7 @@ This is the package of utilities for working with the `1inch limit orders protoc
 
 | Statements                                                                    | Branches                                                                    | Functions                                                                  | Lines                                                                    |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| ![Statements](https://img.shields.io/badge/Coverage-98.94%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-96.83%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-98.94%25-brightgreen.svg) |
+| ![Statements](https://img.shields.io/badge/Coverage-98.96%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-96.88%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-98.96%25-brightgreen.svg) |
 
 ## Installation
 
@@ -60,6 +60,7 @@ See [CHANGELOG.md](./CHANGELOG.md)
 6. [Fill a limit order](#Fill-a-limit-order)
 7. [Cancel a limit order](#Cancel-a-limit-order)
 8. [Cancel all limit orders](#Cancel-all-limit-orders)
+9. [Domain separator](#Domain-separator)
 
 ## Quick start
 
@@ -503,4 +504,16 @@ sendTransaction({
     to: contractAddress,
     data: callData,
 });
+```
+
+## Domain separator
+
+[Definition of domainSeparator](https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator)
+
+### Example:
+
+```typescript
+import {LimitOrderProtocolFacade} from '@1inch/limit-order-protocol';
+
+const domainSeparator = await LimitOrderProtocolFacade.domainSeparator();
 ```

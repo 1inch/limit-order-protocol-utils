@@ -118,6 +118,14 @@ export class LimitOrderProtocolFacade {
             });
     }
 
+    domainSeparator(): Promise<string> {
+        const callData = this.getContractCallData(
+            LimitOrderProtocolMethods.DOMAIN_SEPARATOR
+        );
+
+        return this.providerConnector.ethCall(this.contractAddress, callData);
+    }
+
     getContractCallData(
         methodName: LimitOrderProtocolMethods,
         methodParams: unknown[] = []
