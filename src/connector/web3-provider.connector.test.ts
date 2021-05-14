@@ -46,7 +46,7 @@ describe('Web3ProviderConnector', () => {
             instance(currentProvider)
         );
 
-        await web3ProviderConnector.signTypedData(walletAddress, typedData);
+        await web3ProviderConnector.signTypedData(walletAddress, typedData, '');
 
         const params = [walletAddress, JSON.stringify(typedData)];
 
@@ -63,7 +63,11 @@ describe('Web3ProviderConnector', () => {
         let error = null;
 
         try {
-            await web3ProviderConnector.signTypedData(walletAddress, typedData);
+            await web3ProviderConnector.signTypedData(
+                walletAddress,
+                typedData,
+                ''
+            );
         } catch (e) {
             error = e;
         }

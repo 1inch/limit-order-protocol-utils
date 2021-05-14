@@ -11,7 +11,8 @@ export interface ProviderConnector {
 
     signTypedData(
         walletAddress: string,
-        typedData: EIP712TypedData
+        typedData: EIP712TypedData,
+        typedDataHash: string
     ): Promise<string>;
 
     ethCall(contractAddress: string, callData: string): Promise<string>;

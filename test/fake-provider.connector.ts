@@ -9,7 +9,8 @@ export class FakeProviderConnector extends Web3ProviderConnector {
 
     signTypedData(
         walletAddress: string,
-        typedData: EIP712TypedData
+        typedData: EIP712TypedData,
+        _typedDataHash: string
     ): Promise<string> {
         console.log(walletAddress);
 
