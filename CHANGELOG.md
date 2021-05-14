@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.1.3...v0.2.0) (2021-05-14)
+
+
+### Features
+
+* **limit-order-builder:** buildOrderSignature() now provides a hash of typed data to providerConnector.signTypedData(walletAddress, typedData, dataHash) ([ebe7479](https://github.com/1inch/limit-order-protocol-utils/commit/ebe7479daba635b893c5d77a51ab363377b33e37))
+* **limit-order-protocol-facade:** domainSeparator() for getting hash of domain separator ([3d462cd](https://github.com/1inch/limit-order-protocol-utils/commit/3d462cde6b02e83b61e85d7ad08b43cea3f9ca40))
+
 ### [0.1.3](https://github.com/1inch/limit-order-protocol-utils/compare/v0.1.2...v0.1.3) (2021-05-07)
 
 
