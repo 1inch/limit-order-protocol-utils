@@ -139,11 +139,11 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         it('When order is partially filled, then must return remaining amount', async () => {
             // Order 1BUSD > 1 DAI, filled for 20%
             const orderHash =
-                '0x5e887e6f651029455ce72384b0c02d8eb612db728c09617fd23d3fb834f705e6';
+                '0xa5b11acf64bd0ff47fc2b71b060a0e1e63bb8e82bd3e6aa3470b00ad7746933a';
 
             const remaining = await facade.remaining(orderHash);
 
-            expect(remaining.toString()).toBe('800000000000000000');
+            expect(remaining.toString()).toBe('8000000000000000000');
         });
 
         it('When order is canceled, then must return zero', async () => {

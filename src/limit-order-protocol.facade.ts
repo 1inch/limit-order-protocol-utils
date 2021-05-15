@@ -159,7 +159,8 @@ export class LimitOrderProtocolFacade {
     }
 
     parseSimulateTransferError(error: Error | string): boolean | null {
-        const message = typeof error === 'string' ? error : error.message;
+        const message =
+            typeof error === 'string' ? error : JSON.stringify(error);
         const regex = new RegExp('(' + SIMULATE_TRANSFER_PREFIX + '\\d+)');
         const match = message.match(regex);
 
