@@ -1,6 +1,12 @@
 [
     {
-        "inputs": [],
+        "inputs": [
+            {
+                "internalType": "uint8",
+                "name": "amount",
+                "type": "uint8"
+            }
+        ],
         "name": "advanceNonce",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -157,6 +163,11 @@
                 "internalType": "uint256",
                 "name": "takingAmount",
                 "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "thresholdAmount",
+                "type": "uint256"
             }
         ],
         "name": "fillOrder",
@@ -213,6 +224,16 @@
                 "internalType": "bytes",
                 "name": "signature",
                 "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "makingAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "takingAmount",
+                "type": "uint256"
             }
         ],
         "name": "fillOrderRFQ",
@@ -338,6 +359,32 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "increaseNonce",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newNonce",
+                "type": "uint256"
+            }
+        ],
+        "name": "NonceIncreased",
+        "type": "event"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
@@ -360,6 +407,25 @@
             }
         ],
         "name": "OrderFilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "orderHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "makingAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "OrderFilledRFQ",
         "type": "event"
     },
     {
@@ -724,6 +790,25 @@
         "inputs": [
             {
                 "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "nonce",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "makerAddress",
                 "type": "address"
             },
@@ -739,25 +824,6 @@
                 "internalType": "bool",
                 "name": "",
                 "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "makerAddress",
-                "type": "address"
-            }
-        ],
-        "name": "nonces",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",

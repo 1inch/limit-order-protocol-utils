@@ -22,13 +22,15 @@ export class LimitOrderProtocolFacade {
         order: LimitOrder,
         signature: LimitOrderSignature,
         makerAmount: string,
-        takerAmount: string
+        takerAmount: string,
+        thresholdAmount: string
     ): string {
         return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
             order,
             signature,
             makerAmount,
             takerAmount,
+            thresholdAmount,
         ]);
     }
 
@@ -38,9 +40,9 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
-    nonces(makerAddress: string): Promise<number> {
+    nonce(makerAddress: string): Promise<number> {
         const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.nonces,
+            LimitOrderProtocolMethods.nonce,
             [makerAddress]
         );
 
@@ -49,8 +51,17 @@ export class LimitOrderProtocolFacade {
             .then((nonce) => BigNumber.from(nonce).toNumber());
     }
 
-    advanceNonce(): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.advanceNonce);
+    advanceNonce(count: number): string {
+        return this.getContractCallData(
+            LimitOrderProtocolMethods.advanceNonce,
+            [count]
+        );
+    }
+
+    increaseNonce(): string {
+        return this.getContractCallData(
+            LimitOrderProtocolMethods.increaseNonce
+        );
     }
 
     checkPredicate(order: LimitOrder): Promise<boolean> {
