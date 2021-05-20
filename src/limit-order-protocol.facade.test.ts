@@ -17,7 +17,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     const privateKey =
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
-    const web3 = new Web3('https://bsc-node.1inch.exchange');
+    const web3 = new Web3('https://bsc-dataseed.binance.org');
 
     let providerConnector: FakeProviderConnector;
     let facade: LimitOrderProtocolFacade;
@@ -147,25 +147,23 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 error = e;
             }
 
-            expect(error).toBe('LOP: Unknown order');
+            expect(error?.message?.includes('LOP: Unknown order')).toBe(true);
         });
 
-        // TODO: enable after creating a new partially filled order
-        xit('When order is partially filled, then must return remaining amount', async () => {
-            // Order 1 BUSD > 1 DAI, filled for 20%
+        it('When order is partially filled, then must return remaining amount', async () => {
+            // Order 2 BUSD > 2 DAI, filled for 0.4
             const orderHash =
-                '0xa5b11acf64bd0ff47fc2b71b060a0e1e63bb8e82bd3e6aa3470b00ad7746933a';
+                '0xf86942f65e9a7dea150cf39cb7f4202b2b51ff9a9a79719e1375dab3c7d98955';
 
             const remaining = await facade.remaining(orderHash);
 
-            expect(remaining.toString()).toBe('8000000000000000000');
+            expect(remaining.toString()).toBe('1600000000000000000');
         });
 
-        // TODO: enable after creating a new canceled order
-        xit('When order is canceled, then must return zero', async () => {
+        it('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
-                '0xd522b08465386fb462676da9b923aea0df2085dc3b96695520203e6e4a46e5a8';
+                '0xe55c99da9c8e88bbc3b7461f9a4e7798a3557ee8eff80be5c6706af49659e413';
 
             const remaining = await facade.remaining(orderHash);
 
@@ -206,7 +204,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(result).toBe(false);
         });
 
-        it('When provider returns invalid value, then return true', async () => {
+        it('When provider returns invalid value, then return false', async () => {
             const predicate = await limitOrderPredicateBuilder.eq(
                 '1',
                 walletAddress,

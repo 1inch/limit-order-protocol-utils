@@ -16,7 +16,7 @@ describe('PredicateBuilder - for build limit order predicate', () => {
     const walletAddress = '0xfb3c7eb936caa12b5a884d612393969a557d4307';
     const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c';
 
-    const web3 = new Web3('https://bsc-node.1inch.exchange');
+    const web3 = new Web3('https://bsc-dataseed.binance.org');
     const providerConnector = new Web3ProviderConnector(web3);
 
     let facade: LimitOrderProtocolFacade;

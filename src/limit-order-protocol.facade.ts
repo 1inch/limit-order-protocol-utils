@@ -72,6 +72,11 @@ export class LimitOrderProtocolFacade {
 
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
+            .catch((error) => {
+                console.error(error);
+
+                return false;
+            })
             .then((result) => {
                 try {
                     return BigNumber.from(result).toNumber() === 1;
@@ -171,7 +176,9 @@ export class LimitOrderProtocolFacade {
 
     parseSimulateTransferError(error: Error | string): boolean | null {
         const message =
-            typeof error === 'string' ? error : JSON.stringify(error);
+            typeof error === 'string'
+                ? error
+                : JSON.stringify(error.message || error);
         const regex = new RegExp('(' + SIMULATE_TRANSFER_PREFIX + '\\d+)');
         const match = message.match(regex);
 

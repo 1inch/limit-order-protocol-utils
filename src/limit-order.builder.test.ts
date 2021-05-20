@@ -8,7 +8,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
     const contractAddress = '0xaaaaa';
     const chainId = 56;
 
-    const web3 = new Web3('https://bsc-node.1inch.exchange');
+    const web3 = new Web3('https://bsc-dataseed.binance.org');
     const privateKey =
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
     const providerConnector = new FakeProviderConnector(privateKey, web3);
