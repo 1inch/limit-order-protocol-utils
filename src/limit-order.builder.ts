@@ -121,7 +121,7 @@ export class LimitOrderBuilder {
         return Math.round(Math.random() * Date.now()) + '';
     }
 
-    // Get nonce from contract (nonces method) and put it to predicate on order creating
+    // Get nonce from contract (nonce method) and put it to predicate on order creating
     private getAmountData(
         methodName: LimitOrderProtocolMethods,
         makerAmount: string,

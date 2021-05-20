@@ -34,8 +34,9 @@ yarn install @1inch/limit-order-protocol
 
 ## Protocol addresses
 
--   Ethereum mainnet: `0x94a68df7e81b90a9007db9db7ffb3e6a2f1e6c1b`
--   BSC mainnet: `0x0e6b8845f6a316f92efbaf30af21ff9e78f0008f`
+-   Ethereum mainnet: `0x4aaffca65f5f9cbf51abf0f03d11d5f446bdf8e7`
+-   BSC mainnet: `0x35df9901e79aca6b920abbb53758ffb3de725af8`
+-   Polygon mainnet: `0x59a0a6d73e6a5224871f45e6d845ce1574063ade`
 
 ---
 
@@ -62,7 +63,7 @@ See [CHANGELOG.md](./CHANGELOG.md)
 8. [Cancel all limit orders](#Cancel-all-limit-orders)
 9. [Domain separator](#Domain-separator)
 
-## Quick start
+### Quick start
 
 ```typescript
 import {
@@ -89,7 +90,7 @@ const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     connector
 );
 
-// Create a limit order and signature
+// Create a limit order and it's signature
 const limitOrder = limitOrderBuilder.buildOrder({
     makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
@@ -106,14 +107,17 @@ const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
     limitOrderTypedData
 );
 
-// Fill the limit order
+// Create a call data for fill the limit order
 const callData = limitOrderProtocolFacade.fillOrder(
     limitOrder,
     limitOrderSignature,
     '100',
-    '0'
+    '0',
+    '50'
 );
 
+// Send transaction for the order filling
+// Must be implemented
 sendTransaction({
     from: walletAddress,
     gas: 210_000, // Set your gas limit
@@ -132,23 +136,26 @@ class MyProviderConnector implements ProviderConnector {
 }
 ```
 
-## Create a limit order
+### Create a limit order
 
 `LimitOrderBuilder.buildOrder()`
 
 Parameters for creating a limit order:
 
--   `makerAssetAddress` - address of maker token
--   `takerAssetAddress` - address of taker token
--   `makerAddress` - address of maker
--   `takerAddress` - address of taker. Default: `0x0000000000000000000000000000000000000000`
--   `makerAmount` - amount of maker token, in wei units
--   `takerAmount` - amount of taker token, in wei units
--   `predicate` - predicate call data. Default: `0x`
--   `permit` - permit call data. Default: `0x`
--   `interaction` - interaction call data. Default: `0x`
+-   `makerAssetAddress` - an address of the maker token
+-   `takerAssetAddress` - an address of the taker token
+-   `makerAddress` - an address of the maker (wallet address)
+-   `takerAddress` - an address of the taker. Default: `0x0000000000000000000000000000000000000000`
+-   `makerAmount` - an amount of maker token, in the wei units
+-   `takerAmount` - an amount of taker token, in the wei units
+-   `predicate` - a predicate call data. Default: `0x`
+-   `permit` - a permit call data. Default: `0x`
+-   `interaction` - an interaction call data. Default: `0x`
 
-### Example:
+> Note:  
+> `takerAddress` - if set, then the limit order will be available for filling only for this address
+
+#### Example:
 
 ```typescript
 import {LimitOrderBuilder} from '@1inch/limit-order-protocol';
@@ -174,7 +181,7 @@ const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
 const limitOrderHash = limitOrderBuilder.buildOrderHash(limitOrderTypedData);
 ```
 
-## Check a limit order remaining
+### Check a limit order remaining
 
 `LimitOrderProtocolFacade.remaining()`
 
@@ -184,7 +191,7 @@ After the first fill, the method will return remaining amount.
 
 > Note: a limit order can be partially filled
 
-### Example:
+#### Example:
 
 ```typescript
 import {
@@ -224,14 +231,16 @@ async function getRemaining(orderHash: string): string {
 }
 ```
 
-## Nonce
+### Nonce
 
-`LimitOrderProtocolFacade.nonces()`
+`LimitOrderProtocolFacade.nonce()` - returns the nonce of the current wallet address  
+`LimitOrderProtocolFacade.advanceNonce(count: number)` - increases the nonce by the count  
+`LimitOrderProtocolFacade.increaseNonce()` - increases the nonce by 1
 
 **Nonce** - this is the so-called `series` of limit orders.  
 The nonce is useful when you need to create a bunch of limit orders with the ability to cancel them all later.
 
-### Example:
+#### Example:
 
 ```typescript
 import {
@@ -255,7 +264,7 @@ const limitOrderBuilder = new LimitOrderBuilder(
 );
 
 // Get the current nonce
-const nonce = await limitOrderProtocolFacade.nonces(contractAddress);
+const nonce = await limitOrderProtocolFacade.nonce(contractAddress);
 
 // Create a limit order with nonceEquals predicate
 const predicate = limitOrderPredicateBuilder.nonceEquals(walletAddress, nonce);
@@ -275,7 +284,7 @@ sendTransaction({
 });
 ```
 
-## Validate a limit order
+### Validate a limit order
 
 `LimitOrderProtocolFacade.simulateTransferFroms()`
 
@@ -286,7 +295,7 @@ For example: you can check that a limit order is valid by predicates.
 > On a `simulateTransferFroms()` call, the contract returns the string like `TRANSFERS_SUCCESSFUL_01101`  
 > If that string contains at least one `0` symbol, then a limit order is invalid, otherwise - valid
 
-### Example:
+#### Example:
 
 ```typescript
 import {LimitOrderProtocolFacade, LimitOrder} from '@1inch/limit-order-protocol';
@@ -309,19 +318,19 @@ try {
 }
 ```
 
-## Create a predicate for limit order
+### Create a predicate for limit order
 
 `LimitOrderPredicateBuilder`
 
 A limit order can contain one or more predicates which indicate the logic of its validity.  
 **There are two types of a predicate operators:**
 
-### Conditional operators:
+#### Conditional operators:
 
 -   `and` - combine several predicates, return `true` when all predicates are valid
 -   `or` - combine several predicates, return `true` when the one of predicates is valid
 
-### Comparative operators:
+#### Comparative operators:
 
 > All comparative operators have three arguments:  
 > (**value**: string, **address**: string, **callData**: string)
@@ -333,7 +342,7 @@ A limit order can contain one or more predicates which indicate the logic of its
 -   `lt` - _**a result**_ must be less than the `value`
 -   `gt` - _**a result**_ must be greater than the `value`
 
-### Built-in operators:
+#### Built-in operators:
 
 > `nonceEquals(makerAddress: string, makerNonce: number)`
 
@@ -345,7 +354,7 @@ The predicate checks that the `makerNonce` is equal to the nonce of `makerAddres
 
 The predicate checks that `timestamp` is greater than the current time
 
-### Example:
+#### Example:
 
 ```typescript
 import {
@@ -385,21 +394,22 @@ const complexPredicate: LimitOrderPredicateCallData = or(
 );
 ```
 
-## Fill a limit order
+### Fill a limit order
 
 `LimitOrderProtocolFacade.fillOrder()`
 
 Parameters for order filling:
 
--   `order: LimitOrder`
--   `signature: LimitOrderSignature`
--   `makerAmount: string`
--   `takerAmount: string`
+-   `order: LimitOrder` - a limit order structure
+-   `signature: LimitOrderSignature` - signature of a limit order
+-   `makerAmount: string` - amount of maker asset (in token units)
+-   `takerAmount: string` - amount of taker asset (in token units)
+-   `thresholdAmount: string` - threshold for amount of received asset (in received asset units)
 
 > Note: to fill a limit order, only one of the amounts must be specified  
 > The second one must be set to `0`
 
-### Example
+#### Example
 
 ```typescript
 import {
@@ -416,6 +426,7 @@ const signature: LimitOrderSignature = '...';
 
 const makerAmount = '400000000';
 const takerAmount = '0';
+const thresholdAmount = '600000000';
 
 const connector = new Web3ProviderConnector(new Web3('...'));
 const limitOrderProtocolFacade = new limitOrderProtocolFacade(contractAddress, connector);
@@ -424,7 +435,8 @@ const callData = limitOrderProtocolFacade.fillOrder(
     order,
     signature,
     makerAmount,
-    takerAmount
+    takerAmount,
+    thresholdAmount
 );
 
 sendTransaction({
@@ -436,11 +448,11 @@ sendTransaction({
 });
 ```
 
-## Cancel a limit order
+### Cancel a limit order
 
 `LimitOrderProtocolFacade.cancelOrder()`
 
-### Example:
+#### Example:
 
 ```typescript
 import {
@@ -467,18 +479,20 @@ sendTransaction({
 });
 ```
 
-## Cancel all limit orders
+### Cancel all limit orders
 
-`LimitOrderProtocolFacade.advanceNonce()`
+`LimitOrderProtocolFacade.advanceNonce(count)`  
+or  
+`LimitOrderProtocolFacade.increaseNonce()`
 
-### First of all, read about [Nonce](#nonce)
+#### First of all, read about [Nonce](#nonce)
 
-`advanceNonce()` increments the nonce and all limit orders with a predicate to the previous nonce value become invalid
+`advanceNonce(count) or increaseNonce()` increments the nonce and all limit orders with a predicate to the previous nonce value become invalid
 
 > **Warning!**  
 > The approach only works when all orders have the `nonceEquals` predicate
 
-### Example:
+#### Example:
 
 ```typescript
 import {
@@ -495,7 +509,7 @@ const limitOrderProtocolFacade = new limitOrderProtocolFacade(
     connector
 );
 
-const callData = limitOrderProtocolFacade.advanceNonce();
+const callData = limitOrderProtocolFacade.increaseNonce();
 
 sendTransaction({
     from: walletAddress,
@@ -506,11 +520,11 @@ sendTransaction({
 });
 ```
 
-## Domain separator
+### Domain separator
 
 [Definition of domainSeparator](https://eips.ethereum.org/EIPS/eip-712#definition-of-domainseparator)
 
-### Example:
+#### Example:
 
 ```typescript
 import {LimitOrderProtocolFacade} from '@1inch/limit-order-protocol';

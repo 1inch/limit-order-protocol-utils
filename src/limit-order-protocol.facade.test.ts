@@ -11,7 +11,7 @@ import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
 import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
-    const contractAddress = '0x0e6b8845f6a316f92efbaf30af21ff9e78f0008f';
+    const contractAddress = '0x35df9901e79aca6b920abbb53758ffb3de725af8';
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
     const chainId = 56;
 
@@ -69,12 +69,14 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const makerAmount = '1000000000000000000';
             const takerAmount = '0';
+            const thresholdAmount = '0';
 
             const callData = facade.fillOrder(
                 order,
                 signature,
                 makerAmount,
-                takerAmount
+                takerAmount,
+                thresholdAmount
             );
 
             expect(callData).toBe(FILL_ORDER_SNAPSHOT);
@@ -97,25 +99,37 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
-    describe('nonces()', () => {
+    describe('nonce()', () => {
         it('Return the nonce number of address (for real wallet address)', async () => {
-            const nonces = await facade.nonces(walletAddress);
+            const nonce = await facade.nonce(
+                '0xbbcf91605c18a9859c1d47abfeed5d2cca7097cf'
+            );
 
-            expect(nonces).toBeGreaterThan(12);
+            expect(nonce).toBeGreaterThan(1);
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {
-            const nonces = await facade.nonces(contractAddress);
+            const nonce = await facade.nonce(contractAddress);
 
-            expect(nonces).toBe(0);
+            expect(nonce).toBe(0);
         });
     });
 
     describe('advanceNonce()', () => {
         it('Must create a call data for advance nonce', async () => {
-            const callData = await facade.advanceNonce();
+            const callData = await facade.advanceNonce(2);
 
-            expect(callData).toBe('0x8faae2c2');
+            expect(callData).toBe(
+                '0x72c244a80000000000000000000000000000000000000000000000000000000000000002'
+            );
+        });
+    });
+
+    describe('increaseNonce()', () => {
+        it('Must create a call data for increase nonce', async () => {
+            const callData = await facade.increaseNonce();
+
+            expect(callData).toBe('0xc53a0292');
         });
     });
 
@@ -136,8 +150,9 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(error).toBe('LOP: Unknown order');
         });
 
-        it('When order is partially filled, then must return remaining amount', async () => {
-            // Order 1BUSD > 1 DAI, filled for 20%
+        // TODO: enable after creating a new partially filled order
+        xit('When order is partially filled, then must return remaining amount', async () => {
+            // Order 1 BUSD > 1 DAI, filled for 20%
             const orderHash =
                 '0xa5b11acf64bd0ff47fc2b71b060a0e1e63bb8e82bd3e6aa3470b00ad7746933a';
 
@@ -146,7 +161,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(remaining.toString()).toBe('8000000000000000000');
         });
 
-        it('When order is canceled, then must return zero', async () => {
+        // TODO: enable after creating a new canceled order
+        xit('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
                 '0xd522b08465386fb462676da9b923aea0df2085dc3b96695520203e6e4a46e5a8';
@@ -214,7 +230,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
                 timestamp
             ); // valid value
-            const nonce = await facade.nonces(walletAddress); // real nonce
+            const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
                 nonce + 1
@@ -239,7 +255,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
                 timestamp
             ); // valid value
-            const nonce = await facade.nonces(walletAddress); // real nonce
+            const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
                 nonce
@@ -264,7 +280,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
                 timestamp
             ); // valid value
-            const nonce = await facade.nonces(walletAddress); // real nonce
+            const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
                 nonce
@@ -289,7 +305,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const result = await facade.domainSeparator();
 
         expect(result).toBe(
-            '0x962a9cc803d5846904fc4b4ff693f86ae185c1071fc66b0f4ab0a97d0578212f'
+            '0x61ba2d5643f6075b336dfa622a46fe041cab25e129bbabcfb273a7b4595522b5'
         );
     });
 
