@@ -54,10 +54,10 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 
 0. [Quick start](#Quick-start)
 1. [Create a limit order](#Create-a-limit-order)
-2. [Check a limit order remaining](#Check-a-limit-order-remaining)
+2. [Limit order remaining](#Limit-order-remaining)
 3. [Nonce](#Nonce)
 4. [Validate a limit order](#Validate-a-limit-order)
-5. [Create a predicate for limit order](#Create-a-predicate-for-limit-order)
+5. [Predicate](#Predicate)
 6. [Fill a limit order](#Fill-a-limit-order)
 7. [Cancel a limit order](#Cancel-a-limit-order)
 8. [Cancel all limit orders](#Cancel-all-limit-orders)
@@ -181,7 +181,7 @@ const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
 const limitOrderHash = limitOrderBuilder.buildOrderHash(limitOrderTypedData);
 ```
 
-## Check a limit order remaining
+## Limit order remaining
 
 `LimitOrderProtocolFacade.remaining()`
 
@@ -318,7 +318,7 @@ try {
 }
 ```
 
-## Create a predicate for limit order
+## Predicate
 
 `LimitOrderPredicateBuilder`
 
