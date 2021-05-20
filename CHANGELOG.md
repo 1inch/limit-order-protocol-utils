@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.2.1...v0.3.0) (2021-05-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **limit-order-protocol-facade:** LimitOrderProtocolFacade.fillOrder() now has one more argument - thresholdAmount, LimitOrderProtocolFacade.nonces() renamed to LimitOrderProtocolFacade.nonce(), LimitOrderProtocolFacade.advanceNonce() now receive argument - nonce increment count - the number to increase the nonce, new method - LimitOrderProtocolFacade.increaseNonce() - increase nonce by 1
+
+### Features
+
+* **limit-order-protocol-facade:** improve errors parsing for simulateTransferFroms() and checkPredicate() ([24e2db8](https://github.com/1inch/limit-order-protocol-utils/commit/24e2db8572b20ed0ece64f6c8153487b2c9d22e6))
+* **limit-order-protocol-facade:** update limit order protocol contracts ([5d2d1c6](https://github.com/1inch/limit-order-protocol-utils/commit/5d2d1c6cb1fa34a3b70b74a42c5788de937453b2))
+
 ### [0.2.1](https://github.com/1inch/limit-order-protocol-utils/compare/v0.2.0...v0.2.1) (2021-05-15)
 
 
