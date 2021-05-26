@@ -90,7 +90,7 @@ const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     connector
 );
 
-// Create a limit order and it's signature
+// Create a limit order and its signature
 const limitOrder = limitOrderBuilder.buildOrder({
     makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
@@ -107,7 +107,7 @@ const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
     limitOrderTypedData
 );
 
-// Create a call data for fill the limit order
+// Create a call data for filling a limit order
 const callData = limitOrderProtocolFacade.fillOrder(
     limitOrder,
     limitOrderSignature,
@@ -237,7 +237,7 @@ async function getRemaining(orderHash: string): string {
 `LimitOrderProtocolFacade.advanceNonce(count: number)` - increases the nonce by the count  
 `LimitOrderProtocolFacade.increaseNonce()` - increases the nonce by 1
 
-**Nonce** - this is the so-called `series` of limit orders.  
+**Nonce** - this is a so-called `series` of limit orders.  
 The nonce is useful when you need to create a bunch of limit orders with the ability to cancel them all later.
 
 ### Example:
@@ -288,7 +288,7 @@ sendTransaction({
 
 `LimitOrderProtocolFacade.simulateTransferFroms()`
 
-There is the possibility to check limit orders validity.  
+There is a possibility to check limit orders validity.  
 For example: you can check that a limit order is valid by predicates.
 
 > **Under the hood:**  
