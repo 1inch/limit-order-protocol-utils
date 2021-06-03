@@ -255,39 +255,6 @@
             },
             {
                 "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "contract IERC1155",
-                "name": "token",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "func_00cMjE8",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
                 "name": "tokenId",
                 "type": "uint256"
             },
@@ -354,6 +321,44 @@
             }
         ],
         "name": "func_50BkM4K",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IERC1155",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "func_733NCGU",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -431,8 +436,8 @@
     {
         "inputs": [
             {
-                "internalType": "contract IERC20[]",
-                "name": "tokens",
+                "internalType": "address[]",
+                "name": "targets",
                 "type": "address[]"
             },
             {
@@ -441,7 +446,7 @@
                 "type": "bytes[]"
             }
         ],
-        "name": "simulateTransferFroms",
+        "name": "simulateCalls",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -573,6 +578,40 @@
                 "internalType": "bytes32",
                 "name": "",
                 "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract AggregatorV3Interface",
+                "name": "oracle1",
+                "type": "address"
+            },
+            {
+                "internalType": "contract AggregatorV3Interface",
+                "name": "oracle2",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "spread",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "doublePrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -905,6 +944,35 @@
                 "internalType": "uint256[]",
                 "name": "results",
                 "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract AggregatorV3Interface",
+                "name": "oracle",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "inverseAndSpread",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "singlePrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",

@@ -34,9 +34,9 @@ yarn install @1inch/limit-order-protocol
 
 ## Protocol addresses
 
--   Ethereum mainnet: `0x4aaffca65f5f9cbf51abf0f03d11d5f446bdf8e7`
--   BSC mainnet: `0x35df9901e79aca6b920abbb53758ffb3de725af8`
--   Polygon mainnet: `0x59a0a6d73e6a5224871f45e6d845ce1574063ade`
+-   Ethereum mainnet: `0x3ef51736315f52d568d6d2cf289419b9cfffe782`
+-   BSC mainnet: `0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb`
+-   Polygon mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
 
 ---
 
@@ -286,13 +286,13 @@ sendTransaction({
 
 ## Validate a limit order
 
-`LimitOrderProtocolFacade.simulateTransferFroms()`
+`LimitOrderProtocolFacade.simulateCalls()`
 
 There is the possibility to check limit orders validity.  
 For example: you can check that a limit order is valid by predicates.
 
 > **Under the hood:**  
-> On a `simulateTransferFroms()` call, the contract returns the string like `TRANSFERS_SUCCESSFUL_01101`  
+> On a `simulateCalls()` call, the contract returns the string like `CALL_RESULTS_01101`  
 > If that string contains at least one `0` symbol, then a limit order is invalid, otherwise - valid
 
 ### Example:
@@ -310,7 +310,7 @@ const addresses = [contractAddress];
 const callDatas = [order.predicate];
 
 try {
-    const result: boolean = await limitOrderProtocolFacade.simulateTransferFroms(addresses, callDatas);
+    const result: boolean = await limitOrderProtocolFacade.simulateCalls(addresses, callDatas);
 
     console.log('Order validity: ', result);
 } catch (error) {

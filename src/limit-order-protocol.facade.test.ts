@@ -11,7 +11,7 @@ import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
 import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
-    const contractAddress = '0x35df9901e79aca6b920abbb53758ffb3de725af8';
+    const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
     const chainId = 56;
 
@@ -151,19 +151,19 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
 
         it('When order is partially filled, then must return remaining amount', async () => {
-            // Order 2 BUSD > 2 DAI, filled for 0.4
+            // Order WBNB > 1INCH, filled for 3%
             const orderHash =
-                '0xf86942f65e9a7dea150cf39cb7f4202b2b51ff9a9a79719e1375dab3c7d98955';
+                '0x969ecf29e9b02b15e9640a6c741ea2db7984a00843485e0ed6aa4638e6860838';
 
             const remaining = await facade.remaining(orderHash);
 
-            expect(remaining.toString()).toBe('1600000000000000000');
+            expect(remaining.toString()).toBe('2917591702620370');
         });
 
         it('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
-                '0xe55c99da9c8e88bbc3b7461f9a4e7798a3557ee8eff80be5c6706af49659e413';
+                '0x44579da3014205b53cafe1badd3a4e8327d769560a0f38efd9840c402670312c';
 
             const remaining = await facade.remaining(orderHash);
 
@@ -222,7 +222,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
-    describe('simulateTransferFroms()', () => {
+    describe('simulateCalls()', () => {
         it('When an order is invalid by the nonce predicate then must return false', async () => {
             const timestamp = Math.floor(Date.now() / 1000) + 100;
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
@@ -243,7 +243,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const tokens = [contractAddress, walletAddress];
             const data = [order.predicate, order.makerAssetData];
 
-            const result = await facade.simulateTransferFroms(tokens, data);
+            const result = await facade.simulateCalls(tokens, data);
 
             expect(result).toBe(false);
         });
@@ -268,7 +268,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const tokens = [contractAddress, walletAddress];
             const data = [order.predicate, order.makerAssetData];
 
-            const result = await facade.simulateTransferFroms(tokens, data);
+            const result = await facade.simulateCalls(tokens, data);
 
             expect(result).toBe(false);
         });
@@ -293,7 +293,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const tokens = [contractAddress, walletAddress];
             const data = [order.predicate, order.makerAssetData];
 
-            const result = await facade.simulateTransferFroms(tokens, data);
+            const result = await facade.simulateCalls(tokens, data);
 
             expect(result).toBe(true);
         });
@@ -303,7 +303,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const result = await facade.domainSeparator();
 
         expect(result).toBe(
-            '0x61ba2d5643f6075b336dfa622a46fe041cab25e129bbabcfb273a7b4595522b5'
+            '0xc01dba435cd14ffa0d760af4ffb49214bf6c739da021e8377adedcb4c4db47e8'
         );
     });
 
@@ -327,14 +327,14 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     });
 
     it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
-        const input = 'TRANSFERS_SUCCESSFUL_11';
+        const input = 'CALL_RESULTS_11';
         const result = facade.parseSimulateTransferError(input);
 
         expect(result).toBe(true);
     });
 
     it('parseSimulateTransferError() return false when response contain zero chars', () => {
-        const input = 'TRANSFERS_SUCCESSFUL_01';
+        const input = 'CALL_RESULTS_01';
         const result = facade.parseSimulateTransferError(input);
 
         expect(result).toBe(false);
