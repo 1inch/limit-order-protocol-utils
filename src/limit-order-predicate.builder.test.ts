@@ -12,7 +12,7 @@ import {
 } from '../test/predicate-snapshots';
 
 describe('PredicateBuilder - for build limit order predicate', () => {
-    const contractAddress = '0x35df9901e79aca6b920abbb53758ffb3de725af8';
+    const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
     const walletAddress = '0xfb3c7eb936caa12b5a884d612393969a557d4307';
     const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c';
 

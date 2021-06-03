@@ -10,7 +10,7 @@ export const ZX = '0x';
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-export const SIMULATE_TRANSFER_PREFIX = 'TRANSFERS_SUCCESSFUL_';
+export const CALL_RESULTS_PREFIX = 'CALL_RESULTS_';
 
 export const LIMIT_ORDER_PROTOCOL_ABI: AbiItem[] = LimitOrderProtocolABISource;
 

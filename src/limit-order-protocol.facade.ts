@@ -1,6 +1,6 @@
 import {
     LIMIT_ORDER_PROTOCOL_ABI,
-    SIMULATE_TRANSFER_PREFIX,
+    CALL_RESULTS_PREFIX,
     ZX,
 } from './limit-order-protocol.const';
 import {
@@ -110,9 +110,9 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    simulateTransferFroms(tokens: string[], data: unknown[]): Promise<boolean> {
+    simulateCalls(tokens: string[], data: unknown[]): Promise<boolean> {
         const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.simulateTransferFroms,
+            LimitOrderProtocolMethods.simulateCalls,
             [tokens, data]
         );
 
@@ -165,8 +165,8 @@ export class LimitOrderProtocolFacade {
     parseSimulateTransferResponse(response: string): boolean | null {
         const parsed = this.parseContractResponse(response);
 
-        if (parsed.startsWith(SIMULATE_TRANSFER_PREFIX)) {
-            const data = parsed.replace(SIMULATE_TRANSFER_PREFIX, '');
+        if (parsed.startsWith(CALL_RESULTS_PREFIX)) {
+            const data = parsed.replace(CALL_RESULTS_PREFIX, '');
 
             return !data.includes('0');
         }
@@ -175,11 +175,8 @@ export class LimitOrderProtocolFacade {
     }
 
     parseSimulateTransferError(error: Error | string): boolean | null {
-        const message =
-            typeof error === 'string'
-                ? error
-                : JSON.stringify(error.message || error);
-        const regex = new RegExp('(' + SIMULATE_TRANSFER_PREFIX + '\\d+)');
+        const message = this.stringifyError(error);
+        const regex = new RegExp('(' + CALL_RESULTS_PREFIX + '\\d+)');
         const match = message.match(regex);
 
         if (match) {
@@ -194,5 +191,17 @@ export class LimitOrderProtocolFacade {
             'string',
             ZX + response.slice(10)
         );
+    }
+
+    private stringifyError(error: Error | string | unknown): string {
+        if (typeof error === 'string') {
+            return error;
+        }
+
+        if (error instanceof Error) {
+            return error.toString();
+        }
+
+        return JSON.stringify(error);
     }
 }
