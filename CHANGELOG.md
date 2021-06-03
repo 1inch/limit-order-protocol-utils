@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.3.0...v0.4.0) (2021-06-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **limit-order-protocol-facade:** LimitOrderProtocolFacade.simulateTransferFroms() renamed to simulateCalls()
+
+### Features
+
+* **limit-order-protocol-facade:** update limit order protocol contracts ([7be31d8](https://github.com/1inch/limit-order-protocol-utils/commit/7be31d8093cc989bacbbef6a9a2f25764885b9ae))
+
 ## [0.3.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.2.1...v0.3.0) (2021-05-20)
 
 
