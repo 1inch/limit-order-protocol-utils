@@ -16,7 +16,7 @@ This is the package of utilities for working with the `1inch limit orders protoc
 
 | Statements                                                                    | Branches                                                                    | Functions                                                                  | Lines                                                                    |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| ![Statements](https://img.shields.io/badge/Coverage-97.56%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-92.31%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-97.56%25-brightgreen.svg) |
+| ![Statements](https://img.shields.io/badge/Coverage-97.64%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-92.86%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-97.64%25-brightgreen.svg) |
 
 ## Installation
 

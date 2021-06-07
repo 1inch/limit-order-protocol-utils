@@ -9,6 +9,7 @@ import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {FakeProviderConnector} from '../test/fake-provider.connector';
 import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
 import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
+import {FILL_ORDER_RFQ_SNAPSHOT} from '../test/fill-order-rfq-snapshot';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
@@ -83,6 +84,38 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
+    describe('fillOrderRFQ()', () => {
+        it('Must create a call data for RFQ order filling', async () => {
+            const order = limitOrderBuilder.buildOrderRFQ({
+                id: 2,
+                expiresInTimestampMs: 2289743746903,
+                makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
+                takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
+                makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',
+                takerAssetAddress: '0x49feb353fdf1d396a959973216cbac10ef11e7bf',
+                makerAmount: '1000000000000000000',
+                takerAmount: '6500000000000000000',
+            });
+
+            const typedData = limitOrderBuilder.buildOrderRFQTypedData(order);
+            const signature = await limitOrderBuilder.buildOrderSignature(
+                walletAddress,
+                typedData
+            );
+            const makerAmount = '1000000000000000000';
+            const takerAmount = '0';
+
+            const callData = facade.fillOrderRFQ(
+                order,
+                signature,
+                makerAmount,
+                takerAmount
+            );
+
+            expect(callData).toBe(FILL_ORDER_RFQ_SNAPSHOT);
+        });
+    });
+
     describe('cancelOrder()', () => {
         it('Must create a call data for order canceling', async () => {
             const timestamp = 1621040104;
@@ -96,6 +129,27 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const callData = facade.cancelOrder(order);
 
             expect(callData).toBe(CANCEL_ORDER_SNAPSHOT);
+        });
+    });
+
+    describe('cancelOrderRFQ()', () => {
+        it('Must create a call data for order canceling', async () => {
+            const order = limitOrderBuilder.buildOrderRFQ({
+                id: 2,
+                expiresInTimestampMs: 2289743746903,
+                makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
+                takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
+                makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',
+                takerAssetAddress: '0x49feb353fdf1d396a959973216cbac10ef11e7bf',
+                makerAmount: '1000000000000000000',
+                takerAmount: '6500000000000000000',
+            });
+
+            const callData = facade.cancelOrderRFQ(order.info);
+
+            expect(callData).toBe(
+                '0x825caba100000000000000000000000000000000000002151f5cd7570000000000000002'
+            );
         });
     });
 

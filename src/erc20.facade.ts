@@ -10,7 +10,7 @@ export class Erc20Facade {
     constructor(private readonly providerConnector: ProviderConnector) {}
 
     transferFrom(
-        makerAssetAddress: string,
+        makerAssetAddress: string | null,
         fromAddress: string,
         toAddress: string,
         value: string
