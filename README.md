@@ -29,7 +29,7 @@ npm install @1inch/limit-order-protocol
 ### Yarn
 
 ```
-yarn install @1inch/limit-order-protocol
+yarn add @1inch/limit-order-protocol
 ```
 
 ## Protocol addresses
