@@ -103,7 +103,7 @@ function createOrder(params: CreatingParams): LimitOrderRFQ {
 
     return limitOrderBuilder.buildOrderRFQ({
         id: params.orderId,
-        expiresInTimestampMs: Date.now() + params.expiresIn * 1000,
+        expiresInTimestamp: Math.ceil(Date.now() / 1000) + params.expiresIn,
         makerAddress: walletAddress,
         makerAssetAddress: params.makerAssetAddress,
         takerAssetAddress: params.takerAssetAddress,

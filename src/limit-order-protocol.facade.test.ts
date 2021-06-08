@@ -88,7 +88,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         it('Must create a call data for RFQ order filling', async () => {
             const order = limitOrderBuilder.buildOrderRFQ({
                 id: 2,
-                expiresInTimestampMs: 2289743746903,
+                expiresInTimestamp: 1623166102,
                 makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
                 takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
                 makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',
@@ -136,7 +136,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         it('Must create a call data for order canceling', async () => {
             const order = limitOrderBuilder.buildOrderRFQ({
                 id: 2,
-                expiresInTimestampMs: 2289743746903,
+                expiresInTimestamp: 1623166102,
                 makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
                 takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
                 makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',

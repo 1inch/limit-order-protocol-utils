@@ -29,9 +29,9 @@ export function generateOrderSalt(): string {
 
 export function generateRFQOrderInfo(
     id: number,
-    expiresInTimestampMs: number
+    expiresInTimestamp: number
 ): string {
-    return ((BigInt(expiresInTimestampMs) << BigInt(64)) | BigInt(id)).toString(
+    return ((BigInt(expiresInTimestamp) << BigInt(64)) | BigInt(id)).toString(
         10
     );
 }
@@ -109,7 +109,7 @@ export class LimitOrderBuilder {
     /* eslint-disable max-lines-per-function */
     buildOrderRFQ({
         id,
-        expiresInTimestampMs,
+        expiresInTimestamp,
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
@@ -118,7 +118,7 @@ export class LimitOrderBuilder {
         takerAmount,
     }: LimitOrderRFQData): LimitOrderRFQ {
         return {
-            info: generateRFQOrderInfo(id, expiresInTimestampMs),
+            info: generateRFQOrderInfo(id, expiresInTimestamp),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             makerAssetData: this.erc20Facade.transferFrom(

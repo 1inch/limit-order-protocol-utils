@@ -170,7 +170,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
 
             const orderRFQ = await limitOrderBuilder.buildOrderRFQ({
                 id: 1,
-                expiresInTimestampMs: 2289743244390,
+                expiresInTimestamp: 1623166102,
                 makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 takerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 makerAddress,

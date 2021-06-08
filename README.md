@@ -594,7 +594,7 @@ const limitOrderBuilder = new LimitOrderBuilder(
 
 const orderRFQ = await limitOrderBuilder.buildOrderRFQ({
     id: 1,
-    expiresInTimestampMs: 2289743244390,
+    expiresInTimestamp: 1623166102,
     makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
     takerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     makerAddress: walletAddress,
@@ -648,11 +648,10 @@ Example of generating a limit order RFQ info:
 
 ```javascript
 const id = 1;
-const expiresInTimestampMs = 1623160978945;
-const info = (
-    (BigInt(expiresInTimestampMs) << BigInt(64)) |
-    BigInt(id)
-).toString(10);
+const expiresInTimestamp = 1623166102;
+const info = ((BigInt(expiresInTimestamp) << BigInt(64)) | BigInt(id)).toString(
+    10
+);
 ```
 
 `makerAsset` - the address of the asset you want to sell (address of a token contract)  
