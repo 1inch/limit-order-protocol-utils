@@ -50,7 +50,7 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 
 ---
 
-## Motivation
+## Limit order
 
 A limit order is an order to buy or sell at a specified or better price.  
 A limit order excludes the possibility of execution at a less favorable price than a limit order, however, its execution is not guaranteed.
@@ -66,9 +66,7 @@ Inch protocol limit orders have many tools for flexible management:
 
 For market making, there are **limit orders RFQ** that have special optimization that does not require a large amount of gas for execution.
 
----
-
-## Limit order docs
+### Docs
 
 0. [Quick start](./docs/quick-start.md)
 1. [Create a limit order](./docs/create-limit-order.md)
@@ -81,4 +79,21 @@ For market making, there are **limit orders RFQ** that have special optimization
 8. [Cancel all limit orders](./docs/cancel-all-limit-orders.md)
 9. [Domain separator](./docs/domain-separator.md)
 
-## [Limit order RFQ docs](./docs/limit-order-rfq.md)
+---
+
+## Limit order RFQ
+
+**A request for quotation (RFQ)** is a business process in which a customer requests a quote from a supplier (market maker) for the purchase of some tokens.
+
+**The 1inch Limit Order Protocol** allows to create offers for the sale / purchase of certain pairs of tokens.  
+In other words, you can put up a pair of tokens for sale at the price you set.  
+1inch Limit Order Protocol supports work only with EPC-20, BEP-20 tokens.
+
+> Limit orders RFQ differ from ordinary orders in that they are optimized for frequent market trading, and their execution does not require a lot of gas.
+
+### Docs:
+
+1. [Creating a limit order RFQ](./docs/create-limit-order-rfq.md)
+2. [Limit order RFQ structure](./docs/limit-order-rfq-structure.md)
+3. [Canceling a limit order RFQ](./docs/cancel-limit-order-rfq.md)
+4. [Filling a limit order RFQ](./docs/fill-limit-order-rfq.md)
