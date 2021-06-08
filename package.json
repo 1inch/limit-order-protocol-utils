@@ -10,7 +10,7 @@
     "scripts": {
         "prebuild": "rm -rf dist && yarn run test:coverage && yarn run make-badges",
         "build": "tsc --module commonjs",
-        "postbuild": "cp package.json dist && cp README.md dist",
+        "postbuild": "cp package.json dist && cp README.md dist && cp -R docs dist",
         "lint": "eslint ./src --ext .js,.ts",
         "release": "standard-version",
         "test": "jest",

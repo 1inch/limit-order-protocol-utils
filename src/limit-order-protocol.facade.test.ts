@@ -51,6 +51,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             chainId,
             providerConnector
         );
+
+        jest.spyOn(console, 'error').mockImplementation();
     });
 
     describe('fillOrder()', () => {
@@ -148,7 +150,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const callData = facade.cancelOrderRFQ(order.info);
 
             expect(callData).toBe(
-                '0x825caba100000000000000000000000000000000000002151f5cd7570000000000000002'
+                '0x825caba1000000000000000000000000000000000000000060bf8c960000000000000002'
             );
         });
     });
@@ -267,9 +269,6 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             const order = createOrderWithPredicate(predicate);
 
-            console.log(
-                'This is ok! Error "overflow (fault="overflow", operation="toNumber"..." must be shown!'
-            );
             const result = await facade.checkPredicate(order);
 
             expect(result).toBe(false);
