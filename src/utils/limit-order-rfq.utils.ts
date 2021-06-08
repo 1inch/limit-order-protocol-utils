@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 import prompts from 'prompts';
+import yargs from 'yargs';
 import kleur from 'kleur';
 import Web3 from 'web3';
 import {FakeProviderConnector} from '../../test/fake-provider.connector';
@@ -23,6 +26,8 @@ import {
 import {TransactionConfig} from 'web3-core';
 
 (async () => {
+    prompts.override(yargs.argv);
+
     const operationResult = (await prompts(operationSchema)) as OperationParams;
 
     switch (operationResult.operation) {

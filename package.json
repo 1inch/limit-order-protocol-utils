@@ -20,7 +20,7 @@
         "make-badges": "istanbul-badges-readme",
         "ci-pipeline": "yarn run lint && yarn run test && yarn run typecheck",
         "set-npm-auth": "echo \"//npm.pkg.github.com/:_authToken=${NPM_AUTH_TOKEN}\" >> .npmrc",
-        "rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
+        "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
         "@ethersproject/bignumber": "^5.1.1",
@@ -58,6 +58,9 @@
     "peerDependencies": {
         "assert": "^2.0.0",
         "stream": "^0.0.2"
+    },
+    "bin": {
+        "limit-order-rfq-utils": "./src/utils/limit-order-rfq.utils.js"
     },
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/1inch"
