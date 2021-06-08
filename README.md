@@ -606,23 +606,23 @@ const orderRFQ = await limitOrderBuilder.buildOrderRFQ({
 #### Creating via CLI (with arguments):
 
 ```shell
-npm run limit-order-rfq-utils --\
---operation=create\
---chainId=56\
---privateKey={xxx}\
---orderId=1\
---expiresIn=300\
---makerAssetAddress=0x111111111117dc0aa78b770fa6a738034120c302\
---takerAssetAddress=0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3\
---makerAmount=1000000000000000000\
---takerAmount=4000000000000000000\
+npx limit-order-rfq-utils --\
+--operation=create \
+--chainId=56 \
+--privateKey={xxx} \
+--orderId=1 \
+--expiresIn=300 \
+--makerAssetAddress=0x111111111117dc0aa78b770fa6a738034120c302 \
+--takerAssetAddress=0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3 \
+--makerAmount=1000000000000000000 \
+--takerAmount=4000000000000000000 \
 --takerAddress=""
 ```
 
 #### Creating via CLI (through prompt):
 
 ```shell
-npm run limit-order-rfq-utils
+npx limit-order-rfq-utils
 ```
 
 As result you will receive a JSON structure of limit order RFQ. Example:
@@ -708,19 +708,21 @@ sendTransaction({
 
 #### Canceling via CLI (with arguments):
 
+`gasPrice` - in units of GWEI
+
 ```shell
-npm run limit-order-rfq-utils --\
---operation=cancel\
---chainId=56\
---privateKey={xxx}\
---gasPrice=60000000000\
+npx limit-order-rfq-utils --\
+--operation=cancel \
+--chainId=56 \
+--privateKey={xxx} \
+--gasPrice=6 \
 --orderInfo=29941961886664662336741887180811
 ```
 
 #### Canceling via CLI (through prompt):
 
 ```shell
-npm run limit-order-rfq-utils
+npx limit-order-rfq-utils
 ```
 
 As result, you will receive a link to the transaction hash.
@@ -800,27 +802,29 @@ sendTransaction({
 
 #### Filling via CLI (with arguments):
 
+`gasPrice` - in units of GWEI
+
 ```shell
-npm run limit-order-rfq-utils --\
---operation=fill\
---chainId=56\
---privateKey={xxx}\
---gasPrice=60000000000\
---order='{\
-    "info": "29941961886664662336741887180811",\
-    "makerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",\
-    "takerAsset": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",\
-    "makerAssetData": "0x23b872dd00...000",\
-    "takerAssetData": "0x23b872dd00...000"\
-}'\
---makerAmount=1000000000000000000\
+npx limit-order-rfq-utils --\
+--operation=fill \
+--chainId=56 \
+--privateKey={xxx} \
+--gasPrice=6 \
+--order="{ \
+    \"info\": \"29941961886664662336741887180811\", \
+    \"makerAsset\": \"0x111111111117dc0aa78b770fa6a738034120c302\", \
+    \"takerAsset\": \"0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3\", \
+    \"makerAssetData\": \"0x23b872dd00...000\", \
+    \"takerAssetData\": \"0x23b872dd00...000\" \
+}" \
+--makerAmount=1000000000000000000 \
 --takerAmount=0
 ```
 
 #### Filling via CLI (through prompt):
 
 ```shell
-npm run limit-order-rfq-utils
+npx limit-order-rfq-utils
 ```
 
 As result, you will receive a link to the transaction hash.
