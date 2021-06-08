@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.4.0...v0.5.0) (2021-06-08)
+
+
+### Features
+
+* **limit-order-rfq:** util for create,fill,cancel limit order RFQ ([aa61ed2](https://github.com/1inch/limit-order-protocol-utils/commit/aa61ed24a5f9285902f8d694b198a1ec1aa5bd00))
+* RFQ limit orders ([b4a670e](https://github.com/1inch/limit-order-protocol-utils/commit/b4a670ede66ff4de410a4566bf5cef8662becfba))
+
 ## [0.4.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.3.0...v0.4.0) (2021-06-03)
 
 
