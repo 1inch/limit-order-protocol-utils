@@ -7,8 +7,8 @@ A limit order can be filled in whole or in part.
 ## Parameters:
 
 `order` - structure of the limit order RFQ (see [Limit order RFQ structure](#Limit-order-RFQ-structure))  
-`signature` - signature of the typed date of the limit order RFQ (signTypedData_v4)
-`makerAmount` - the number of maker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units
+`signature` - signature of the typed date of the limit order RFQ (signTypedData_v4)  
+`makerAmount` - the number of maker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units  
 `takerAmount` - the number of taker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units
 
 > important! Only one of the assets amounts can be not zero.
