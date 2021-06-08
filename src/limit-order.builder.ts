@@ -6,6 +6,7 @@ import {
     PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
     ZX,
+    ORDER_RFQ_STRUCTURE,
 } from './limit-order-protocol.const';
 import {
     ChainId,
@@ -14,11 +15,26 @@ import {
     LimitOrderData,
     LimitOrderHash,
     LimitOrderSignature,
+    LimitOrderRFQ,
+    LimitOrderRFQData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
 import {Erc20Facade} from './erc20.facade';
+
+export function generateOrderSalt(): string {
+    return Math.round(Math.random() * Date.now()) + '';
+}
+
+export function generateRFQOrderInfo(
+    id: number,
+    expiresInTimestampMs: number
+): string {
+    return ((BigInt(expiresInTimestampMs) << BigInt(64)) | BigInt(id)).toString(
+        10
+    );
+}
 
 export class LimitOrderBuilder {
     private readonly erc20Facade: Erc20Facade;
@@ -26,7 +42,8 @@ export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
         private readonly chainId: ChainId,
-        private readonly providerConnector: ProviderConnector
+        private readonly providerConnector: ProviderConnector,
+        private readonly generateSalt = generateOrderSalt
     ) {
         this.erc20Facade = new Erc20Facade(this.providerConnector);
     }
@@ -72,6 +89,54 @@ export class LimitOrderBuilder {
         };
     }
 
+    buildOrderRFQTypedData(order: LimitOrderRFQ): EIP712TypedData {
+        return {
+            primaryType: 'OrderRFQ',
+            types: {
+                EIP712Domain: EIP712_DOMAIN,
+                OrderRFQ: ORDER_RFQ_STRUCTURE,
+            },
+            domain: {
+                name: PROTOCOL_NAME,
+                version: PROTOCOL_VERSION,
+                chainId: this.chainId,
+                verifyingContract: this.contractAddress,
+            },
+            message: order,
+        };
+    }
+
+    /* eslint-disable max-lines-per-function */
+    buildOrderRFQ({
+        id,
+        expiresInTimestampMs,
+        makerAssetAddress,
+        takerAssetAddress,
+        makerAddress,
+        takerAddress = ZERO_ADDRESS,
+        makerAmount,
+        takerAmount,
+    }: LimitOrderRFQData): LimitOrderRFQ {
+        return {
+            info: generateRFQOrderInfo(id, expiresInTimestampMs),
+            makerAsset: makerAssetAddress,
+            takerAsset: takerAssetAddress,
+            makerAssetData: this.erc20Facade.transferFrom(
+                null,
+                makerAddress,
+                takerAddress,
+                makerAmount
+            ),
+            takerAssetData: this.erc20Facade.transferFrom(
+                null,
+                takerAddress,
+                makerAddress,
+                takerAmount
+            ),
+        };
+    }
+    /* eslint-enable max-lines-per-function */
+
     /* eslint-disable max-lines-per-function */
     buildOrder({
         makerAssetAddress,
@@ -89,13 +154,13 @@ export class LimitOrderBuilder {
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             makerAssetData: this.erc20Facade.transferFrom(
-                makerAssetAddress,
+                null,
                 makerAddress,
                 takerAddress,
                 makerAmount
             ),
             takerAssetData: this.erc20Facade.transferFrom(
-                makerAssetAddress,
+                null,
                 takerAddress,
                 makerAddress,
                 takerAmount
@@ -116,10 +181,6 @@ export class LimitOrderBuilder {
         };
     }
     /* eslint-enable max-lines-per-function */
-
-    private generateSalt(): string {
-        return Math.round(Math.random() * Date.now()) + '';
-    }
 
     // Get nonce from contract (nonce method) and put it to predicate on order creating
     private getAmountData(

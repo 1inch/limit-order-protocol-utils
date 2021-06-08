@@ -35,3 +35,11 @@ export const ORDER_STRUCTURE = [
     {name: 'permit', type: 'bytes'},
     {name: 'interaction', type: 'bytes'},
 ];
+
+export const ORDER_RFQ_STRUCTURE = [
+    {name: 'info', type: 'uint256'},
+    {name: 'makerAsset', type: 'address'},
+    {name: 'takerAsset', type: 'address'},
+    {name: 'makerAssetData', type: 'bytes'},
+    {name: 'takerAssetData', type: 'bytes'},
+];
