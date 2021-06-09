@@ -55,7 +55,7 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 A limit order is a financial instrument with which you can put up an EPC-20 (or BEP-20) token for sale at a fixed price.  
 For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tokens.
 
-1inch limit orders protocol have many tools for flexible trade management:
+1inch limit orders protocol has many tools for flexible trade management:
 
 -   partial fill
 -   predicates
@@ -79,16 +79,17 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ### Docs
 
-0. [Quick start](./docs/quick-start.md)
-1. [Create a limit order](./docs/create-limit-order.md)
-2. [Limit order remaining](./docs/remaining.md)
-3. [Nonce](./docs/nonce.md)
-4. [Validate a limit order](./docs/validate-limit-order.md)
-5. [Predicate](./docs/predicate.md)
-6. [Fill a limit order](./docs/fill-limit-order.md)
-7. [Cancel a limit order](./docs/cancel-limit-order.md)
-8. [Cancel all limit orders](./docs/cancel-all-limit-orders.md)
-9. [Domain separator](./docs/domain-separator.md)
+1. [Quick start](./docs/quick-start.md)
+2. [Create a limit order](./docs/create-limit-order.md)
+3. [Limit order structure](./docs/limit-order-structure.md)
+4. [Limit order remaining](./docs/remaining.md)
+5. [Nonce](./docs/nonce.md)
+6. [Validate a limit order](./docs/validate-limit-order.md)
+7. [Predicate](./docs/predicate.md)
+8. [Fill a limit order](./docs/fill-limit-order.md)
+9. [Cancel a limit order](./docs/cancel-limit-order.md)
+10. [Cancel all limit orders](./docs/cancel-all-limit-orders.md)
+11. [Domain separator](./docs/domain-separator.md)
 
 ---
 

@@ -10,7 +10,7 @@
 | `signature`       | `LimitOrderSignature` | signature of a limit order                                                       |
 | `makerAmount`     | `String`              | amount of maker asset (in token units)                                           |
 | `takerAmount`     | `String`              | amount of taker asset (in token units)                                           |
-| `thresholdAmount` | `String`              | threshold for amount of received asset (in received asset units)                 |
+| `thresholdAmount` | `String`              | the threshold for the amount of received asset (in received asset units)         |
 
 > Note: to fill a limit order, only one of the amounts must be specified  
 > The second one must be set to `0`

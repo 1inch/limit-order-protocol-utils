@@ -2,8 +2,8 @@
 
 `LimitOrderProtocolFacade.simulateCalls()`
 
-There is the possibility to check limit orders validity.  
-For example: you can check that a limit order is valid by predicates.
+There is the possibility to check limit order validity.  
+For example, you can check that a limit order is valid by predicates.
 
 > **Under the hood:**  
 > On a `simulateCalls()` call, the contract returns the string like `CALL_RESULTS_01101`  

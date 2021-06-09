@@ -65,7 +65,7 @@ sendTransaction({
 ```
 
 **Note:** you can use any implementation for the provider.  
-Just implement `ProviderConnector` interface:
+Just implement the `ProviderConnector` interface:
 
 ```typescript
 class MyProviderConnector implements ProviderConnector {

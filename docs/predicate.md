@@ -2,15 +2,15 @@
 
 `LimitOrderPredicateBuilder`
 
-A limit order can contain one or more predicates which indicate the logic of its validity.  
-**There are two types of a predicate operators:**
+A limit order can contain one or more predicates that indicate the logic of its validity.  
+**There are two types of predicate operators:**
 
 ## Conditional operators:
 
-| Name    | Description                                                                   |
-| ------- | ----------------------------------------------------------------------------- |
-| **and** | combine several predicates, return `true` when all predicates are valid       |
-| **or**  | combine several predicates, return `true` when the one of predicates is valid |
+| Name    | Description                                                               |
+| ------- | ------------------------------------------------------------------------- |
+| **and** | combine several predicates, return `true` when all predicates are valid   |
+| **or**  | combine several predicates, return `true` when one of predicates is valid |
 
 ## Comparative operators:
 

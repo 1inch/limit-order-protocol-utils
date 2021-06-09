@@ -2,19 +2,19 @@
 
 `LimitOrderBuilder.buildLimitOrder()`
 
-Parameters for creating a limit order:
+## Parameters:
 
-| Field               | Type      | Description                                                                                                                                                                                      |
-| ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `makerAssetAddress` | `String`  | the address of the asset you want to sell (address of a token contract)                                                                                                                          |
-| `takerAssetAddress` | `String`  | the address of the asset you want to buy (address of a token contract)                                                                                                                           |
-| `makerAddress`      | `String`  | an address of the maker (wallet address)                                                                                                                                                         |
-| `takerAddress`      | `String?` | the address of the taker for whom the limit order is being created. _ This is an optional parameter _, if it is not specified, then the limit order will be available for execution for everyone |
-| `makerAmount`       | `String`  | the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units                                                                          |
-| `takerAmount`       | `String`  | the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units                                           |
-| `predicate`         | `String?` | a predicate call data. Default: `0x`. See [Predicate docs](./predicate.md)                                                                                                                       |
-| `permit`            | `String?` | a permit call data. Default: `0x`                                                                                                                                                                |
-| `interaction`       | `String?` | an interaction call data. Default: `0x`                                                                                                                                                          |
+| Field               | Type      | Description                                                                                                                                                                                    |
+| ------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `makerAssetAddress` | `String`  | the address of the asset you want to sell (address of a token contract)                                                                                                                        |
+| `takerAssetAddress` | `String`  | the address of the asset you want to buy (address of a token contract)                                                                                                                         |
+| `makerAddress`      | `String`  | an address of the maker (wallet address)                                                                                                                                                       |
+| `takerAddress`      | `String?` | the address of the taker for whom the limit order is being created. _This is an optional parameter_, if it is not specified, then the limit order will be available for execution for everyone |
+| `makerAmount`       | `String`  | the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units                                                                        |
+| `takerAmount`       | `String`  | the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units                                         |
+| `predicate`         | `String?` | a predicate call data. Default: `0x`. See [Predicate docs](./predicate.md)                                                                                                                     |
+| `permit`            | `String?` | a permit call data. Default: `0x`                                                                                                                                                              |
+| `interaction`       | `String?` | an interaction call data. Default: `0x`                                                                                                                                                        |
 
 ## Example:
 

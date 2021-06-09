@@ -3,8 +3,8 @@
 `LimitOrderProtocolFacade.remaining()`
 
 By default, a limit order is created unfilled.  
-Until the first fill the `remaining` method will throw error `LOP: Unknown order`.  
-After the first fill, the method will return remaining amount.
+Until the first fill the `remaining` method will throw an error `LOP: Unknown order`.  
+After the first fill, the method will return the remaining amount.
 
 > Note: a limit order can be partially filled
 
