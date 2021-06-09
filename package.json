@@ -19,7 +19,6 @@
         "prettier": "prettier --write .",
         "make-badges": "istanbul-badges-readme",
         "ci-pipeline": "yarn run lint && yarn run test && yarn run typecheck",
-        "set-npm-auth": "echo \"//npm.pkg.github.com/:_authToken=${NPM_AUTH_TOKEN}\" >> .npmrc",
         "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
