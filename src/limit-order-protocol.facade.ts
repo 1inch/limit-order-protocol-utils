@@ -8,8 +8,8 @@ import {
     LimitOrderProtocolMethods,
     LimitOrderHash,
     LimitOrderSignature,
-    LimitOrderRFQInfo,
-    LimitOrderRFQ,
+    RFQOrderInfo,
+    RFQOrder,
 } from './model/limit-order-protocol.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
@@ -20,7 +20,7 @@ export class LimitOrderProtocolFacade {
         public readonly providerConnector: ProviderConnector
     ) {}
 
-    fillOrder(
+    fillLimitOrder(
         order: LimitOrder,
         signature: LimitOrderSignature,
         makerAmount: string,
@@ -36,8 +36,8 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
-    fillOrderRFQ(
-        order: LimitOrderRFQ,
+    fillRFQOrder(
+        order: RFQOrder,
         signature: LimitOrderSignature,
         makerAmount: string,
         takerAmount: string
@@ -48,13 +48,13 @@ export class LimitOrderProtocolFacade {
         );
     }
 
-    cancelOrder(order: LimitOrder): string {
+    cancelLimitOrder(order: LimitOrder): string {
         return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
             order,
         ]);
     }
 
-    cancelOrderRFQ(orderInfo: LimitOrderRFQInfo): string {
+    cancelRFQOrder(orderInfo: RFQOrderInfo): string {
         return this.getContractCallData(
             LimitOrderProtocolMethods.cancelOrderRFQ,
             [orderInfo]

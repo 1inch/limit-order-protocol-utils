@@ -7,8 +7,10 @@ A limit order can contain one or more predicates which indicate the logic of its
 
 ## Conditional operators:
 
--   `and` - combine several predicates, return `true` when all predicates are valid
--   `or` - combine several predicates, return `true` when the one of predicates is valid
+| Name    | Description                                                                   |
+| ------- | ----------------------------------------------------------------------------- |
+| **and** | combine several predicates, return `true` when all predicates are valid       |
+| **or**  | combine several predicates, return `true` when the one of predicates is valid |
 
 ## Comparative operators:
 
@@ -18,9 +20,11 @@ A limit order can contain one or more predicates which indicate the logic of its
 > **How the operators works:**  
 > On an operator call, the contract execute the `callData` for the `address` and compare _**a result**_ with the `value`
 
--   `eq` - _**a result**_ must be equal to the `value`
--   `lt` - _**a result**_ must be less than the `value`
--   `gt` - _**a result**_ must be greater than the `value`
+| Name   | Description                                     |
+| ------ | ----------------------------------------------- |
+| **eq** | _**a result**_ must be equal to the `value`     |
+| **lt** | _**a result**_ must be less than the `value`    |
+| **gt** | _**a result**_ must be greater than the `value` |
 
 ## Built-in operators:
 

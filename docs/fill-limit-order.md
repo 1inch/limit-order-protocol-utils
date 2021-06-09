@@ -1,14 +1,16 @@
 # Fill a limit order
 
-`LimitOrderProtocolFacade.fillOrder()`
+`LimitOrderProtocolFacade.fillLimitOrder()`
 
-Parameters for order filling:
+## Parameters:
 
--   `order: LimitOrder` - a limit order structure
--   `signature: LimitOrderSignature` - signature of a limit order
--   `makerAmount: string` - amount of maker asset (in token units)
--   `takerAmount: string` - amount of taker asset (in token units)
--   `thresholdAmount: string` - threshold for amount of received asset (in received asset units)
+| Field             | Type                  | Description                                                                      |
+| ----------------- | --------------------- | -------------------------------------------------------------------------------- |
+| `order`           | `LimitOrder`          | a limit order structure. See [Limit order structure](./limit-order-structure.md) |
+| `signature`       | `LimitOrderSignature` | signature of a limit order                                                       |
+| `makerAmount`     | `String`              | amount of maker asset (in token units)                                           |
+| `takerAmount`     | `String`              | amount of taker asset (in token units)                                           |
+| `thresholdAmount` | `String`              | threshold for amount of received asset (in received asset units)                 |
 
 > Note: to fill a limit order, only one of the amounts must be specified  
 > The second one must be set to `0`
@@ -35,7 +37,7 @@ const thresholdAmount = '600000000';
 const connector = new Web3ProviderConnector(new Web3('...'));
 const limitOrderProtocolFacade = new limitOrderProtocolFacade(contractAddress, connector);
 
-const callData = limitOrderProtocolFacade.fillOrder(
+const callData = limitOrderProtocolFacade.fillLimitOrder(
     order,
     signature,
     makerAmount,

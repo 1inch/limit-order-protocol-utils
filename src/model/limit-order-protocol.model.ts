@@ -11,8 +11,8 @@ export type LimitOrderSignature = string;
 
 export type LimitOrderHash = string;
 
-// LimitOrderRFQData.expiresInTimestamp | LimitOrderRFQData.id
-export type LimitOrderRFQInfo = string;
+// RFQOrderData.expiresInTimestamp | RFQOrderData.id
+export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
     makerAddress: string;
@@ -26,7 +26,7 @@ export interface LimitOrderData {
     interaction?: string;
 }
 
-export interface LimitOrderRFQData {
+export interface RFQOrderData {
     // Index number of RFQ limit order. Example: 1
     id: number;
     // Timestamp when the RFQ limit order will expire (seconds). Example: 1623166102
@@ -52,8 +52,8 @@ export interface LimitOrder extends EIP712Object {
     interaction: string;
 }
 
-export interface LimitOrderRFQ extends EIP712Object {
-    info: LimitOrderRFQInfo;
+export interface RFQOrder extends EIP712Object {
+    info: RFQOrderInfo;
     makerAsset: string;
     takerAsset: string;
     makerAssetData: string;

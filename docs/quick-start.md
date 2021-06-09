@@ -26,7 +26,7 @@ const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
 );
 
 // Create a limit order and it's signature
-const limitOrder = limitOrderBuilder.buildOrder({
+const limitOrder = limitOrderBuilder.buildLimitOrder({
     makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
     makerAddress: walletAddress,
@@ -36,14 +36,16 @@ const limitOrder = limitOrderBuilder.buildOrder({
     permit: '0x0',
     interaction: '0x0',
 });
-const limitOrderTypedData = limitOrderBuilder.buildOrderTypedData(limitOrder);
+const limitOrderTypedData = limitOrderBuilder.buildLimitOrderTypedData(
+    limitOrder
+);
 const limitOrderSignature = limitOrderBuilder.buildOrderSignature(
     walletAddress,
     limitOrderTypedData
 );
 
 // Create a call data for fill the limit order
-const callData = limitOrderProtocolFacade.fillOrder(
+const callData = limitOrderProtocolFacade.fillLimitOrder(
     limitOrder,
     limitOrderSignature,
     '100',

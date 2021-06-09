@@ -1,4 +1,4 @@
-import {LimitOrder, LimitOrderRFQ} from '../src';
+import {LimitOrder, RFQOrder} from '../src';
 
 export const ORDER_SNAPSHOT: LimitOrder = {
     getMakerAmount:
@@ -17,7 +17,7 @@ export const ORDER_SNAPSHOT: LimitOrder = {
         '0x23b872dd0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dddd91605c18a9999c1d47abfeed5daaaa7000000000000000000000000000000000000000000000000000000000000000000064',
 };
 
-export const ORDER_RFQ_SNAPSHOT: LimitOrderRFQ = {
+export const RFQ_ORDER_SNAPSHOT: RFQOrder = {
     info: '29942129672714733576710520833',
     makerAsset: '0x111111111117dc0aa78b770fa6a738034120c302',
     makerAssetData:

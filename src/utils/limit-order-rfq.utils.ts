@@ -6,7 +6,7 @@ import kleur from 'kleur';
 import Web3 from 'web3';
 import {FakeProviderConnector} from '../../test/fake-provider.connector';
 import {LimitOrderBuilder} from '../limit-order.builder';
-import {LimitOrderRFQ} from '../model/limit-order-protocol.model';
+import {RFQOrder} from '../model/limit-order-protocol.model';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
 import {
     cancelOrderSchema,
@@ -57,7 +57,7 @@ async function createOrderOperation() {
 
 async function fillOrderOperation() {
     const fillingParams = (await prompts(fillOrderSchema)) as FillingParams;
-    const orderForFill: LimitOrderRFQ = JSON.parse(fillingParams.order);
+    const orderForFill: RFQOrder = JSON.parse(fillingParams.order);
 
     console.log(kleur.green().bold('Order for filling: '));
     console.log(kleur.white().underline(JSON.stringify(orderForFill, null, 4)));
@@ -84,7 +84,7 @@ async function cancelOrderOperation() {
 }
 
 /* eslint-disable max-lines-per-function */
-function createOrder(params: CreatingParams): LimitOrderRFQ {
+function createOrder(params: CreatingParams): RFQOrder {
     const contractAddress = contractAddresses[params.chainId];
     const web3 = new Web3(rpcUrls[params.chainId]);
     const providerConnector = new FakeProviderConnector(
@@ -101,7 +101,7 @@ function createOrder(params: CreatingParams): LimitOrderRFQ {
         providerConnector
     );
 
-    return limitOrderBuilder.buildOrderRFQ({
+    return limitOrderBuilder.buildRFQOrder({
         id: params.orderId,
         expiresInTimestamp: Math.ceil(Date.now() / 1000) + params.expiresIn,
         makerAddress: walletAddress,
@@ -117,7 +117,7 @@ function createOrder(params: CreatingParams): LimitOrderRFQ {
 /* eslint-disable max-lines-per-function */
 async function fillOrder(
     params: FillingParams,
-    order: LimitOrderRFQ
+    order: RFQOrder
 ): Promise<string> {
     const contractAddress = contractAddresses[params.chainId];
     const web3 = new Web3(rpcUrls[params.chainId]);
@@ -139,13 +139,13 @@ async function fillOrder(
         providerConnector
     );
 
-    const typedData = limitOrderBuilder.buildOrderRFQTypedData(order);
+    const typedData = limitOrderBuilder.buildRFQOrderTypedData(order);
     const signature = await limitOrderBuilder.buildOrderSignature(
         walletAddress,
         typedData
     );
 
-    const callData = limitOrderProtocolFacade.fillOrderRFQ(
+    const callData = limitOrderProtocolFacade.fillRFQOrder(
         order,
         signature,
         params.makerAmount,
@@ -185,7 +185,7 @@ async function cancelOrder(params: CancelingParams): Promise<string> {
         providerConnector
     );
 
-    const callData = limitOrderProtocolFacade.cancelOrderRFQ(params.orderInfo);
+    const callData = limitOrderProtocolFacade.cancelRFQOrder(params.orderInfo);
     const txConfig: TransactionConfig = {
         to: contractAddress,
         from: walletAddress,

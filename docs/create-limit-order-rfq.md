@@ -1,14 +1,17 @@
-# Creating a limit order RFQ:
+# Creating a RFQ order:
 
 ## Parameters:
 
-1. `id` - is a pass-through, integer identifier starting at 1
-2. `expire time` - is the timestamp in milliseconds when the limit order will no longer be available for execution. For example: 1623166270029
-3. `maker asset address` - the address of the asset you want to sell (address of a token contract)
-4. `taker asset address` - the address of the asset you want to buy (address of a token contract)
-5. `maker amount` - the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units
-6. `taker amount` - the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units
-7. `taker address` - the address of the buyer for whom the limit order is being created. _This is an optional parameter_, if it is not specified, then the limit order will be available for execution for everyone
+| Field                | Type      | Description                                                                                                                                                                                      |
+| -------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`                 | `Number`  | is a pass-through, integer identifier starting at 1                                                                                                                                              |
+| `expiresInTimestamp` | `Number`  | is the timestamp in seconds when the limit order will no longer be available for execution. For example: 1623166270029                                                                           |
+| `makerAssetAddress`  | `String`  | the address of the asset you want to sell (address of a token contract)                                                                                                                          |
+| `takerAssetAddress`  | `String`  | the address of the asset you want to buy (address of a token contract)                                                                                                                           |
+| `makerAddress`       | `String`  | an address of the maker (wallet address)                                                                                                                                                         |
+| `takerAddress`       | `String?` | the address of the taker for whom the limit order is being created. _ This is an optional parameter _, if it is not specified, then the limit order will be available for execution for everyone |
+| `makerAmount`        | `String`  | the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units                                                                          |
+| `takerAmount`        | `String`  | the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units                                           |
 
 ## Creating with a typescript/javascript:
 
@@ -29,7 +32,7 @@ const limitOrderBuilder = new LimitOrderBuilder(
     connector
 );
 
-const orderRFQ = await limitOrderBuilder.buildOrderRFQ({
+const RFQorder = await limitOrderBuilder.buildRFQOrder({
     id: 1,
     expiresInTimestamp: 1623166102,
     makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
@@ -62,7 +65,7 @@ npx limit-order-rfq-utils --\
 npx limit-order-rfq-utils
 ```
 
-As result you will receive a JSON structure of limit order RFQ. Example:
+As result you will receive a structure of [RFQ order](./limit-order-rfq-structure.md). Example:
 
 ```json
 {

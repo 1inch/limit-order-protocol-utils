@@ -35,7 +35,7 @@ const nonce = await limitOrderProtocolFacade.nonce(contractAddress);
 
 // Create a limit order with nonceEquals predicate
 const predicate = limitOrderPredicateBuilder.nonceEquals(walletAddress, nonce);
-const limitOrder = limitOrderBuilder.buildOrder({
+const limitOrder = limitOrderBuilder.buildLimitOrder({
     ...,
     predicate
 });

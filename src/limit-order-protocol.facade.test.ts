@@ -9,7 +9,7 @@ import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {FakeProviderConnector} from '../test/fake-provider.connector';
 import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
 import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
-import {FILL_ORDER_RFQ_SNAPSHOT} from '../test/fill-order-rfq-snapshot';
+import {FILL_RFQ_ORDER_SNAPSHOT} from '../test/fill-order-rfq-snapshot';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
@@ -26,7 +26,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     let limitOrderBuilder: LimitOrderBuilder;
 
     function createOrderWithPredicate(predicate: string): LimitOrder {
-        return limitOrderBuilder.buildOrder({
+        return limitOrderBuilder.buildLimitOrder({
             makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
             takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
             makerAddress: walletAddress,
@@ -55,7 +55,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         jest.spyOn(console, 'error').mockImplementation();
     });
 
-    describe('fillOrder()', () => {
+    describe('fillLimitOrder()', () => {
         it('Must create a call data for order filling', async () => {
             const timestamp = 1621040104;
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
@@ -65,7 +65,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             order.salt = '1';
 
-            const typedData = limitOrderBuilder.buildOrderTypedData(order);
+            const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
             const signature = await limitOrderBuilder.buildOrderSignature(
                 walletAddress,
                 typedData
@@ -74,7 +74,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const takerAmount = '0';
             const thresholdAmount = '0';
 
-            const callData = facade.fillOrder(
+            const callData = facade.fillLimitOrder(
                 order,
                 signature,
                 makerAmount,
@@ -86,9 +86,9 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
-    describe('fillOrderRFQ()', () => {
+    describe('fillRFQOrder()', () => {
         it('Must create a call data for RFQ order filling', async () => {
-            const order = limitOrderBuilder.buildOrderRFQ({
+            const order = limitOrderBuilder.buildRFQOrder({
                 id: 2,
                 expiresInTimestamp: 1623166102,
                 makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
@@ -99,7 +99,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAmount: '6500000000000000000',
             });
 
-            const typedData = limitOrderBuilder.buildOrderRFQTypedData(order);
+            const typedData = limitOrderBuilder.buildRFQOrderTypedData(order);
             const signature = await limitOrderBuilder.buildOrderSignature(
                 walletAddress,
                 typedData
@@ -107,18 +107,18 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const makerAmount = '1000000000000000000';
             const takerAmount = '0';
 
-            const callData = facade.fillOrderRFQ(
+            const callData = facade.fillRFQOrder(
                 order,
                 signature,
                 makerAmount,
                 takerAmount
             );
 
-            expect(callData).toBe(FILL_ORDER_RFQ_SNAPSHOT);
+            expect(callData).toBe(FILL_RFQ_ORDER_SNAPSHOT);
         });
     });
 
-    describe('cancelOrder()', () => {
+    describe('cancelLimitOrder()', () => {
         it('Must create a call data for order canceling', async () => {
             const timestamp = 1621040104;
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
@@ -128,15 +128,15 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             order.salt = '1';
 
-            const callData = facade.cancelOrder(order);
+            const callData = facade.cancelLimitOrder(order);
 
             expect(callData).toBe(CANCEL_ORDER_SNAPSHOT);
         });
     });
 
-    describe('cancelOrderRFQ()', () => {
+    describe('cancelRFQOrder()', () => {
         it('Must create a call data for order canceling', async () => {
-            const order = limitOrderBuilder.buildOrderRFQ({
+            const order = limitOrderBuilder.buildRFQOrder({
                 id: 2,
                 expiresInTimestamp: 1623166102,
                 makerAddress: '0x96577468b160184347e16340a80a9e81c132b967',
@@ -147,7 +147,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAmount: '6500000000000000000',
             });
 
-            const callData = facade.cancelOrderRFQ(order.info);
+            const callData = facade.cancelRFQOrder(order.info);
 
             expect(callData).toBe(
                 '0x825caba1000000000000000000000000000000000000000060bf8c960000000000000002'
@@ -192,8 +192,12 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     describe('remaining()', () => {
         it('When order is never been touched, then must throw error', async () => {
             const order = createOrderWithPredicate('0x');
-            const orderTypedData = limitOrderBuilder.buildOrderTypedData(order);
-            const orderHash = limitOrderBuilder.buildOrderHash(orderTypedData);
+            const orderTypedData = limitOrderBuilder.buildLimitOrderTypedData(
+                order
+            );
+            const orderHash = limitOrderBuilder.buildLimitOrderHash(
+                orderTypedData
+            );
 
             let error = null;
 

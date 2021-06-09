@@ -52,10 +52,10 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 
 ## Limit order
 
-A limit order is an order to buy or sell at a specified or better price.  
-A limit order excludes the possibility of execution at a less favorable price than a limit order, however, its execution is not guaranteed.
+A limit order is a financial instrument with which you can put up an EPC-20 (or BEP-20) token for sale at a fixed price.  
+For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tokens.
 
-Inch protocol limit orders have many tools for flexible management:
+1inch limit orders protocol have many tools for flexible trade management:
 
 -   partial fill
 -   predicates
@@ -64,7 +64,18 @@ Inch protocol limit orders have many tools for flexible management:
 -   fullness check
 -   validation
 
-For market making, there are **limit orders RFQ** that have special optimization that does not require a large amount of gas for execution.
+For market making, there are **RFQ orders** that have special optimization that does not require a large amount of gas for execution.
+
+### Limit orders in the 1inch aggregation protocol
+
+[**1inch aggregation protocol**](https://1inch.io/aggregation-protocol/) - the protocol sources liquidity from various exchanges and is capable of splitting a single trade transaction across multiple DEXes to ensure the best rates.  
+You can send your limit orders to the 1inch database and then your order will participate in the 1inch aggregation protocol.
+
+### API swagger:
+
+-   [Ethereum](https://limit-orders.1inch.exchange/swagger/ethereum/)
+-   [Binance Smart Chain](https://limit-orders.1inch.exchange/swagger/binance/)
+-   [Polygon](https://limit-orders.1inch.exchange/swagger/polygon/)
 
 ### Docs
 
@@ -81,19 +92,15 @@ For market making, there are **limit orders RFQ** that have special optimization
 
 ---
 
-## Limit order RFQ
+## RFQ order
 
 **A request for quotation (RFQ)** is a business process in which a customer requests a quote from a supplier (market maker) for the purchase of some tokens.
 
-**The 1inch Limit Order Protocol** allows to create offers for the sale / purchase of certain pairs of tokens.  
-In other words, you can put up a pair of tokens for sale at the price you set.  
-1inch Limit Order Protocol supports work only with EPC-20, BEP-20 tokens.
-
-> Limit orders RFQ differ from ordinary orders in that they are optimized for frequent market trading, and their execution does not require a lot of gas.
+> Technically, RFQ orders are a stripped-down version of standard orders, which contains less data and tools to manage, which in turn allows to spend significantly less gas for their execution.
 
 ### Docs:
 
-1. [Creating a limit order RFQ](./docs/create-limit-order-rfq.md)
-2. [Limit order RFQ structure](./docs/limit-order-rfq-structure.md)
-3. [Canceling a limit order RFQ](./docs/cancel-limit-order-rfq.md)
-4. [Filling a limit order RFQ](./docs/fill-limit-order-rfq.md)
+1. [Creating a RFQ order](./docs/create-limit-order-rfq.md)
+2. [RFQ order structure](./docs/limit-order-rfq-structure.md)
+3. [Canceling a RFQ order](./docs/cancel-limit-order-rfq.md)
+4. [Filling a RFQ order](./docs/fill-limit-order-rfq.md)

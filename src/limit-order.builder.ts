@@ -6,7 +6,7 @@ import {
     PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
     ZX,
-    ORDER_RFQ_STRUCTURE,
+    RFQ_ORDER_STRUCTURE,
 } from './limit-order-protocol.const';
 import {
     ChainId,
@@ -15,8 +15,8 @@ import {
     LimitOrderData,
     LimitOrderHash,
     LimitOrderSignature,
-    LimitOrderRFQ,
-    LimitOrderRFQData,
+    RFQOrder,
+    RFQOrderData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
@@ -66,13 +66,13 @@ export class LimitOrderBuilder {
         );
     }
 
-    buildOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
+    buildLimitOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
         const message = orderTypedData as TypedMessage<MessageTypes>;
 
         return ZX + TypedDataUtils.sign(message).toString('hex');
     }
 
-    buildOrderTypedData(order: LimitOrder): EIP712TypedData {
+    buildLimitOrderTypedData(order: LimitOrder): EIP712TypedData {
         return {
             primaryType: 'Order',
             types: {
@@ -89,12 +89,12 @@ export class LimitOrderBuilder {
         };
     }
 
-    buildOrderRFQTypedData(order: LimitOrderRFQ): EIP712TypedData {
+    buildRFQOrderTypedData(order: RFQOrder): EIP712TypedData {
         return {
             primaryType: 'OrderRFQ',
             types: {
                 EIP712Domain: EIP712_DOMAIN,
-                OrderRFQ: ORDER_RFQ_STRUCTURE,
+                OrderRFQ: RFQ_ORDER_STRUCTURE,
             },
             domain: {
                 name: PROTOCOL_NAME,
@@ -107,7 +107,7 @@ export class LimitOrderBuilder {
     }
 
     /* eslint-disable max-lines-per-function */
-    buildOrderRFQ({
+    buildRFQOrder({
         id,
         expiresInTimestamp,
         makerAssetAddress,
@@ -116,7 +116,7 @@ export class LimitOrderBuilder {
         takerAddress = ZERO_ADDRESS,
         makerAmount,
         takerAmount,
-    }: LimitOrderRFQData): LimitOrderRFQ {
+    }: RFQOrderData): RFQOrder {
         return {
             info: generateRFQOrderInfo(id, expiresInTimestamp),
             makerAsset: makerAssetAddress,
@@ -138,7 +138,7 @@ export class LimitOrderBuilder {
     /* eslint-enable max-lines-per-function */
 
     /* eslint-disable max-lines-per-function */
-    buildOrder({
+    buildLimitOrder({
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,

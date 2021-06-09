@@ -1,6 +1,12 @@
 # Cancel a limit order
 
-`LimitOrderProtocolFacade.cancelOrder()`
+`LimitOrderProtocolFacade.cancelLimitOrder()`
+
+## Parameters:
+
+| Parameter | Type         | Description                                                                       |
+| --------- | ------------ | --------------------------------------------------------------------------------- |
+| `order`   | `LimitOrder` | Structure of limit order. See [Limit order structure](./limit-order-structure.md) |
 
 ## Example:
 
@@ -18,7 +24,7 @@ const order: LimitOrder = {...};
 const connector = new Web3ProviderConnector(new Web3('...'));
 const limitOrderProtocolFacade = new limitOrderProtocolFacade(contractAddress, connector);
 
-const callData = limitOrderProtocolFacade.cancelOrder(order);
+const callData = limitOrderProtocolFacade.cancelLimitOrder(order);
 
 sendTransaction({
     from: walletAddress,

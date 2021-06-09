@@ -6,10 +6,12 @@ A limit order can be filled in whole or in part.
 
 ## Parameters:
 
-`order` - structure of the limit order RFQ (see [Limit order RFQ structure](#Limit-order-RFQ-structure))  
-`signature` - signature of the typed date of the limit order RFQ (signTypedData_v4)  
-`makerAmount` - the number of maker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units  
-`takerAmount` - the number of taker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units
+| Field         | Description                                                                                                             |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `order`       | structure of the RFQ order (see [RFQ order structure] ( ./docs/limit-order-rfq-structure.md))                           |
+| `signature`   | signature of the typed date of the RFQ order (signTypedData_v4)                                                         |
+| `makerAmount` | the number of maker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units |
+| `takerAmount` | the number of taker asset tokens that you want to fill (in token units). For example: 5 DAI = 5000000000000000000 units |
 
 > important! Only one of the assets amounts can be not zero.
 > For example, if you specified the maker amount, then the taker amount must be zero and vice versa.
@@ -20,7 +22,7 @@ A limit order can be filled in whole or in part.
 import {
     LimitOrderBuilder,
     LimitOrderProtocolFacade,
-    LimitOrderRFQ
+    RFQOrder
 } from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x7643b8c2457c1f36dc6e3b8f8e112fdf6da7698a';
@@ -41,9 +43,9 @@ const limitOrderProtocolFacade = new limitOrderProtocolFacade(
     connector
 );
 
-const orderRFQ: LimitOrderRFQ = {...};
+const RFQorder: RFQOrder = {...};
 
-const typedData = limitOrderBuilder.buildOrderRFQTypedData(orderRFQ);
+const typedData = limitOrderBuilder.buildRFQOrderTypedData(RFQorder);
 const signature = await limitOrderBuilder.buildOrderSignature(
     walletAddress,
     typedData
@@ -51,14 +53,14 @@ const signature = await limitOrderBuilder.buildOrderSignature(
 const makerAmount = '1000000000000000000';
 const takerAmount = '0';
 
-const callData = facade.fillOrderRFQ(
+const callData = facade.fillRFQOrder(
     order,
     signature,
     makerAmount,
     takerAmount
 );
 
-// Send transaction for the limit order RFQ filling
+// Send transaction for the order RFQ filling
 // Must be implemented
 sendTransaction({
     from: walletAddress,

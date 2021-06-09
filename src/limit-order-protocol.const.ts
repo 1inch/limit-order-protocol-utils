@@ -36,7 +36,7 @@ export const ORDER_STRUCTURE = [
     {name: 'interaction', type: 'bytes'},
 ];
 
-export const ORDER_RFQ_STRUCTURE = [
+export const RFQ_ORDER_STRUCTURE = [
     {name: 'info', type: 'uint256'},
     {name: 'makerAsset', type: 'address'},
     {name: 'takerAsset', type: 'address'},

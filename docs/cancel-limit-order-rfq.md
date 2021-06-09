@@ -1,18 +1,20 @@
 # Canceling a limit order:
 
-It is assumed that limit orders RFQ will be created with a short lifetime.  
-But, if it becomes necessary to cancel the created limit order RFQ, then this can be done as follows:
+It is assumed that RFQ orders will be created with a short lifetime.  
+But, if it becomes necessary to cancel the created RFQ order, then this can be done as follows:
 
 ## Parameters:
 
-1. `info` - information about a limit order RFQ (see above in section [Limit order RFQ structure](#Limit-order-RFQ-structure))
+| Parameter | Type     | Description                                                                                          |
+| --------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `info`    | `String` | information about a RFQ order (see above in section [RFQ structure](./limit-order-rfq-structure.md)) |
 
 ## Creating with a typescript/javascript:
 
 ```typescript
 import {
     LimitOrderProtocolFacade,
-    LimitOrderRFQ
+    RFQOrder
 } from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x7643b8c2457c1f36dc6e3b8f8e112fdf6da7698a';
@@ -27,11 +29,11 @@ const limitOrderProtocolFacade = new limitOrderProtocolFacade(
     connector
 );
 
-const orderRFQ: LimitOrderRFQ = {...};
+const RFQorder: RFQOrder = {...};
 
-const callData = limitOrderProtocolFacade.cancelOrderRFQ(orderRFQ.info);
+const callData = limitOrderProtocolFacade.cancelRFQOrder(RFQorder.info);
 
-// Send transaction for the limit order RFQ canceling
+// Send transaction for the RFQ order canceling
 // Must be implemented
 sendTransaction({
     from: walletAddress,

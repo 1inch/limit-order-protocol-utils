@@ -1,8 +1,8 @@
 import {LimitOrderBuilder} from './limit-order.builder';
-import {LimitOrder, LimitOrderRFQ} from './model/limit-order-protocol.model';
+import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {FakeProviderConnector} from '../test/fake-provider.connector';
-import {ORDER_RFQ_SNAPSHOT, ORDER_SNAPSHOT} from '../test/order-snapshot';
+import {RFQ_ORDER_SNAPSHOT, ORDER_SNAPSHOT} from '../test/order-snapshot';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const contractAddress = '0xaaaaa';
@@ -45,7 +45,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 permit: 'permit',
                 interaction: 'interaction',
             };
-            const typedData = limitOrderBuilder.buildOrderTypedData(order);
+            const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
 
             const signTypedDataSpy = spyOn(
                 providerConnector,
@@ -66,7 +66,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             );
         });
 
-        it('buildOrderHash() must create a hash of order with 0x prefix', () => {
+        it('buildLimitOrderHash() must create a hash of order with 0x prefix', () => {
             const order: LimitOrder = {
                 salt: '1',
                 makerAsset: 'makerAsset',
@@ -79,19 +79,19 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 permit: 'permit',
                 interaction: 'interaction',
             };
-            const typedData = limitOrderBuilder.buildOrderTypedData(order);
+            const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
 
-            const hash = limitOrderBuilder.buildOrderHash(typedData);
+            const hash = limitOrderBuilder.buildLimitOrderHash(typedData);
 
             expect(hash).toBe(
                 '0x7c82935dfbdc224a1ca8f86c07e545b04514b107f9a8d96a34dee95635a4cc11'
             );
         });
 
-        it('buildOrder() must create a limit order instance according to the given parameters', async () => {
+        it('buildLimitOrder() must create a limit order instance according to the given parameters', async () => {
             const makerAddress = '0xdddd91605c18a9999c1d47abfeed5daaaa700000';
 
-            const order = await limitOrderBuilder.buildOrder({
+            const order = await limitOrderBuilder.buildLimitOrder({
                 makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 makerAddress,
@@ -120,14 +120,14 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             const dataHash =
                 'e443e4a726c281bda2bd124d8e1d0f9b0c5381e09849f70e2cf1157fec89a9cd';
 
-            const order: LimitOrderRFQ = {
+            const order: RFQOrder = {
                 info: '42238307623767714019752007434241',
                 makerAsset: 'makerAsset',
                 takerAsset: 'takerAsset',
                 makerAssetData: 'makerAssetData',
                 takerAssetData: 'takerAssetData',
             };
-            const typedData = limitOrderBuilder.buildOrderRFQTypedData(order);
+            const typedData = limitOrderBuilder.buildRFQOrderTypedData(order);
 
             const signTypedDataSpy = spyOn(
                 providerConnector,
@@ -148,27 +148,27 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             );
         });
 
-        it('buildOrderHash() must create a hash of order with 0x prefix', () => {
-            const order: LimitOrderRFQ = {
+        it('buildLimitOrderHash() must create a hash of order with 0x prefix', () => {
+            const order: RFQOrder = {
                 info: '42238307623767714019752007434241',
                 makerAsset: 'makerAsset',
                 takerAsset: 'takerAsset',
                 makerAssetData: 'makerAssetData',
                 takerAssetData: 'takerAssetData',
             };
-            const typedData = limitOrderBuilder.buildOrderRFQTypedData(order);
+            const typedData = limitOrderBuilder.buildRFQOrderTypedData(order);
 
-            const hash = limitOrderBuilder.buildOrderHash(typedData);
+            const hash = limitOrderBuilder.buildLimitOrderHash(typedData);
 
             expect(hash).toBe(
                 '0x04aba335aed9f3a4f9d3cb06b6630c678331565509f7fd7b57f3f948033db0d0'
             );
         });
 
-        it('buildOrder() must create a RFQ limit order instance according to the given parameters', async () => {
+        it('buildLimitOrder() must create a RFQ limit order instance according to the given parameters', async () => {
             const makerAddress = '0xdddd91605c18a9999c1d47abfeed5daaaa800000';
 
-            const orderRFQ = await limitOrderBuilder.buildOrderRFQ({
+            const RFQorder = await limitOrderBuilder.buildRFQOrder({
                 id: 1,
                 expiresInTimestamp: 1623166102,
                 makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
@@ -178,7 +178,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 takerAmount: '600',
             });
 
-            expect(orderRFQ).toEqual(ORDER_RFQ_SNAPSHOT);
+            expect(RFQorder).toEqual(RFQ_ORDER_SNAPSHOT);
         });
     });
 });
