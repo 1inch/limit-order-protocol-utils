@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/1inch/limit-order-protocol-utils/compare/v0.5.4...v0.6.0) (2021-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* renamed many methods and models
+
+* refactor all docs. Use LimitOrder and RFQOrder terms ([dd58d6d](https://github.com/1inch/limit-order-protocol-utils/commit/dd58d6d8905c099ea3bd062a09e6fefa6355f36e))
+
 ### [0.5.4](https://github.com/1inch/limit-order-protocol-utils/compare/v0.5.3...v0.5.4) (2021-06-08)
 
 ### [0.5.3](https://github.com/1inch/limit-order-protocol-utils/compare/v0.5.2...v0.5.3) (2021-06-08)
