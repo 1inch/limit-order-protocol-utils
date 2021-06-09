@@ -165,7 +165,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             );
         });
 
-        it('buildLimitOrder() must create a RFQ limit order instance according to the given parameters', async () => {
+        it('buildLimitOrder() must create an RFQ limit order instance according to the given parameters', async () => {
             const makerAddress = '0xdddd91605c18a9999c1d47abfeed5daaaa800000';
 
             const RFQorder = await limitOrderBuilder.buildRFQOrder({

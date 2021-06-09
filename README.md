@@ -100,7 +100,7 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ### Docs:
 
-1. [Creating a RFQ order](./docs/create-limit-order-rfq.md)
+1. [Creating an RFQ order](./docs/create-limit-order-rfq.md)
 2. [RFQ order structure](./docs/limit-order-rfq-structure.md)
-3. [Canceling a RFQ order](./docs/cancel-limit-order-rfq.md)
-4. [Filling a RFQ order](./docs/fill-limit-order-rfq.md)
+3. [Canceling an RFQ order](./docs/cancel-limit-order-rfq.md)
+4. [Filling an RFQ order](./docs/fill-limit-order-rfq.md)

@@ -1,4 +1,4 @@
-# Creating a RFQ order:
+# Creating an RFQ order:
 
 ## Parameters:
 
