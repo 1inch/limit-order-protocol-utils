@@ -79,17 +79,17 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ### Docs
 
-1. [Quick start](./docs/quick-start.md)
-2. [Create a limit order](./docs/create-limit-order.md)
-3. [Limit order structure](./docs/limit-order-structure.md)
-4. [Limit order remaining](./docs/remaining.md)
-5. [Nonce](./docs/nonce.md)
-6. [Validate a limit order](./docs/validate-limit-order.md)
-7. [Predicate](./docs/predicate.md)
-8. [Fill a limit order](./docs/fill-limit-order.md)
-9. [Cancel a limit order](./docs/cancel-limit-order.md)
-10. [Cancel all limit orders](./docs/cancel-all-limit-orders.md)
-11. [Domain separator](./docs/domain-separator.md)
+1. [Quick start](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/quick-start.md)
+2. [Create a limit order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/create-limit-order.md)
+3. [Limit order structure](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/limit-order-structure.md)
+4. [Limit order remaining](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/remaining.md)
+5. [Nonce](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/nonce.md)
+6. [Validate a limit order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/validate-limit-order.md)
+7. [Predicate](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/predicate.md)
+8. [Fill a limit order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/fill-limit-order.md)
+9. [Cancel a limit order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/cancel-limit-order.md)
+10. [Cancel all limit orders](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/cancel-all-limit-orders.md)
+11. [Domain separator](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/domain-separator.md)
 
 ---
 
@@ -101,7 +101,7 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ### Docs:
 
-1. [Creating an RFQ order](./docs/create-limit-order-rfq.md)
-2. [RFQ order structure](./docs/limit-order-rfq-structure.md)
-3. [Canceling an RFQ order](./docs/cancel-limit-order-rfq.md)
-4. [Filling an RFQ order](./docs/fill-limit-order-rfq.md)
+1. [Creating an RFQ order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/create-limit-order-rfq.md)
+2. [RFQ order structure](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/limit-order-rfq-structure.md)
+3. [Canceling an RFQ order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/cancel-limit-order-rfq.md)
+4. [Filling an RFQ order](https://github.com/1inch/limit-order-protocol-utils/blob/master/docs/fill-limit-order-rfq.md)
