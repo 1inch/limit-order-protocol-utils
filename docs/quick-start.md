@@ -1,5 +1,7 @@
 # Quick start
 
+Example, how to create and fill a limit order:
+
 ```typescript
 import {
     LimitOrderBuilder,
