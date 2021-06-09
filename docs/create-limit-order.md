@@ -59,6 +59,6 @@ As result you will receive a structure of [limit order](./limit-order-structure.
     "takerAssetData": "0x23b872dd00000...0000",
     "predicate": "0x961d5b1e0000000000...0000",
     "permit": "0x",
-    "interaction": "0x"__
+    "interaction": "0x"
 }
 ```
