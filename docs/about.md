@@ -20,7 +20,7 @@ To do that he or she pass signed order to the `fillOrder` method on the contract
 *Note: trades buyer and seller should approve their asset to be used by 1inch limit order contract.*  
 
 Pathfinder algorithm use limit orders placed via `dApp` and REST API, as a liquidity source, and make it available to fill to any 1inch user. 
-So, 1inch limit ordres are integrated into the DeFi ecosystem from the day one.
+So, 1inch limit orders are integrated into the DeFi ecosystem from the day one.
 
 Limit orders are extremely **flexible** limit order, can be configured with:
 1) Order execution predicate.
