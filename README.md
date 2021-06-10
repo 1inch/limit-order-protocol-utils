@@ -2,9 +2,9 @@
   <img src="https://app.1inch.io/assets/images/logo.svg" width="200" alt="1inch network" />
 </p>
 
-# Utils for limit orders protocol
+# Utils library for 1inch Limit Orders Protocol
 
-This is the package of utilities for working with the `1inch limit orders protocol`
+This is the package of utilities for working with the `1inch Limit Orders Protocol`
 
 You can find general overview and docs on 1inch limit orders protocol [here](https://docs.1inch.io/limit-order-protocol-utils/).
 
