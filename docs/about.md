@@ -3,7 +3,7 @@
 </p>
 
 
-# 1inch Limit Order protocol
+# 1inch Limit Order Protocol
 
 1inch limit order protocol is a set of smart contracts, that can work on any EVM based blockchains (Ethereum, Binance Smart Chain, Polygon, etc.). Key features of the protocol is **extreme flexibility** and high **gas efficiency** that achieved by using two different order types - regular *Limit Order* and *RFQ Order*.
 
