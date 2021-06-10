@@ -2,16 +2,17 @@
 
 ## Parameters:
 
-| Field                | Type      | Description                                                                                                                                                                                    |
-| -------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                 | `Number`  | is a pass-through, integer identifier starting at 1                                                                                                                                            |
-| `expiresInTimestamp` | `Number`  | is the timestamp in seconds when the limit order will no longer be available for execution. For example: 1623166270029                                                                         |
-| `makerAssetAddress`  | `String`  | the address of the asset you want to sell (address of a token contract)                                                                                                                        |
-| `takerAssetAddress`  | `String`  | the address of the asset you want to buy (address of a token contract)                                                                                                                         |
-| `makerAddress`       | `String`  | an address of the maker (wallet address)                                                                                                                                                       |
-| `takerAddress`       | `String?` | the address of the taker for whom the limit order is being created. _This is an optional parameter_, if it is not specified, then the limit order will be available for execution for everyone |
-| `makerAmount`        | `String`  | the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units                                                                        |
-| `takerAmount`        | `String`  | the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units                                         |
+| Field                | Type      | Description                                                                                                                                                                                                    |
+| -------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                 | `Number`  | is a pass-through, integer identifier starting at 1                                                                                                                                                            |
+| `expiresInTimestamp` | `Number`  | is the timestamp in seconds when the limit order will no longer be available for execution. For example: 1623166270029                                                                                         |
+| `makerAssetAddress`  | `String`  | the address of the asset you want to sell (address of a token contract)                                                                                                                                        |
+| `takerAssetAddress`  | `String`  | the address of the asset you want to buy (address of a token contract)                                                                                                                                         |
+| `makerAddress`       | `String`  | an address of the maker (wallet address)                                                                                                                                                                       |
+| `takerAddress`       | `String?` | the address of the taker for whom the limit order is being created for maker asset. _This is an optional parameter_, if it is not specified, then the limit order will be available for execution for everyone |
+| `destReceiver`       | `String?` | the address that will receive a maker asset. _This is an optional parameter_, if it is not specified will be equal to takerAddress                                                                             |
+| `makerAmount`        | `String`  | the number of maker asset tokens that you want to sell (in token units). For example: 5 DAI = 5000000000000000000 units                                                                                        |
+| `takerAmount`        | `String`  | the number of taker asset tokens that you want to receive for selling the maker asset (in token units). For example: 5 DAI = 5000000000000000000 units                                                         |
 
 ## Creating with a typescript/javascript:
 
@@ -56,7 +57,8 @@ npx limit-order-rfq-utils --\
 --takerAssetAddress=0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3 \
 --makerAmount=1000000000000000000 \
 --takerAmount=4000000000000000000 \
---takerAddress=""
+--takerAddress="" \
+--destReceiver=""
 ```
 
 ## Creating via CLI (through prompt):

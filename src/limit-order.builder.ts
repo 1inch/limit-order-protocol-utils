@@ -114,6 +114,7 @@ export class LimitOrderBuilder {
         takerAssetAddress,
         makerAddress,
         takerAddress = ZERO_ADDRESS,
+        destReceiver = takerAddress,
         makerAmount,
         takerAmount,
     }: RFQOrderData): RFQOrder {
@@ -129,7 +130,7 @@ export class LimitOrderBuilder {
             ),
             takerAssetData: this.erc20Facade.transferFrom(
                 null,
-                takerAddress,
+                destReceiver,
                 makerAddress,
                 takerAmount
             ),
