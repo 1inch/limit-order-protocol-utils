@@ -52,7 +52,7 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 
 ## Limit order
 
-A limit order is a financial instrument with which you can put up an EPC-20 (or BEP-20) token for sale at a fixed price.  
+A limit order is a financial instrument with which you can put up an ERC-20 (or BEP-20) token for sale at a fixed price.  
 For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tokens.
 
 1inch limit orders protocol has many tools for flexible trade management:
