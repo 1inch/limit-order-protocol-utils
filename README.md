@@ -6,7 +6,7 @@
 
 This is the package of utilities for working with the `1inch Limit Orders Protocol`
 
-You can find general overview and docs on 1inch limit orders protocol [here](https://docs.1inch.io/limit-order-protocol-utils/).
+You can find general overview and docs on 1inch limit orders protocol [here](https://docs.1inch.io/limit-order-protocol/).
 
 #### Smart contract addresses
 
