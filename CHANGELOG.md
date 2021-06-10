@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/1inch/limit-order-protocol-utils/compare/v1.1.1...v1.1.2) (2021-06-10)
+
+
+### Bug Fixes
+
+* fix path to limit-order-rfq-utils script ([ae878b3](https://github.com/1inch/limit-order-protocol-utils/commit/ae878b3cab0dc027c7798e3fed70317a22cddad6))
+
+### [1.1.1](https://github.com/1inch/limit-order-protocol-utils/compare/v1.1.0...v1.1.1) (2021-06-10)
+
 ## [1.1.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.0.2...v1.1.0) (2021-06-10)
 
 
