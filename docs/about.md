@@ -10,7 +10,9 @@
 Smart Contract allows users to place limit orders and RFQ Orders, that later could be filled on-chain.
 Both type of orders is a data structure created off-chain and signed according to [EIP-712](https://eips.ethereum.org/EIPS/eip-712).
 
-### Limit Order
+## Order types
+
+#### Limit Order
 
 1inch users can place their limit orders via 1inch [dApp](https://app.1inch.io/#/1/limit-order/WETH/DAI).
 Anyone can fetch this signed orders using REST API endpoint ([Ethereum](https://limit-orders.1inch.exchange/swagger/ethereum/), [BSC](https://limit-orders.1inch.exchange/swagger/binance/), [Polygon](https://limit-orders.1inch.exchange/swagger/polygon/)) to perform trade by filling order on-chain. 
@@ -28,7 +30,7 @@ Limit orders are extremely **flexible** limit order, can be configured with:
     - Function that will allow to extract assets price from arbitrary on-chain source
 3) Callback, for to notify maker on order execution.
 
-### RFQ order
+#### RFQ order
 RFQ orders has different use case, and dedicated to market makers at first place. Typical scenario is following:
 Market maker create a bunch of RFQ Orders, and expose it via API.
 Trading or platform / algorithm ask market maker quotes, and if it match his needs, he receives signed RFQ order from market maker.
@@ -41,7 +43,8 @@ Trading or platform / algorithm ask market maker quotes, and if it match his nee
 - Partial Fill is possible (once)
 
 
-
-### Integration into 1inch Network ecosystem
-- 1inch users can place limit orders via 
-- Limit orders could be placed into 
+## More resources
+- You can use it right in [1inch dApp](https://app.1inch.io/#/1/limit-order/WETH/DAI)
+- Smart Contracts [repository](https://github.com/1inch/limit-order-protocol/)
+- Utils library [repository](https://github.com/1inch/limit-order-protocol-utils/)
+- REST API ([Ethereum](https://limit-orders.1inch.exchange/swagger/ethereum/), [BSC](https://limit-orders.1inch.exchange/swagger/binance/), [Polygon](https://limit-orders.1inch.exchange/swagger/polygon/))
