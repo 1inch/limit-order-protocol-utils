@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.0.2...v1.1.0) (2021-06-10)
+
+
+### Features
+
+* PrivateKeyProviderConnector - to create a signature of typed data for a limit order using the private key ([3bbb39c](https://github.com/1inch/limit-order-protocol-utils/commit/3bbb39cb609eb720a2f4465a1935d25371bcbb0a))
+
 ### [1.0.2](https://github.com/1inch/limit-order-protocol-utils/compare/v1.0.1...v1.0.2) (2021-06-09)
 
 ### [1.0.1](https://github.com/1inch/limit-order-protocol-utils/compare/v1.0.0...v1.0.1) (2021-06-09)
