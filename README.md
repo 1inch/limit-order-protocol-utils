@@ -64,6 +64,8 @@ For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tok
 -   fullness check
 -   validation
 
+> **Note:** You can create a limit order even if your balance is insufficient to execute the limit order right now. However you must have an allowance for the maker asset.
+
 For market making, there are **RFQ orders** that have special optimization that does not require a large amount of gas for execution.
 
 ### Limit orders in the 1inch aggregation protocol

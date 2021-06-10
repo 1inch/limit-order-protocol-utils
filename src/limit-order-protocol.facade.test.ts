@@ -6,10 +6,10 @@ import {
 } from './model/limit-order-protocol.model';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
-import {FakeProviderConnector} from '../test/fake-provider.connector';
 import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
 import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
 import {FILL_RFQ_ORDER_SNAPSHOT} from '../test/fill-order-rfq-snapshot';
+import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
@@ -20,7 +20,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
     const web3 = new Web3('https://bsc-dataseed.binance.org');
 
-    let providerConnector: FakeProviderConnector;
+    let providerConnector: PrivateKeyProviderConnector;
     let facade: LimitOrderProtocolFacade;
     let limitOrderPredicateBuilder: LimitOrderPredicateBuilder;
     let limitOrderBuilder: LimitOrderBuilder;
@@ -37,7 +37,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     }
 
     beforeEach(() => {
-        providerConnector = new FakeProviderConnector(privateKey, web3);
+        providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
 
         facade = new LimitOrderProtocolFacade(
             contractAddress,

@@ -21,7 +21,20 @@
 ```typescript
 import {LimitOrderBuilder} from '@1inch/limit-order-protocol';
 
-const limitOrderBuilder = new LimitOrderBuilder();
+const contractAddress = '0x7643b8c2457c1f36dc6e3b8f8e112fdf6da7698a';
+const walletAddress = '0xd337163ef588f2ee7cdd30a3387660019be415c9';
+const chainId = 1;
+
+const web3 = new Web3('...');
+// You can create and use a custom provider connector (for example: ethers)
+const connector = new Web3ProviderConnector(web3);
+
+const limitOrderBuilder = new LimitOrderBuilder(
+    contractAddress,
+    chainId,
+    connector
+);
+
 // ...
 
 const limitOrder = limitOrderBuilder.buildLimitOrder({
@@ -61,4 +74,33 @@ As result you will receive a structure of [limit order](./limit-order-structure.
     "permit": "0x",
     "interaction": "0x"
 }
+```
+
+## Limit order signature
+
+To fill a limit order, you need a typed data structure signature.  
+You can create a signature following the example above.
+
+But the example uses `Web3ProviderConnector` which is designed to work with a wallet.  
+If you need to get the signature on the server side, you can use the `PrivateKeyProviderConnector` and get the signature using the private key.
+
+```typescript
+const walletAddress = '0xd337163ef588f2ee7cdd30a3387660019be415c9';
+
+const privateKey =
+    'd8d1f95deb28949ea0ecc4e9a0decf89e98422c2d76ab6e5f736792a388c56c7';
+const limitOrderTypedData: EIP712TypedData = {
+    // ...
+};
+
+const web3Provider = new Web3('...');
+const privateKeyProviderConnector = new PrivateKeyProviderConnector(
+    privateKey,
+    web3Provider
+);
+
+const signature = await privateKeyProviderConnector.signTypedData(
+    walletAddress,
+    limitOrderTypedData
+);
 ```

@@ -4,7 +4,6 @@ import prompts from 'prompts';
 import yargs from 'yargs';
 import kleur from 'kleur';
 import Web3 from 'web3';
-import {FakeProviderConnector} from '../../test/fake-provider.connector';
 import {LimitOrderBuilder} from '../limit-order.builder';
 import {RFQOrder} from '../model/limit-order-protocol.model';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
@@ -24,6 +23,7 @@ import {
     OperationParams,
 } from './limit-order-rfq.model';
 import {TransactionConfig} from 'web3-core';
+import {PrivateKeyProviderConnector} from '../connector/private-key-provider.connector';
 
 (async () => {
     prompts.override(yargs.argv);
@@ -87,7 +87,7 @@ async function cancelOrderOperation() {
 function createOrder(params: CreatingParams): RFQOrder {
     const contractAddress = contractAddresses[params.chainId];
     const web3 = new Web3(rpcUrls[params.chainId]);
-    const providerConnector = new FakeProviderConnector(
+    const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
         web3
     );
@@ -121,7 +121,7 @@ async function fillOrder(
 ): Promise<string> {
     const contractAddress = contractAddresses[params.chainId];
     const web3 = new Web3(rpcUrls[params.chainId]);
-    const providerConnector = new FakeProviderConnector(
+    const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
         web3
     );
@@ -172,7 +172,7 @@ async function cancelOrder(params: CancelingParams): Promise<string> {
     const web3 = new Web3(
         new Web3.providers.HttpProvider(rpcUrls[params.chainId])
     );
-    const providerConnector = new FakeProviderConnector(
+    const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
         web3
     );

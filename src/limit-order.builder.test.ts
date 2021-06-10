@@ -1,8 +1,8 @@
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
-import {FakeProviderConnector} from '../test/fake-provider.connector';
 import {RFQ_ORDER_SNAPSHOT, ORDER_SNAPSHOT} from '../test/order-snapshot';
+import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const contractAddress = '0xaaaaa';
@@ -11,7 +11,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
     const web3 = new Web3('https://bsc-dataseed.binance.org');
     const privateKey =
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
-    const providerConnector = new FakeProviderConnector(privateKey, web3);
+    const providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
 
     let limitOrderBuilder: LimitOrderBuilder;
 
