@@ -3,12 +3,15 @@
 </p>
 
 # Utils for limit orders protocol
-
 This is the package of utilities for working with the `1inch limit orders protocol`
 
-[LimitOrderBuilder](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order.builder.ts) - to create a limit order  
-[LimitOrderPredicateBuilder](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-predicate.builder.ts) - to create a predicate for limit order  
-[LimitOrderProtocolFacade](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-protocol.facade.ts) - to interact with the protocol on the blockchain
+You can find general overview and docs on 1inch limit orders protocol [here](https://docs.1inch.io/limit-order-protocol-utils/).
+
+#### Smart contract addresses
+-   Ethereum mainnet: `0x3ef51736315f52d568d6d2cf289419b9cfffe782`
+-   BSC mainnet: `0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb`
+-   Polygon mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
+-   Smart contracts source code repository is available [here](https://github.com/1inch/limit-order-protocol)
 
 ---
 
@@ -32,12 +35,6 @@ npm install @1inch/limit-order-protocol
 yarn add @1inch/limit-order-protocol
 ```
 
-## Protocol addresses
-
--   Ethereum mainnet: `0x3ef51736315f52d568d6d2cf289419b9cfffe782`
--   BSC mainnet: `0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb`
--   Polygon mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
-
 ---
 
 ## Contributing
@@ -49,20 +46,31 @@ See [CONTRIBUTING.md](https://github.com/1inch/limit-order-protocol-utils/blob/m
 See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/master/CHANGELOG.md)
 
 ---
+##About:
 
-## Limit order
+Contract allows users to place limit orders, that later could be filled on-chain. Limit order itself is a data structure created off-chain and signed according to EIP-712.
 
-A limit order is a financial instrument with which you can put up an ERC-20 (or BEP-20) token for sale at a fixed price.  
+Most probably you would need use following classes:
+
+[LimitOrderBuilder](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order.builder.ts) - to create a limit order  
+[LimitOrderPredicateBuilder](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-predicate.builder.ts) - to create a predicate for limit order  
+[LimitOrderProtocolFacade](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-protocol.facade.ts) - to interact with the protocol on the blockchain
+
+Ket features of the protocol is extreme flexibility and high gas efficiency that achieved by using following order types.
+
+## 1. Limit order
+
+A limit order is a financial instrument with which you can put up an ERC-20 token for sale at a fixed price.  
 For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tokens.
 
 1inch limit orders protocol has many tools for flexible trade management:
 
--   partial fill
--   predicates
--   single cancellation
--   bunch cancellation
--   fullness check
--   validation
+-   Partial fill
+-   Predicates
+-   Single cancellation
+-   Bunch cancellation
+-   Fullness check
+-   Validation
 
 > **Note:** You can create a limit order even if your balance is insufficient to execute the limit order right now. However you must have an allowance for the maker asset.
 
@@ -73,11 +81,11 @@ For market making, there are **RFQ orders** that have special optimization that 
 [**1inch aggregation protocol**](https://1inch.io/aggregation-protocol/) - the protocol sources liquidity from various exchanges and is capable of splitting a single trade transaction across multiple DEXes to ensure the best rates.  
 You can send your limit orders to the 1inch database and then your order will participate in the 1inch aggregation protocol.
 
-### API swagger:
+### REST API (swagger):
 
--   [Ethereum](https://limit-orders.1inch.exchange/swagger/ethereum/)
--   [Binance Smart Chain](https://limit-orders.1inch.exchange/swagger/binance/)
--   [Polygon](https://limit-orders.1inch.exchange/swagger/polygon/)
+-   [Ethereum Endpoint](https://limit-orders.1inch.exchange/swagger/ethereum/)
+-   [Binance Smart Chain Endpoint](https://limit-orders.1inch.exchange/swagger/binance/)
+-   [Polygon Endpoint](https://limit-orders.1inch.exchange/swagger/polygon/)
 
 ### Docs
 
@@ -95,7 +103,7 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ---
 
-## RFQ order
+## 2. RFQ order
 
 **A request for quotation (RFQ)** is a business process in which a customer requests a quote from a supplier (market maker) for the purchase of some tokens.
 
