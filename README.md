@@ -14,9 +14,9 @@ This is the package of utilities for working with the `1inch limit orders protoc
 
 ## Test coverage
 
-| Statements                                                                    | Branches                                                                    | Functions                                                                  | Lines                                                                    |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| ![Statements](https://img.shields.io/badge/Coverage-97.64%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-92.86%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-97.64%25-brightgreen.svg) |
+| Statements                                                                    | Branches                                                                    | Functions                                                                    | Lines                                                                    |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![Statements](https://img.shields.io/badge/Coverage-96.85%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-93.15%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-96.08%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-96.85%25-brightgreen.svg) |
 
 ## Installation
 
