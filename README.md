@@ -59,7 +59,7 @@ Most probably you would need use following classes:
 [LimitOrderPredicateBuilder](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-predicate.builder.ts) - to create a predicate for limit order  
 [LimitOrderProtocolFacade](https://github.com/1inch/limit-order-protocol-utils/blob/master/src/limit-order-protocol.facade.ts) - to interact with the protocol on the blockchain
 
-Ket features of the protocol is extreme flexibility and high gas efficiency that achieved by using following order types.
+Key features of the protocol is extreme flexibility and high gas efficiency that achieved by using following order types.
 
 ## 1. Limit order
 
