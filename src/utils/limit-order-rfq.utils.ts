@@ -25,20 +25,34 @@ import {
 import {TransactionConfig} from 'web3-core';
 import {PrivateKeyProviderConnector} from '../connector/private-key-provider.connector';
 
+const allSchemas = [
+    cancelOrderSchema,
+    createOrderSchema,
+    fillOrderSchema,
+    operationSchema,
+];
+
 (async () => {
+    const argvKeys = Object.keys(yargs.argv);
+    const isRunningWithArgv = allSchemas.some((schema) => {
+        return schema
+            .map((i) => i.name as string)
+            .every((param) => argvKeys.includes(param));
+    });
+
     prompts.override(yargs.argv);
 
     const operationResult = (await prompts(operationSchema)) as OperationParams;
 
     switch (operationResult.operation) {
         case 'create':
-            await createOrderOperation();
+            await createOrderOperation(isRunningWithArgv);
             break;
         case 'fill':
-            await fillOrderOperation();
+            await fillOrderOperation(isRunningWithArgv);
             break;
         case 'cancel':
-            await cancelOrderOperation();
+            await cancelOrderOperation(isRunningWithArgv);
             break;
         default:
             console.log('Unknown operation: ', operationResult.operation);
@@ -46,36 +60,49 @@ import {PrivateKeyProviderConnector} from '../connector/private-key-provider.con
     }
 })();
 
-async function createOrderOperation() {
+async function createOrderOperation(isRunningWithArgv: boolean) {
     const creatingParams = (await prompts(createOrderSchema)) as CreatingParams;
 
     const newOrder = createOrder(creatingParams);
+
+    if (isRunningWithArgv) {
+        console.log(JSON.stringify(newOrder));
+        return;
+    }
 
     console.log(kleur.green().bold('New limit order RFQ: '));
     console.log(kleur.white().underline(JSON.stringify(newOrder, null, 4)));
 }
 
-async function fillOrderOperation() {
+async function fillOrderOperation(isRunningWithArgv: boolean) {
     const fillingParams = (await prompts(fillOrderSchema)) as FillingParams;
     const orderForFill: RFQOrder = JSON.parse(fillingParams.order);
 
     console.log(kleur.green().bold('Order for filling: '));
     console.log(kleur.white().underline(JSON.stringify(orderForFill, null, 4)));
 
-    const callDataForFill = await fillOrder(fillingParams, orderForFill);
+    const txHash = await fillOrder(fillingParams, orderForFill);
+
+    if (isRunningWithArgv) {
+        console.log(txHash);
+        return;
+    }
 
     console.log(kleur.green().bold('Order filling transaction: '));
-    printTransactionLink(
-        explorerTxLink(fillingParams.chainId, callDataForFill)
-    );
+    printTransactionLink(explorerTxLink(fillingParams.chainId, txHash));
 }
 
-async function cancelOrderOperation() {
+async function cancelOrderOperation(isRunningWithArgv: boolean) {
     const cancelingParams = (await prompts(
         cancelOrderSchema
     )) as CancelingParams;
 
     const cancelingTxHash = await cancelOrder(cancelingParams);
+
+    if (isRunningWithArgv) {
+        console.log(cancelingTxHash);
+        return;
+    }
 
     console.log(kleur.green().bold('Order canceling transaction: '));
     printTransactionLink(

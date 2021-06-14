@@ -12,8 +12,10 @@ But, if it becomes necessary to cancel the created RFQ order, then this can be d
 ## Creating with a typescript/javascript:
 
 ```typescript
+import Web3 from 'web3';
 import {
     LimitOrderProtocolFacade,
+    Web3ProviderConnector,
     RFQOrder
 } from '@1inch/limit-order-protocol';
 
@@ -24,7 +26,7 @@ const web3 = new Web3('...');
 // You can create and use a custom provider connector (for example: ethers)
 const connector = new Web3ProviderConnector(web3);
 
-const limitOrderProtocolFacade = new limitOrderProtocolFacade(
+const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     contractAddress,
     connector
 );

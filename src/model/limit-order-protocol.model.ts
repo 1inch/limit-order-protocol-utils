@@ -37,7 +37,6 @@ export interface RFQOrderData {
     takerAmount: string;
     makerAddress: string;
     takerAddress?: string; // Optional, by default = ZERO_ADDRESS
-    destReceiver?: string; // Optional, by default = ZERO_ADDRESS
 }
 
 export interface LimitOrder extends EIP712Object {

@@ -19,10 +19,12 @@ A limit order can be filled in whole or in part.
 ## Filling with a typescript/javascript:
 
 ```typescript
+import Web3 from 'web3';
 import {
     LimitOrderBuilder,
     LimitOrderProtocolFacade,
-    RFQOrder
+    RFQOrder,
+    Web3ProviderConnector
 } from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x7643b8c2457c1f36dc6e3b8f8e112fdf6da7698a';
@@ -38,7 +40,7 @@ const limitOrderBuilder = new LimitOrderBuilder(
     connector
 );
 
-const limitOrderProtocolFacade = new limitOrderProtocolFacade(
+const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
     contractAddress,
     connector
 );
@@ -53,7 +55,7 @@ const signature = await limitOrderBuilder.buildOrderSignature(
 const makerAmount = '1000000000000000000';
 const takerAmount = '0';
 
-const callData = facade.fillRFQOrder(
+const callData = limitOrderProtocolFacade.fillRFQOrder(
     order,
     signature,
     makerAmount,

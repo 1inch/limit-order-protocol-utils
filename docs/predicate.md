@@ -41,23 +41,37 @@ The predicate checks that `timestamp` is greater than the current time
 ## Example:
 
 ```typescript
+import Web3 from 'web3';
 import {
     LimitOrderProtocolFacade,
     LimitOrderPredicateBuilder,
-    LimitOrderPredicateCallData
+    LimitOrderPredicateCallData,
+    Web3ProviderConnector,
 } from '@1inch/limit-order-protocol';
 
 const makerAddress = '0x5fa31604fc5dcebfcac2481f9fa59d174126e5e6';
-const tokenAddress = '0xsss...';
-const balanceOfCallData = '0xccc...';
+const tokenAddress = '0xcc83bc1050244c98ac562f9faff408f069a137d7';
+const balanceOfCallData = '0x000...000';
+const contractAddress = '0x5fa31604fc5dcebfcac2481f9fa59d174126e5e6';
 
-const limitOrderProtocolFacade = new LimitOrderProtocolFacade(...);
-
+const connector = new Web3ProviderConnector(new Web3('...'));
+const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
+    contractAddress,
+    connector
+);
 const limitOrderPredicateBuilder = new LimitOrderPredicateBuilder(
     limitOrderProtocolFacade
 );
 
-const {or, and, timestampBelow, nonceEquals, gt, lt, eq} = predicateBuilder;
+const {
+    or,
+    and,
+    timestampBelow,
+    nonceEquals,
+    gt,
+    lt,
+    eq,
+} = limitOrderPredicateBuilder;
 
 const simplePredicate: LimitOrderPredicateCallData = and(
     timestampBelow(Math.round(Date.now() / 1000) + 60_000), // a limit order is valid only for 1 minute
@@ -70,10 +84,7 @@ const complexPredicate: LimitOrderPredicateCallData = or(
         nonceEquals(makerAddress, 4),
         gt('10', tokenAddress, balanceOfCallData)
     ),
-    or(
-        timestampBelow(5444440000),
-        lt('20', tokenAddress, balanceOfCallData)
-    ),
+    or(timestampBelow(5444440000), lt('20', tokenAddress, balanceOfCallData)),
     eq('30', tokenAddress, balanceOfCallData)
 );
 ```

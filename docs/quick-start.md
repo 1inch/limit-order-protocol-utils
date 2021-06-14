@@ -3,9 +3,11 @@
 Example, how to create and fill a limit order:
 
 ```typescript
+import Web3 from 'web3';
 import {
     LimitOrderBuilder,
     LimitOrderProtocolFacade,
+    Web3ProviderConnector,
 } from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x5fa31604fc5dcebfcac2481f9fa59d174126e5e6';

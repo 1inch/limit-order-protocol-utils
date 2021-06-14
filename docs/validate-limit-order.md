@@ -12,13 +12,18 @@ For example, you can check that a limit order is valid by predicates.
 ## Example:
 
 ```typescript
-import {LimitOrderProtocolFacade, LimitOrder} from '@1inch/limit-order-protocol';
+import Web3 from 'web3';
+import {
+    LimitOrderProtocolFacade,
+    LimitOrder,
+    Web3ProviderConnector
+} from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x5fa31604fc5dcebfcac2481f9fa59d174126e5e6';
 const order: LimitOrder = {...};
 
 const connector = new Web3ProviderConnector(new Web3('...'));
-const limitOrderProtocolFacade = new limitOrderProtocolFacade(contractAddress, connector);
+const limitOrderProtocolFacade = new LimitOrderProtocolFacade(contractAddress, connector);
 
 const addresses = [contractAddress];
 const callDatas = [order.predicate];

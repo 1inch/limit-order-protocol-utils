@@ -19,7 +19,11 @@
 ## Example:
 
 ```typescript
-import {LimitOrderBuilder} from '@1inch/limit-order-protocol';
+import Web3 from 'web3';
+import {
+    LimitOrderBuilder,
+    Web3ProviderConnector,
+} from '@1inch/limit-order-protocol';
 
 const contractAddress = '0x7643b8c2457c1f36dc6e3b8f8e112fdf6da7698a';
 const walletAddress = '0xd337163ef588f2ee7cdd30a3387660019be415c9';

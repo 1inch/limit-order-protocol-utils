@@ -49,7 +49,7 @@ See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/mast
 
 ---
 
-##About:
+## About
 
 Contract allows users to place limit orders, that later could be filled on-chain. Limit order itself is a data structure created off-chain and signed according to EIP-712.
 
@@ -61,7 +61,7 @@ Most probably you would need use following classes:
 
 Key features of the protocol is extreme flexibility and high gas efficiency that achieved by using following order types.
 
-## 1. Limit order
+## I. Limit order
 
 A limit order is a financial instrument with which you can put up an ERC-20 token for sale at a fixed price.  
 For example, you can put up for sale 2 WBTC tokens at the price of 82415 DAI tokens.
@@ -106,7 +106,7 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ---
 
-## 2. RFQ order
+## II. RFQ order
 
 **A request for quotation (RFQ)** is a business process in which a customer requests a quote from a supplier (market maker) for the purchase of some tokens.
 
