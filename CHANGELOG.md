@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.2.1...v1.3.0) (2021-06-14)
+
+
+### Features
+
+* **limit-order-rfq-utils:** plain output when proccess is running with argv ([6adfc41](https://github.com/1inch/limit-order-protocol-utils/commit/6adfc412faea42ce37539023440404c39f5136c4))
+
 ### [1.2.1](https://github.com/1inch/limit-order-protocol-utils/compare/v1.2.0...v1.2.1) (2021-06-10)
 
 ## [1.2.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.1.2...v1.2.0) (2021-06-10)
