@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.3.0...v1.4.0) (2021-08-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* change web3 libs version to 1.5.1 (because 2.0.0 is deprecated)
+
+* change web3 libs version to 1.5.1 (because 2.0.0 is deprecated) ([2e24ee3](https://github.com/1inch/limit-order-protocol-utils/commit/2e24ee308dae235f0eafb00266d50abdd970b1a0))
+
 ## [1.3.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.2.1...v1.3.0) (2021-06-14)
 
 
