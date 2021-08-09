@@ -5,7 +5,7 @@ import {RFQ_ORDER_SNAPSHOT, ORDER_SNAPSHOT} from '../test/order-snapshot';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
-    const contractAddress = '0xaaaaa';
+    const contractAddress = '0x4523f4a1ca37736837b423d63ea78fc13862eaf8';
     const chainId = 56;
 
     const web3 = new Web3('https://bsc-dataseed.binance.org');
@@ -27,9 +27,8 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         it('buildOrderSignature() must call the provider signTypedData method', async () => {
             const walletAddress = '0x1548dAdf412Eaaf3c80bEad35CDa83a4bf7dF6ce';
             const expectedSignature =
-                '0x526dfdcecc99e2f9cc823042cd177' +
-                'd22c1c86923a4c577dda58c0a7f18365a884325b07acc' +
-                'd1b5cae4272fbd591418026508243c18774a468d968f1fe09341991b';
+                '0x80e5d516efcee3ffba3c0ad3e90091b749fc2930862399bfcd' +
+                '9ef7cd5c8f07e87505691727d4d17faba35f739bf2f2f8a606ac3ba640b3b2a0809953a1f9aaa81c';
             const dataHash =
                 'c2664ebe815297a7ec0dce88b9879bd5b0ca47345a188a80f1a2eef1b59deb26';
 
@@ -84,7 +83,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             const hash = limitOrderBuilder.buildLimitOrderHash(typedData);
 
             expect(hash).toBe(
-                '0x7c82935dfbdc224a1ca8f86c07e545b04514b107f9a8d96a34dee95635a4cc11'
+                '0xff7b0a08dd824a005baaae0034eb69fff0679a2f765110f240f9ecdd86484375'
             );
         });
 
@@ -114,9 +113,8 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         it('buildOrderSignature() must call the provider signTypedData method', async () => {
             const walletAddress = '0x1548dAdf412Eaaf3c80bEad35CDa83a4bf7dF6ce';
             const expectedSignature =
-                '0xd5299db23008a564d628debcc7af6e0809b309a6441b97b86' +
-                '6ddd626fe7bab572d23a18a7e912942d0f9405d96af99' +
-                '956d3500072686884d6a1b1d185be80ab61c';
+                '0xeeab164a9b5cb781027ede9df911a10ff658e6147157d65d1676f54590' +
+                'd17ed2752bd386e2b665c15ab5627f0279fd0218d30112512894813821354eccf09e181b';
             const dataHash =
                 'e443e4a726c281bda2bd124d8e1d0f9b0c5381e09849f70e2cf1157fec89a9cd';
 
@@ -161,7 +159,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             const hash = limitOrderBuilder.buildLimitOrderHash(typedData);
 
             expect(hash).toBe(
-                '0x04aba335aed9f3a4f9d3cb06b6630c678331565509f7fd7b57f3f948033db0d0'
+                '0x298379087a16c7ed8c536f5aadeff5385509da6082d2fef0f9a338d1af207aa3'
             );
         });
 

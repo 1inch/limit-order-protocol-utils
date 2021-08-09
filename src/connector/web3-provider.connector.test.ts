@@ -1,7 +1,6 @@
 import {Web3ProviderConnector} from './web3-provider.connector';
 import Web3 from 'web3';
-import {deepEqual, instance, mock, verify, when} from 'ts-mockito';
-import {Web3EthereumProvider} from 'web3-providers';
+import {anything, instance, mock, verify, when} from 'ts-mockito';
 import {
     EIP712_DOMAIN,
     LIMIT_ORDER_PROTOCOL_ABI,
@@ -40,39 +39,18 @@ describe('Web3ProviderConnector', () => {
     it('signTypedData() must call eth_signTypedData_v4 rpc method', async () => {
         const walletAddress = '0xasd';
 
-        const currentProvider = mock<Web3EthereumProvider>();
+        const extendedWeb3 = {
+            signTypedDataV4: jest.fn(),
+        };
 
-        when(web3Provider.currentProvider).thenReturn(
-            instance(currentProvider)
-        );
+        when(web3Provider.extend(anything())).thenReturn(extendedWeb3);
 
         await web3ProviderConnector.signTypedData(walletAddress, typedData, '');
 
-        const params = [walletAddress, JSON.stringify(typedData)];
-
-        verify(
-            currentProvider.send('eth_signTypedData_v4', deepEqual(params))
-        ).once();
-    });
-
-    it('signTypedData() must throw error when there is no currentProvider', async () => {
-        const walletAddress = '0xasd';
-
-        when(web3Provider.currentProvider).thenReturn();
-
-        let error = null;
-
-        try {
-            await web3ProviderConnector.signTypedData(
-                walletAddress,
-                typedData,
-                ''
-            );
-        } catch (e) {
-            error = e;
-        }
-
-        expect(error?.message).toBe('Web3 currentProvider is null');
+        expect(extendedWeb3.signTypedDataV4).toHaveBeenCalledWith(
+            walletAddress,
+            JSON.stringify(typedData)
+        );
     });
 
     it('contractEncodeABI() changed address from null to undefined for contract instance', async () => {

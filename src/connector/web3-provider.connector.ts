@@ -4,6 +4,10 @@ import {EIP712TypedData} from '../model/eip712.model';
 import {AbiItem} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
 
+interface ExtendedWeb3 extends Web3 {
+    signTypedDataV4(walletAddress: string, typedData: string): Promise<string>;
+}
+
 export class Web3ProviderConnector implements ProviderConnector {
     constructor(protected readonly web3Provider: Web3) {}
 
@@ -27,14 +31,20 @@ export class Web3ProviderConnector implements ProviderConnector {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         _typedDataHash: string
     ): Promise<string> {
-        if (!this.web3Provider.currentProvider) {
-            throw new Error('Web3 currentProvider is null');
-        }
+        const extendedWeb3: ExtendedWeb3 = this.web3Provider.extend({
+            methods: [
+                {
+                    name: 'signTypedDataV4',
+                    call: 'eth_signTypedData_v4',
+                    params: 2,
+                },
+            ],
+        });
 
-        return this.web3Provider.currentProvider.send('eth_signTypedData_v4', [
+        return extendedWeb3.signTypedDataV4(
             walletAddress,
-            JSON.stringify(typedData),
-        ]);
+            JSON.stringify(typedData)
+        );
     }
 
     ethCall(contractAddress: string, callData: string): Promise<string> {
