@@ -1,8 +1,8 @@
-# Filling a limit order:
+# Filling a RFQ order:
 
-A limit order can be filled in whole or in part.
+A RFQ order can be filled in whole or in part.
 
-> Important! You can fill in a limit order only once!
+> Important! You can fill in a RFQ order only once!
 
 ## Parameters:
 
