@@ -2,8 +2,8 @@
     "name": "@1inch/limit-order-protocol",
     "version": "1.4.0",
     "description": "Utility for limit order protocol",
-    "main": "src/index.js",
-    "types": "src/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "repository": {
         "type": "git",
         "url": "ssh://git@github.com:1inch/limit-order-protocol-utils.git",
