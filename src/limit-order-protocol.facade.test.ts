@@ -6,13 +6,11 @@ import {
 } from './model/limit-order-protocol.model';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
-import {FILL_ORDER_SNAPSHOT} from '../test/fill-order-sanpshot';
-import {CANCEL_ORDER_SNAPSHOT} from '../test/cancel-order-snapshot';
-import {FILL_RFQ_ORDER_SNAPSHOT} from '../test/fill-order-rfq-snapshot';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
-    const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
+    // TODO: fix test regarding to final contract
+    const contractAddress = '0xab6391d02c7410302f5d1db1c22b0c06714c041a';
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
     const chainId = 56;
 
@@ -82,7 +80,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 thresholdAmount
             );
 
-            expect(callData).toBe(FILL_ORDER_SNAPSHOT);
+            expect(callData).toMatchSnapshot();
         });
     });
 
@@ -114,7 +112,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAmount
             );
 
-            expect(callData).toBe(FILL_RFQ_ORDER_SNAPSHOT);
+            expect(callData).toMatchSnapshot();
         });
     });
 
@@ -130,7 +128,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             const callData = facade.cancelLimitOrder(order);
 
-            expect(callData).toBe(CANCEL_ORDER_SNAPSHOT);
+            expect(callData).toMatchSnapshot();
         });
     });
 
@@ -161,7 +159,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 '0xbbcf91605c18a9859c1d47abfeed5d2cca7097cf'
             );
 
-            expect(nonce).toBeGreaterThan(1);
+            expect(nonce).toBe(0);
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {

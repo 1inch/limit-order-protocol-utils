@@ -26,6 +26,11 @@ describe('PrivateKeyProviderConnector', () => {
             '0x296637bf0000000000000000000000000000000000000000000000',
         makerAsset: '0x111111111117dc0aa78b770fa6a738034120c302',
         takerAsset: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+        maker: '0xa07c1d51497fb6e66aa2329cecb86fca0a957fdb',
+        receiver: '0x0000000000000000000000000000000000000000',
+        allowedSender: '0x0000000000000000000000000000000000000000',
+        makingAmount: '1000000000000000000000',
+        takingAmount: '90000000000000000000',
         makerAssetData:
             '0x23b872dd000000000000000000000000fb3c7eb936caa12b5a884d612393969a557d43070000',
         takerAssetData:
@@ -59,17 +64,13 @@ describe('PrivateKeyProviderConnector', () => {
 
     it('signTypedData() must sign typed data by private key', async () => {
         const walletAddress = '0xa07c1d51497fb6e66aa2329cecb86fca0a957fdb';
-        const expectedSignature =
-            '0x00efa043cc010fa4fb9850dc860ee44a9ffbe' +
-            '5d719f5982137cb40d46bdb01fe2f38b4149d4463a7eb2197a47794691f46' +
-            'a373dd2db3a38b5c550a44f30fee2f1b';
 
         const signature = await privateKeyProviderConnector.signTypedData(
             walletAddress,
             typedData
         );
 
-        expect(signature).toBe(expectedSignature);
+        expect(signature).toMatchSnapshot();
     });
 
     it('contractEncodeABI() changed address from null to undefined for contract instance', async () => {

@@ -1,12 +1,12 @@
 import {
     EIP712_DOMAIN,
     ORDER_STRUCTURE,
-    PROTOCOL_VERSION,
     ZERO_ADDRESS,
-    PROTOCOL_NAME,
     LIMIT_ORDER_PROTOCOL_ABI,
     ZX,
     RFQ_ORDER_STRUCTURE,
+    PROTOCOL_NAME,
+    PROTOCOL_VERSION,
 } from './limit-order-protocol.const';
 import {
     ChainId,
@@ -29,11 +29,16 @@ export function generateOrderSalt(): string {
 
 export function generateRFQOrderInfo(
     id: number,
-    expiresInTimestamp: number
+    expiresInTimestamp: number,
+    wrapEth: boolean
 ): string {
-    return ((BigInt(expiresInTimestamp) << BigInt(64)) | BigInt(id)).toString(
-        10
-    );
+    const info = (BigInt(expiresInTimestamp) << BigInt(64)) | BigInt(id);
+
+    if (wrapEth) {
+        return (info | (BigInt(1) << BigInt(255))).toString(10);
+    }
+
+    return info.toString(10);
 }
 
 export class LimitOrderBuilder {
@@ -72,7 +77,10 @@ export class LimitOrderBuilder {
         return ZX + TypedDataUtils.sign(message).toString('hex');
     }
 
-    buildLimitOrderTypedData(order: LimitOrder): EIP712TypedData {
+    buildLimitOrderTypedData(
+        order: LimitOrder,
+        domainName = PROTOCOL_NAME
+    ): EIP712TypedData {
         return {
             primaryType: 'Order',
             types: {
@@ -80,7 +88,7 @@ export class LimitOrderBuilder {
                 Order: ORDER_STRUCTURE,
             },
             domain: {
-                name: PROTOCOL_NAME,
+                name: domainName,
                 version: PROTOCOL_VERSION,
                 chainId: this.chainId,
                 verifyingContract: this.contractAddress,
@@ -89,7 +97,10 @@ export class LimitOrderBuilder {
         };
     }
 
-    buildRFQOrderTypedData(order: RFQOrder): EIP712TypedData {
+    buildRFQOrderTypedData(
+        order: RFQOrder,
+        domainName = PROTOCOL_NAME
+    ): EIP712TypedData {
         return {
             primaryType: 'OrderRFQ',
             types: {
@@ -97,7 +108,7 @@ export class LimitOrderBuilder {
                 OrderRFQ: RFQ_ORDER_STRUCTURE,
             },
             domain: {
-                name: PROTOCOL_NAME,
+                name: domainName,
                 version: PROTOCOL_VERSION,
                 chainId: this.chainId,
                 verifyingContract: this.contractAddress,
@@ -109,6 +120,7 @@ export class LimitOrderBuilder {
     /* eslint-disable max-lines-per-function */
     buildRFQOrder({
         id,
+        wrapEth = false,
         expiresInTimestamp,
         makerAssetAddress,
         takerAssetAddress,
@@ -118,21 +130,13 @@ export class LimitOrderBuilder {
         takerAmount,
     }: RFQOrderData): RFQOrder {
         return {
-            info: generateRFQOrderInfo(id, expiresInTimestamp),
+            info: generateRFQOrderInfo(id, expiresInTimestamp, wrapEth),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
-            makerAssetData: this.erc20Facade.transferFrom(
-                null,
-                makerAddress,
-                takerAddress,
-                makerAmount
-            ),
-            takerAssetData: this.erc20Facade.transferFrom(
-                null,
-                takerAddress,
-                makerAddress,
-                takerAmount
-            ),
+            maker: makerAddress,
+            allowedSender: takerAddress,
+            makingAmount: makerAmount,
+            takingAmount: takerAmount,
         };
     }
     /* eslint-enable max-lines-per-function */
@@ -142,6 +146,7 @@ export class LimitOrderBuilder {
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
+        receiver = ZERO_ADDRESS,
         takerAddress = ZERO_ADDRESS,
         makerAmount,
         takerAmount,
@@ -153,6 +158,11 @@ export class LimitOrderBuilder {
             salt: this.generateSalt(),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
+            maker: makerAddress,
+            receiver,
+            allowedSender: takerAddress,
+            makingAmount: makerAmount,
+            takingAmount: takerAmount,
             makerAssetData: this.erc20Facade.transferFrom(
                 null,
                 makerAddress,

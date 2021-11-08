@@ -6,10 +6,6 @@ import {
     LimitOrderPredicateCallData,
 } from './limit-order-predicate.builder';
 import {Erc20Facade} from './erc20.facade';
-import {
-    COMPLEX_PREDICATE_SNAPSHOT,
-    SIMPLE_PREDICATE_SNAPSHOT,
-} from '../test/predicate-snapshots';
 
 describe('PredicateBuilder - for build limit order predicate', () => {
     const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
@@ -101,7 +97,7 @@ describe('PredicateBuilder - for build limit order predicate', () => {
             predicate.includes(value)
         );
 
-        expect(predicate).toBe(SIMPLE_PREDICATE_SNAPSHOT.join(''));
+        expect(predicate).toMatchSnapshot();
         expect(allValuesCheck).toBe(true);
     });
 
@@ -112,7 +108,7 @@ describe('PredicateBuilder - for build limit order predicate', () => {
             predicate.includes(value)
         );
 
-        expect(predicate).toBe(COMPLEX_PREDICATE_SNAPSHOT.join(''));
+        expect(predicate).toMatchSnapshot();
         expect(allValuesCheck).toBe(true);
     });
 

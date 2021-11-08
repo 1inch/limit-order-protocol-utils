@@ -16,6 +16,7 @@ export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
     makerAddress: string;
+    receiver?: string; // Optional, by default = ZERO_ADDRESS
     takerAddress?: string; // Optional, by default = ZERO_ADDRESS
     makerAssetAddress: string;
     takerAssetAddress: string;
@@ -29,6 +30,7 @@ export interface LimitOrderData {
 export interface RFQOrderData {
     // Index number of RFQ limit order. Example: 1
     id: number;
+    wrapEth?: boolean;
     // Timestamp when the RFQ limit order will expire (seconds). Example: 1623166102
     expiresInTimestamp: number;
     makerAssetAddress: string;
@@ -43,6 +45,11 @@ export interface LimitOrder extends EIP712Object {
     salt: string;
     makerAsset: string;
     takerAsset: string;
+    maker: string;
+    receiver: string;
+    allowedSender: string;
+    makingAmount: string;
+    takingAmount: string;
     makerAssetData: string;
     takerAssetData: string;
     getMakerAmount: string;
@@ -56,8 +63,10 @@ export interface RFQOrder extends EIP712Object {
     info: RFQOrderInfo;
     makerAsset: string;
     takerAsset: string;
-    makerAssetData: string;
-    takerAssetData: string;
+    maker: string;
+    allowedSender: string;
+    makingAmount: string;
+    takingAmount: string;
 }
 
 export enum LimitOrderProtocolMethods {

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrder() must create a limit order instance according to the given parameters 1`] = `
+Object {
+  "allowedSender": "0x0000000000000000000000000000000000000000",
+  "getMakerAmount": "0xf4a215c300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000064",
+  "getTakerAmount": "0x296637bf00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000064",
+  "interaction": "0x333",
+  "maker": "0xdddd91605c18a9999c1d47abfeed5daaaa700000",
+  "makerAsset": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+  "makerAssetData": "0x23b872dd000000000000000000000000dddd91605c18a9999c1d47abfeed5daaaa70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003",
+  "makingAmount": "3",
+  "permit": "0x222",
+  "predicate": "0x111",
+  "receiver": "0x0000000000000000000000000000000000000000",
+  "salt": "1",
+  "takerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",
+  "takerAssetData": "0x23b872dd0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dddd91605c18a9999c1d47abfeed5daaaa7000000000000000000000000000000000000000000000000000000000000000000064",
+  "takingAmount": "100",
+}
+`;
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x5573e78a239adef418fb0bc3c4555c3542a92eec1faf4f0280f9bcd1f4ce5014"`;
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x5f7a7bceab71117da38ddaf15b3161d4ff577eee7fee2b1f2e4f10133303984a5de40e3fa983dee2ce1eaa5b86068f5bb6475224b600d27bf3563c837f5545c01c"`;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrder() must create an RFQ limit order instance according to the given parameters 1`] = `
+Object {
+  "allowedSender": "0x0000000000000000000000000000000000000000",
+  "info": "29942129672714733576710520833",
+  "maker": "0xdddd91605c18a9999c1d47abfeed5daaaa800000",
+  "makerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",
+  "makingAmount": "5",
+  "takerAsset": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+  "takingAmount": "600",
+}
+`;

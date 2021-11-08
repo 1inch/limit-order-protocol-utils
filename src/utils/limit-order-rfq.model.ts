@@ -7,7 +7,7 @@ export interface CreatingParams {
     takerAssetAddress: string;
     makerAmount: string;
     takerAmount: string;
-    takerAddress: string;
+    takerAddress?: string;
 }
 
 export interface FillingParams {
@@ -17,6 +17,7 @@ export interface FillingParams {
     order: string;
     makerAmount: string;
     takerAmount: string;
+    domainName?: string;
 }
 
 export interface CancelingParams {

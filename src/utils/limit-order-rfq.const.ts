@@ -122,7 +122,7 @@ export const rpcUrls: {[key: number]: string} = {
 
 export const contractAddresses: {[key: number]: string} = {
     [ChainId.etherumMainnet]: '0x3ef51736315f52d568d6d2cf289419b9cfffe782',
-    [ChainId.binanceMainnet]: '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb',
+    [ChainId.binanceMainnet]: '0xab6391d02c7410302f5d1db1c22b0c06714c041a',
     [ChainId.polygonMainnet]: '0xb707d89d29c189421163515c59e42147371d6857',
 };
 
