@@ -5,6 +5,8 @@ export enum ChainId {
     etherumMainnet = 1,
     binanceMainnet = 56,
     polygonMainnet = 137,
+    optimismMainnet = 10,
+    arbitrumMainnet = 42161,
 }
 
 export type LimitOrderSignature = string;

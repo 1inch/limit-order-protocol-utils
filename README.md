@@ -13,6 +13,8 @@ You can find general overview and docs on 1inch limit orders protocol [here](htt
 -   Ethereum mainnet: `0x3ef51736315f52d568d6d2cf289419b9cfffe782`
 -   BSC mainnet: `0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb`
 -   Polygon mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
+-   Optimism mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
+-   Arbitrum mainnet: `0xe295ad71242373c37c5fda7b57f26f9ea1088afe`
 -   Smart contracts source code repository is available [here](https://github.com/1inch/limit-order-protocol)
 
 ---
@@ -86,9 +88,11 @@ You can send your limit orders to the 1inch database and then your order will pa
 
 ### REST API (swagger):
 
--   [Ethereum Endpoint](https://limit-orders.1inch.exchange/swagger/ethereum/)
--   [Binance Smart Chain Endpoint](https://limit-orders.1inch.exchange/swagger/binance/)
--   [Polygon Endpoint](https://limit-orders.1inch.exchange/swagger/polygon/)
+-   [Ethereum Endpoint](https://limit-orders.1inch.io/swagger/ethereum/)
+-   [Binance Smart Chain Endpoint](https://limit-orders.1inch.io/swagger/binance/)
+-   [Polygon Endpoint](https://limit-orders.1inch.io/swagger/polygon/)
+-   [Optimism Endpoint](https://limit-orders.1inch.io/swagger/optimism/)
+-   [Arbitrum Endpoint](https://limit-orders.1inch.io/swagger/arbitrum/)
 
 ### Docs
 

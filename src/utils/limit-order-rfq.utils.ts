@@ -5,7 +5,7 @@ import yargs from 'yargs';
 import kleur from 'kleur';
 import Web3 from 'web3';
 import {LimitOrderBuilder} from '../limit-order.builder';
-import {RFQOrder} from '../model/limit-order-protocol.model';
+import {ChainId, RFQOrder} from '../model/limit-order-protocol.model';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
 import {
     cancelOrderSchema,
@@ -112,8 +112,8 @@ async function cancelOrderOperation(isRunningWithArgv: boolean) {
 
 /* eslint-disable max-lines-per-function */
 function createOrder(params: CreatingParams): RFQOrder {
-    const contractAddress = contractAddresses[params.chainId];
-    const web3 = new Web3(rpcUrls[params.chainId]);
+    const contractAddress = contractAddresses[params.chainId as ChainId];
+    const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
     const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
         web3
@@ -146,8 +146,8 @@ async function fillOrder(
     params: FillingParams,
     order: RFQOrder
 ): Promise<string> {
-    const contractAddress = contractAddresses[params.chainId];
-    const web3 = new Web3(rpcUrls[params.chainId]);
+    const contractAddress = contractAddresses[params.chainId as ChainId];
+    const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
     const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
         web3
@@ -195,9 +195,9 @@ async function fillOrder(
 
 /* eslint-disable max-lines-per-function */
 async function cancelOrder(params: CancelingParams): Promise<string> {
-    const contractAddress = contractAddresses[params.chainId];
+    const contractAddress = contractAddresses[params.chainId as ChainId];
     const web3 = new Web3(
-        new Web3.providers.HttpProvider(rpcUrls[params.chainId])
+        new Web3.providers.HttpProvider(rpcUrls[params.chainId as ChainId])
     );
     const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
@@ -250,7 +250,7 @@ async function sendSignedTransaction(
 }
 
 function explorerTxLink(chainId: number, txHash: string): string {
-    const explorerUrl = explorersUrls[chainId];
+    const explorerUrl = explorersUrls[chainId as ChainId];
 
     return `${explorerUrl}/tx/${txHash}`;
 }

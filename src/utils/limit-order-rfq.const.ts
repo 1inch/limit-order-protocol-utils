@@ -10,6 +10,8 @@ const commonProperties: PromptObject[] = [
             {title: 'Ethereum', value: ChainId.etherumMainnet},
             {title: 'BSC', value: ChainId.binanceMainnet},
             {title: 'Polygon', value: ChainId.polygonMainnet},
+            {title: 'Optimism', value: ChainId.optimismMainnet},
+            {title: 'Arbitrum', value: ChainId.arbitrumMainnet},
         ],
     },
     {
@@ -114,20 +116,26 @@ export const cancelOrderSchema: PromptObject[] = [
     },
 ];
 
-export const rpcUrls: {[key: number]: string} = {
-    [ChainId.etherumMainnet]: 'https://web3-node.1inch.exchange',
+export const rpcUrls: {[key in ChainId]: string} = {
+    [ChainId.etherumMainnet]: 'https://web3-node.1inch.io',
     [ChainId.binanceMainnet]: 'https://bsc-dataseed.binance.org',
-    [ChainId.polygonMainnet]: 'https://bor-nodes.1inch.exchange',
+    [ChainId.polygonMainnet]: 'https://bor-nodes.1inch.io',
+    [ChainId.optimismMainnet]: 'https://optimism-nodes.1inch.io',
+    [ChainId.arbitrumMainnet]: 'https://arbitrum-nodes.1inch.io',
 };
 
-export const contractAddresses: {[key: number]: string} = {
+export const contractAddresses: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: '0x3ef51736315f52d568d6d2cf289419b9cfffe782',
     [ChainId.binanceMainnet]: '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb',
     [ChainId.polygonMainnet]: '0xb707d89d29c189421163515c59e42147371d6857',
+    [ChainId.optimismMainnet]: '0xb707d89d29c189421163515c59e42147371d6857',
+    [ChainId.arbitrumMainnet]: '0xe295ad71242373c37c5fda7b57f26f9ea1088afe',
 };
 
-export const explorersUrls: {[key: number]: string} = {
+export const explorersUrls: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: 'https://etherscan.io',
     [ChainId.binanceMainnet]: 'https://bscscan.com',
-    [ChainId.polygonMainnet]: 'https://explorer-mainnet.maticvigil.com',
+    [ChainId.polygonMainnet]: 'https://polygonscan.com',
+    [ChainId.optimismMainnet]: 'https://optimistic.etherscan.io',
+    [ChainId.arbitrumMainnet]: 'https://arbiscan.io',
 };
