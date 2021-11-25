@@ -20,9 +20,9 @@ Object {
 }
 `;
 
-exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x5573e78a239adef418fb0bc3c4555c3542a92eec1faf4f0280f9bcd1f4ce5014"`;
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x6684304585ca583ea653a870fa956fdb7f0ae007b825ec874d6c1f45a6655369"`;
 
-exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x5f7a7bceab71117da38ddaf15b3161d4ff577eee7fee2b1f2e4f10133303984a5de40e3fa983dee2ce1eaa5b86068f5bb6475224b600d27bf3563c837f5545c01c"`;
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x499fba7be65e69a42c24ac7450152df82f687758507701d33b30a55e2b0abf06055e183582184ee0f103833363bb2ace1e84b047d4b89c63bc47766bbaaa29a21b"`;
 
 exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrder() must create an RFQ limit order instance according to the given parameters 1`] = `
 Object {
@@ -35,3 +35,7 @@ Object {
   "takingAmount": "600",
 }
 `;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xc57d47b0ae938907441ab825543958de8558fcaad45bc0225ad1212fcac47b85"`;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x8695396903e22c25f727c20bec206f1ef94c647cfedb4871435b534854f6b7f3689a3dd8718e51391093316c7c97845e6664e6766e32ca63c3c80afb1807d6081c"`;

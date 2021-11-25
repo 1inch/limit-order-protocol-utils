@@ -7,12 +7,12 @@ import {
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
+import {contractAddresses} from './utils/limit-order-rfq.const';
 
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
-    // TODO: fix test regarding to final contract
-    const contractAddress = '0xab6391d02c7410302f5d1db1c22b0c06714c041a';
-    const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
     const chainId = 56;
+    const contractAddress = contractAddresses[chainId];
+    const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
 
     const privateKey =
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
@@ -208,6 +208,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(error?.message?.includes('LOP: Unknown order')).toBe(true);
         });
 
+        // TODO: fix
         it('When order is partially filled, then must return remaining amount', async () => {
             // Order WBNB > 1INCH, filled for 3%
             const orderHash =
@@ -218,6 +219,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(remaining.toString()).toBe('2917591702620370');
         });
 
+        // TODO: fix
         it('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
@@ -358,7 +360,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const result = await facade.domainSeparator();
 
         expect(result).toBe(
-            '0xc01dba435cd14ffa0d760af4ffb49214bf6c739da021e8377adedcb4c4db47e8'
+            '0xc9dfaba08b15c35c936d490b78569de2af72cdaf5c789ce65249622765d16101'
         );
     });
 

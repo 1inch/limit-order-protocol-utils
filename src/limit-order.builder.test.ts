@@ -2,10 +2,11 @@ import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
+import {contractAddresses} from './utils/limit-order-rfq.const';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
-    const contractAddress = '0x4523f4a1ca37736837b423d63ea78fc13862eaf8';
     const chainId = 56;
+    const contractAddress = contractAddresses[chainId];
 
     const web3 = new Web3('https://bsc-dataseed.binance.org');
     const privateKey =
@@ -116,9 +117,6 @@ describe('LimitOrderBuilder - for build new limit order', () => {
     describe('RFQ limit order', () => {
         it('buildOrderSignature() must call the provider signTypedData method', async () => {
             const walletAddress = '0x1548dAdf412Eaaf3c80bEad35CDa83a4bf7dF6ce';
-            const expectedSignature =
-                '0xf3da5320b2c230027d02a3ee465a4169c79e6582a86afb9d183c385bce01cadd' +
-                '28cbc23bec0466c1ccbfecb333f5f69e7d2d7e680b533a5b00d5a54efc7e5c4c1c';
             const dataHash =
                 'b24d438b542e1ff36332b8c609d5b882187344306a7df17a785e6d44cd20c5f9';
 
@@ -143,7 +141,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 typedData
             );
 
-            expect(signature).toBe(expectedSignature);
+            expect(signature).toMatchSnapshot();
             expect(signTypedDataSpy).toHaveBeenCalledTimes(1);
             expect(signTypedDataSpy).toHaveBeenCalledWith(
                 walletAddress,
@@ -166,9 +164,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
 
             const hash = limitOrderBuilder.buildLimitOrderHash(typedData);
 
-            expect(hash).toBe(
-                '0x800b8b5ae059b65f3f272cddec926e62688147433515cb2f67b2ff5971112069'
-            );
+            expect(hash).toMatchSnapshot();
         });
 
         it('buildLimitOrder() must create an RFQ limit order instance according to the given parameters', async () => {

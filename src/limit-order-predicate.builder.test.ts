@@ -6,9 +6,10 @@ import {
     LimitOrderPredicateCallData,
 } from './limit-order-predicate.builder';
 import {Erc20Facade} from './erc20.facade';
+import {contractAddresses} from './utils/limit-order-rfq.const';
 
 describe('PredicateBuilder - for build limit order predicate', () => {
-    const contractAddress = '0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb';
+    const contractAddress = contractAddresses[56];
     const walletAddress = '0xfb3c7eb936caa12b5a884d612393969a557d4307';
     const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c';
 
