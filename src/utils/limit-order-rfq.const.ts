@@ -125,11 +125,11 @@ export const rpcUrls: {[key in ChainId]: string} = {
 };
 
 export const contractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x3ef51736315f52d568d6d2cf289419b9cfffe782',
-    [ChainId.binanceMainnet]: '0xab6391d02c7410302f5d1db1c22b0c06714c041a',
-    [ChainId.polygonMainnet]: '0xb707d89d29c189421163515c59e42147371d6857',
-    [ChainId.optimismMainnet]: '0xb707d89d29c189421163515c59e42147371d6857',
-    [ChainId.arbitrumMainnet]: '0xe295ad71242373c37c5fda7b57f26f9ea1088afe',
+    [ChainId.etherumMainnet]: '0xf667e1626a463a80e45647977d6fdc88923221a2',
+    [ChainId.binanceMainnet]: '0x0da1b305d7101359434d71eceaab71e1ff5437e6',
+    [ChainId.polygonMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
+    [ChainId.optimismMainnet]: '0x57da811a9ef9b79dbc2ea6f6dc39368a8da1cf07',
+    [ChainId.arbitrumMainnet]: '0x59a0a6d73e6a5224871f45e6d845ce1574063ade',
 };
 
 export const explorersUrls: {[key in ChainId]: string} = {
