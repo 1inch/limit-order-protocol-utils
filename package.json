@@ -1,5 +1,5 @@
 {
-    "name": "@1inch/limit-order-protocol-2",
+    "name": "@1inch/limit-order-protocol",
     "version": "1.5.1",
     "description": "Utility for limit order protocol",
     "main": "index.js",
