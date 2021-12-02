@@ -167,6 +167,8 @@ export class LimitOrderProtocolFacade {
         methodName: LimitOrderProtocolMethods,
         methodParams: unknown[] = []
     ): string {
+        debugger;
+        console.log(arguments)
         return this.providerConnector.contractEncodeABI(
             LIMIT_ORDER_PROTOCOL_ABI,
             this.contractAddress,
