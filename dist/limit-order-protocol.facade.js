@@ -95,8 +95,6 @@ class LimitOrderProtocolFacade {
         return this.providerConnector.ethCall(this.contractAddress, callData);
     }
     getContractCallData(methodName, methodParams = []) {
-        debugger;
-        console.log(arguments);
         return this.providerConnector.contractEncodeABI(limit_order_protocol_const_1.LIMIT_ORDER_PROTOCOL_ABI, this.contractAddress, methodName, methodParams);
     }
     parseRemainingResponse(response) {
