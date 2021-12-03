@@ -126,7 +126,7 @@ export const rpcUrls: {[key in ChainId]: string} = {
 
 export const contractAddresses: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: '0xf667e1626a463a80e45647977d6fdc88923221a2',
-    [ChainId.binanceMainnet]: '0x0da1b305d7101359434d71eceaab71e1ff5437e6',
+    [ChainId.binanceMainnet]: '0x1e38Eff998DF9d3669E32f4ff400031385Bf6362',
     [ChainId.polygonMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
     [ChainId.optimismMainnet]: '0x57da811a9ef9b79dbc2ea6f6dc39368a8da1cf07',
     [ChainId.arbitrumMainnet]: '0x59a0a6d73e6a5224871f45e6d845ce1574063ade',
