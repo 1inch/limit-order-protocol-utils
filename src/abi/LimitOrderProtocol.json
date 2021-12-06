@@ -389,12 +389,12 @@
     {
         "inputs": [
             {
-                "internalType": "contract AggregatorInterface",
+                "internalType": "contract AggregatorV3Interface",
                 "name": "oracle1",
                 "type": "address"
             },
             {
-                "internalType": "contract AggregatorInterface",
+                "internalType": "contract AggregatorV3Interface",
                 "name": "oracle2",
                 "type": "address"
             },
@@ -1158,6 +1158,102 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "salt",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "makerAsset",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "takerAsset",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "maker",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "receiver",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "allowedSender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "makingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "takingAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "makerAssetData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "takerAssetData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "getMakerAmount",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "getTakerAmount",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "predicate",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "permit",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "interaction",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct OrderMixin.Order",
+                "name": "order",
+                "type": "tuple"
+            }
+        ],
+        "name": "hashOrder",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "increaseNonce",
         "outputs": [],
@@ -1296,7 +1392,7 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "",
                 "type": "uint256"
             }
         ],
@@ -1334,7 +1430,7 @@
         "outputs": [
             {
                 "internalType": "uint256[]",
-                "name": "results",
+                "name": "",
                 "type": "uint256[]"
             }
         ],
@@ -1362,7 +1458,7 @@
     {
         "inputs": [
             {
-                "internalType": "contract AggregatorInterface",
+                "internalType": "contract AggregatorV3Interface",
                 "name": "oracle",
                 "type": "address"
             },
