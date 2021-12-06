@@ -118,11 +118,11 @@ exports.rpcUrls = {
     [limit_order_protocol_model_1.ChainId.arbitrumMainnet]: 'https://arbitrum-nodes.1inch.io',
 };
 exports.contractAddresses = {
-    [limit_order_protocol_model_1.ChainId.etherumMainnet]: '0xf667e1626a463a80e45647977d6fdc88923221a2',
-    [limit_order_protocol_model_1.ChainId.binanceMainnet]: '0x1e38Eff998DF9d3669E32f4ff400031385Bf6362',
-    [limit_order_protocol_model_1.ChainId.polygonMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
-    [limit_order_protocol_model_1.ChainId.optimismMainnet]: '0x57da811a9ef9b79dbc2ea6f6dc39368a8da1cf07',
-    [limit_order_protocol_model_1.ChainId.arbitrumMainnet]: '0x59a0a6d73e6a5224871f45e6d845ce1574063ade',
+    [limit_order_protocol_model_1.ChainId.etherumMainnet]: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
+    [limit_order_protocol_model_1.ChainId.binanceMainnet]: '0x1e38eff998df9d3669e32f4ff400031385bf6362',
+    [limit_order_protocol_model_1.ChainId.polygonMainnet]: '0x94bc2a1c732bcad7343b25af48385fe76e08734f',
+    [limit_order_protocol_model_1.ChainId.optimismMainnet]: '0x11431a89893025d2a48dca4eddc396f8c8117187',
+    [limit_order_protocol_model_1.ChainId.arbitrumMainnet]: '0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9',
 };
 exports.explorersUrls = {
     [limit_order_protocol_model_1.ChainId.etherumMainnet]: 'https://etherscan.io',
