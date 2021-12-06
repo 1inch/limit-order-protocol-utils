@@ -20,9 +20,9 @@ Object {
 }
 `;
 
-exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x6684304585ca583ea653a870fa956fdb7f0ae007b825ec874d6c1f45a6655369"`;
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x775e4598649f19fdbfc36471af359d3c674dd269ca9e657596b6caf401276d8b"`;
 
-exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x499fba7be65e69a42c24ac7450152df82f687758507701d33b30a55e2b0abf06055e183582184ee0f103833363bb2ace1e84b047d4b89c63bc47766bbaaa29a21b"`;
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0xf1a27c2b4ff94f6ea21542758b0f84b58bad811732a65abcefcfaaaff19477805ffe804686099ff30cb35351b5b01c2a66ec9fa1840ace5b5e08c58e4a552eef1b"`;
 
 exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrder() must create an RFQ limit order instance according to the given parameters 1`] = `
 Object {
@@ -36,6 +36,6 @@ Object {
 }
 `;
 
-exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xc57d47b0ae938907441ab825543958de8558fcaad45bc0225ad1212fcac47b85"`;
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xb20ba7d659e73145309495c00cf664aaefd631e348254e9bdb7956130d1821a6"`;
 
-exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x8695396903e22c25f727c20bec206f1ef94c647cfedb4871435b534854f6b7f3689a3dd8718e51391093316c7c97845e6664e6766e32ca63c3c80afb1807d6081c"`;
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x04add184953b8ef9bff07dd85c9682bc0c2ca33f45a78587e111aa99641c6d7c6b1d79e27670ca463c7da8f4a8e9553609294f5eeb535febde26f1ba4dd9298b1c"`;
