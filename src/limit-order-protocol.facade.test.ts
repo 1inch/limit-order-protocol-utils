@@ -208,22 +208,21 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(error?.message?.includes('LOP: Unknown order')).toBe(true);
         });
 
-        // TODO: fix
         it('When order is partially filled, then must return remaining amount', async () => {
-            // Order WBNB > 1INCH, filled for 3%
+            // Order 1INCH > DAI, filled for 40%:
+            // https://bscscan.com/tx/0x094d5b48570faa28205d5619980a1eba2d27a0edbbb177ba1b24dc72069c4fd6
             const orderHash =
-                '0x969ecf29e9b02b15e9640a6c741ea2db7984a00843485e0ed6aa4638e6860838';
+                '0x81c1c187d866c1fdca1d50b9cf4b8a9cbef7211d1adb7d8c5412980d85f4ed6f';
 
             const remaining = await facade.remaining(orderHash);
 
-            expect(remaining.toString()).toBe('2917591702620370');
+            expect(remaining.toString()).toBe('300000000000000000');
         });
 
-        // TODO: fix
         it('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
-                '0x44579da3014205b53cafe1badd3a4e8327d769560a0f38efd9840c402670312c';
+                '0x088c329bd399a43b11986f8f873913789bae70ba6860949db094c935b81e975b';
 
             const remaining = await facade.remaining(orderHash);
 
@@ -360,7 +359,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const result = await facade.domainSeparator();
 
         expect(result).toBe(
-            '0xc9dfaba08b15c35c936d490b78569de2af72cdaf5c789ce65249622765d16101'
+            '0x253b2ae0fba81f26b1cc99d41b81f2276833ee82b1c98e50bffefff8d4055070'
         );
     });
 
