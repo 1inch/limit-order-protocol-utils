@@ -20,7 +20,6 @@ export declare class LimitOrderBuilder {
     private readonly chainId;
     private readonly providerConnector;
     private readonly generateSalt;
-    private readonly erc20Facade;
     constructor(
         contractAddress: string,
         chainId: ChainId,

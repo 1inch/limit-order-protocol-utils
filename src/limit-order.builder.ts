@@ -21,7 +21,6 @@ import {
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
-import {Erc20Facade} from './erc20.facade';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -42,16 +41,12 @@ export function generateRFQOrderInfo(
 }
 
 export class LimitOrderBuilder {
-    private readonly erc20Facade: Erc20Facade;
-
     constructor(
         private readonly contractAddress: string,
         private readonly chainId: ChainId,
         private readonly providerConnector: ProviderConnector,
         private readonly generateSalt = generateOrderSalt
-    ) {
-        this.erc20Facade = new Erc20Facade(this.providerConnector);
-    }
+    ) {}
 
     buildOrderSignature(
         walletAddress: string,
@@ -163,18 +158,8 @@ export class LimitOrderBuilder {
             allowedSender: takerAddress,
             makingAmount: makerAmount,
             takingAmount: takerAmount,
-            makerAssetData: this.erc20Facade.transferFrom(
-                null,
-                makerAddress,
-                takerAddress,
-                makerAmount
-            ),
-            takerAssetData: this.erc20Facade.transferFrom(
-                null,
-                takerAddress,
-                makerAddress,
-                takerAmount
-            ),
+            makerAssetData: ZX,
+            takerAssetData: ZX,
             getMakerAmount: this.getAmountData(
                 LimitOrderProtocolMethods.getMakerAmount,
                 makerAmount,

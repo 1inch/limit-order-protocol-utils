@@ -11,14 +11,6 @@ class Erc20Facade {
     constructor(providerConnector) {
         this.providerConnector = providerConnector;
     }
-    transferFrom(makerAssetAddress, fromAddress, toAddress, value) {
-        return this.providerConnector.contractEncodeABI(
-            limit_order_protocol_const_1.ERC20_ABI,
-            makerAssetAddress,
-            Erc20Methods.transferFrom,
-            [fromAddress, toAddress, value]
-        );
-    }
     balanceOf(tokenAddress, walletAddress) {
         return this.providerConnector.contractEncodeABI(
             limit_order_protocol_const_1.ERC20_ABI,

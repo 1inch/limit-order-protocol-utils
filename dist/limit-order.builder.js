@@ -4,7 +4,6 @@ exports.LimitOrderBuilder = exports.generateRFQOrderInfo = exports.generateOrder
 const limit_order_protocol_const_1 = require('./limit-order-protocol.const');
 const limit_order_protocol_model_1 = require('./model/limit-order-protocol.model');
 const eth_sig_util_1 = require('eth-sig-util');
-const erc20_facade_1 = require('./erc20.facade');
 function generateOrderSalt() {
     return Math.round(Math.random() * Date.now()) + '';
 }
@@ -28,9 +27,6 @@ class LimitOrderBuilder {
         this.chainId = chainId;
         this.providerConnector = providerConnector;
         this.generateSalt = generateSalt;
-        this.erc20Facade = new erc20_facade_1.Erc20Facade(
-            this.providerConnector
-        );
     }
     buildOrderSignature(walletAddress, typedData) {
         const dataHash = eth_sig_util_1.TypedDataUtils.hashStruct(
@@ -135,18 +131,8 @@ class LimitOrderBuilder {
             allowedSender: takerAddress,
             makingAmount: makerAmount,
             takingAmount: takerAmount,
-            makerAssetData: this.erc20Facade.transferFrom(
-                null,
-                makerAddress,
-                takerAddress,
-                makerAmount
-            ),
-            takerAssetData: this.erc20Facade.transferFrom(
-                null,
-                takerAddress,
-                makerAddress,
-                takerAmount
-            ),
+            makerAssetData: limit_order_protocol_const_1.ZX,
+            takerAssetData: limit_order_protocol_const_1.ZX,
             getMakerAmount: this.getAmountData(
                 limit_order_protocol_model_1.LimitOrderProtocolMethods
                     .getMakerAmount,
