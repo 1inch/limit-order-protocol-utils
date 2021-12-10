@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrder() must create a limit order instance according to the given parameters 1`] = `
+Object {
+  "allowedSender": "0x0000000000000000000000000000000000000000",
+  "getMakerAmount": "0xf4a215c300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000064",
+  "getTakerAmount": "0x296637bf00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000064",
+  "interaction": "0x333",
+  "maker": "0xdddd91605c18a9999c1d47abfeed5daaaa700000",
+  "makerAsset": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+  "makerAssetData": "0x",
+  "makingAmount": "3",
+  "permit": "0x222",
+  "predicate": "0x111",
+  "receiver": "0x0000000000000000000000000000000000000000",
+  "salt": "1",
+  "takerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",
+  "takerAssetData": "0x",
+  "takingAmount": "100",
+}
+`;
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0x775e4598649f19fdbfc36471af359d3c674dd269ca9e657596b6caf401276d8b"`;
+
+exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0xf1a27c2b4ff94f6ea21542758b0f84b58bad811732a65abcefcfaaaff19477805ffe804686099ff30cb35351b5b01c2a66ec9fa1840ace5b5e08c58e4a552eef1b"`;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrder() must create an RFQ limit order instance according to the given parameters 1`] = `
+Object {
+  "allowedSender": "0x0000000000000000000000000000000000000000",
+  "info": "29942129672714733576710520833",
+  "maker": "0xdddd91605c18a9999c1d47abfeed5daaaa800000",
+  "makerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",
+  "makingAmount": "5",
+  "takerAsset": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+  "takingAmount": "600",
+}
+`;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xb20ba7d659e73145309495c00cf664aaefd631e348254e9bdb7956130d1821a6"`;
+
+exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x04add184953b8ef9bff07dd85c9682bc0c2ca33f45a78587e111aa99641c6d7c6b1d79e27670ca463c7da8f4a8e9553609294f5eeb535febde26f1ba4dd9298b1c"`;

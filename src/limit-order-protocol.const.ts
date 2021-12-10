@@ -4,7 +4,7 @@ import ERC20ABISource from './abi/ERC20ABI.json';
 
 export const PROTOCOL_NAME = '1inch Limit Order Protocol';
 
-export const PROTOCOL_VERSION = '1';
+export const PROTOCOL_VERSION = '2';
 
 export const ZX = '0x';
 
@@ -27,6 +27,11 @@ export const ORDER_STRUCTURE = [
     {name: 'salt', type: 'uint256'},
     {name: 'makerAsset', type: 'address'},
     {name: 'takerAsset', type: 'address'},
+    {name: 'maker', type: 'address'},
+    {name: 'receiver', type: 'address'},
+    {name: 'allowedSender', type: 'address'},
+    {name: 'makingAmount', type: 'uint256'},
+    {name: 'takingAmount', type: 'uint256'},
     {name: 'makerAssetData', type: 'bytes'},
     {name: 'takerAssetData', type: 'bytes'},
     {name: 'getMakerAmount', type: 'bytes'},
@@ -40,6 +45,8 @@ export const RFQ_ORDER_STRUCTURE = [
     {name: 'info', type: 'uint256'},
     {name: 'makerAsset', type: 'address'},
     {name: 'takerAsset', type: 'address'},
-    {name: 'makerAssetData', type: 'bytes'},
-    {name: 'takerAssetData', type: 'bytes'},
+    {name: 'maker', type: 'address'},
+    {name: 'allowedSender', type: 'address'},
+    {name: 'makingAmount', type: 'uint256'},
+    {name: 'takingAmount', type: 'uint256'},
 ];
