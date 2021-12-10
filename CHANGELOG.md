@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.5.0...v2.0.0) (2021-12-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Limit order V2 (#22)
+
+### Features
+
+* Limit order V2 ([#22](https://github.com/1inch/limit-order-protocol-utils/issues/22)) ([4037b77](https://github.com/1inch/limit-order-protocol-utils/commit/4037b775f3dcdcaae80fc38546f325b5997036a9))
+
 ## [1.5.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.4.1...v1.5.0) (2021-11-23)
 
 
