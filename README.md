@@ -2,7 +2,7 @@
   <img src="https://app.1inch.io/assets/images/logo.svg" width="200" alt="1inch network" />
 </p>
 
-# Utils library for 1inch Limit Orders Protocol
+# Utils library for 1inch Limit Orders Protocol V2
 
 This is the package of utilities for working with the `1inch Limit Orders Protocol`
 
