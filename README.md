@@ -10,11 +10,11 @@ You can find general overview and docs on 1inch limit orders protocol [here](htt
 
 #### Smart contract addresses
 
--   Ethereum mainnet: `0x3ef51736315f52d568d6d2cf289419b9cfffe782`
--   BSC mainnet: `0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb`
--   Polygon mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
--   Optimism mainnet: `0xb707d89d29c189421163515c59e42147371d6857`
--   Arbitrum mainnet: `0xe295ad71242373c37c5fda7b57f26f9ea1088afe`
+-   Ethereum mainnet: `0x119c71d3bbac22029622cbaec24854d3d32d2828`
+-   BSC mainnet: `0x1e38eff998df9d3669e32f4ff400031385bf6362`
+-   Polygon mainnet: `0x94bc2a1c732bcad7343b25af48385fe76e08734f`
+-   Optimism mainnet: `0x11431a89893025d2a48dca4eddc396f8c8117187`
+-   Arbitrum mainnet: `0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9`
 -   Smart contracts source code repository is available [here](https://github.com/1inch/limit-order-protocol)
 
 ---
