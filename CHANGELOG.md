@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.0...v2.0.1) (2021-12-24)
+
+
+### Features
+
+* **limit-order-builder:** add arbitraryStaticCall method ([6e6655d](https://github.com/1inch/limit-order-protocol-utils/commit/6e6655d4c33ae9f05b2ad2e9fcdd365f7f5731fa))
+
 ## [2.0.0](https://github.com/1inch/limit-order-protocol-utils/compare/v1.5.0...v2.0.0) (2021-12-10)
 
 
