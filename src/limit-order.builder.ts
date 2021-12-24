@@ -177,6 +177,18 @@ export class LimitOrderBuilder {
     }
     /* eslint-enable max-lines-per-function */
 
+    getContractCallData(
+        methodName: LimitOrderProtocolMethods,
+        methodParams: unknown[] = []
+    ): string {
+        return this.providerConnector.contractEncodeABI(
+            LIMIT_ORDER_PROTOCOL_ABI,
+            this.contractAddress,
+            methodName,
+            methodParams
+        );
+    }
+
     // Get nonce from contract (nonce method) and put it to predicate on order creating
     private getAmountData(
         methodName: LimitOrderProtocolMethods,
@@ -189,17 +201,5 @@ export class LimitOrderBuilder {
             takerAmount,
             swapTakerAmount,
         ]).substr(0, 2 + 68 * 2);
-    }
-
-    private getContractCallData(
-        methodName: LimitOrderProtocolMethods,
-        methodParams: unknown[] = []
-    ): string {
-        return this.providerConnector.contractEncodeABI(
-            LIMIT_ORDER_PROTOCOL_ABI,
-            this.contractAddress,
-            methodName,
-            methodParams
-        );
     }
 }
