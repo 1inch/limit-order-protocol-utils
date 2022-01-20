@@ -13,6 +13,7 @@ import {
 } from './model/limit-order-protocol.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
+import {getRPCCode} from './utils/get-rpc-code';
 
 export class LimitOrderProtocolFacade {
     constructor(
@@ -195,16 +196,18 @@ export class LimitOrderProtocolFacade {
         return null;
     }
 
-    parseSimulateTransferError(error: Error | string): boolean | null {
+    parseSimulateTransferError(error: Error | string): boolean {
         const message = this.stringifyError(error);
-        const regex = new RegExp('(' + CALL_RESULTS_PREFIX + '\\d+)');
-        const match = message.match(regex);
-
-        if (match) {
-            return !match[0].includes('0');
+        if (this.isMsgContainsCorrectCode(message)) {
+            return true;
         }
 
-        return null;
+        try {
+            const code = getRPCCode(message);
+            return code ? this.isMsgContainsCorrectCode(code) : false;
+        } catch (e) {
+            return false;
+        }
     }
 
     parseContractResponse(response: string): string {
@@ -212,6 +215,17 @@ export class LimitOrderProtocolFacade {
             'string',
             ZX + response.slice(10)
         );
+    }
+
+    private isMsgContainsCorrectCode(message: string): boolean {
+        const regex = new RegExp('(' + CALL_RESULTS_PREFIX + '\\d+)');
+        const matched = message.match(regex);
+
+        if (matched) {
+            return !matched[0].includes('0');
+        }
+
+        return false;
     }
 
     private stringifyError(error: Error | string | unknown): string {

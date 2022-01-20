@@ -379,7 +379,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const input = 'dddddddddd';
         const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toBe(null);
+        expect(result).toBe(false);
     });
 
     it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
