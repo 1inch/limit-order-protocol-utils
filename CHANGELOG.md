@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.1...v2.0.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* add checking for hex response for gnosis chain ([#23](https://github.com/1inch/limit-order-protocol-utils/issues/23)) ([335985d](https://github.com/1inch/limit-order-protocol-utils/commit/335985df21efb9bd99df2d664091530da1da5f21))
+
 ### [2.0.1](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.0...v2.0.1) (2021-12-24)
 
 
