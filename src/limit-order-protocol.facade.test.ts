@@ -379,7 +379,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const input = 'dddddddddd';
         const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toBe(false);
+        expect(result).toBe(null);
     });
 
     it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
@@ -394,5 +394,20 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         const result = facade.parseSimulateTransferError(input);
 
         expect(result).toBe(false);
+    });
+
+    it('parseSimulateTransferError() return true when response contains CALL_RESULT as hex', () => {
+        const input = `
+        Error: Internal JSON-RPC error.
+        {
+          "code": -32015,
+          "message": "VM execution error.",
+          "data": "Reverted 0x43414c4c5f524553554c54535f31"
+        }
+        `;
+
+        const result = facade.parseSimulateTransferError(input);
+
+        expect(result).toBe(true);
     });
 });

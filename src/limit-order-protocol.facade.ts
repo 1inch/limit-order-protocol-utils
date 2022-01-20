@@ -196,17 +196,18 @@ export class LimitOrderProtocolFacade {
         return null;
     }
 
-    parseSimulateTransferError(error: Error | string): boolean {
+    parseSimulateTransferError(error: Error | string): boolean | null {
         const message = this.stringifyError(error);
-        if (this.isMsgContainsCorrectCode(message)) {
-            return true;
+        const isCorrectCode = this.isMsgContainsCorrectCode(message);
+        if (isCorrectCode !== null) {
+            return isCorrectCode;
         }
 
         try {
             const code = getRPCCode(message);
-            return code ? this.isMsgContainsCorrectCode(code) : false;
+            return code ? this.isMsgContainsCorrectCode(code) : null;
         } catch (e) {
-            return false;
+            return null;
         }
     }
 
@@ -217,7 +218,7 @@ export class LimitOrderProtocolFacade {
         );
     }
 
-    private isMsgContainsCorrectCode(message: string): boolean {
+    private isMsgContainsCorrectCode(message: string): boolean | null {
         const regex = new RegExp('(' + CALL_RESULTS_PREFIX + '\\d+)');
         const matched = message.match(regex);
 
@@ -225,7 +226,7 @@ export class LimitOrderProtocolFacade {
             return !matched[0].includes('0');
         }
 
-        return false;
+        return null;
     }
 
     private stringifyError(error: Error | string | unknown): string {
