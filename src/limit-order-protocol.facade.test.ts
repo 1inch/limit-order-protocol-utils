@@ -9,6 +9,7 @@ import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 import {contractAddresses} from './utils/limit-order-rfq.const';
 
+// eslint-disable-next-line max-lines-per-function
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract',() => {
     const chainId = 56;
     const contractAddress = contractAddresses[chainId];
