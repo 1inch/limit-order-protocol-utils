@@ -9,7 +9,8 @@ import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 import {contractAddresses} from './utils/limit-order-rfq.const';
 
-describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
+// eslint-disable-next-line max-lines-per-function
+describe('LimitOrderProtocolFacade - facade for Limit order protocol contract',() => {
     const chainId = 56;
     const contractAddress = contractAddresses[chainId];
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
@@ -79,6 +80,41 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAmount,
                 thresholdAmount
             );
+
+            expect(callData).toMatchSnapshot();
+        });
+    });
+
+    describe('fillOrderToWithPermit()', () => {
+        it('Must create a call data for order filling with permit', async () => {
+            const timestamp = 1621040104;
+            const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+                timestamp
+            );
+            const order = createOrderWithPredicate(timestampBelow);
+
+            order.salt = '1';
+
+            const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
+            const signature = await limitOrderBuilder.buildOrderSignature(
+                walletAddress,
+                typedData
+            );
+            const makerAmount = '1000000000000000000';
+            const takerAmount = '0';
+            const thresholdAmount = '0';
+            const permit = '242342334320324';
+            const targetAddress = walletAddress;
+
+            const callData = facade.fillOrderToWithPermit({
+                order,
+                signature,
+                makerAmount,
+                takerAmount,
+                thresholdAmount,
+                permit,
+                targetAddress,
+            });
 
             expect(callData).toMatchSnapshot();
         });
