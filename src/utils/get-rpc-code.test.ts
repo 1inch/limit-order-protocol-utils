@@ -1,4 +1,4 @@
-import { getRPCCode } from './get-rpc-code';
+import {getRPCCode} from './get-rpc-code';
 
 describe('getRPCCode', () => {
     it('empty string', () => {
@@ -14,11 +14,17 @@ describe('getRPCCode', () => {
     });
 
     it('incorrect object', () => {
-        expect(getRPCCode('test str { "code": 1, "message": "msg" }')).toBeNull();
+        expect(
+            getRPCCode('test str { "code": 1, "message": "msg" }')
+        ).toBeNull();
     });
 
     it('incorrect data', () => {
-        expect(getRPCCode('test str { "code": 1, "message": "msg", "data": "test" }')).toBeNull();
+        expect(
+            getRPCCode(
+                'test str { "code": 1, "message": "msg", "data": "test" }'
+            )
+        ).toBeNull();
     });
 
     it('correct string', () => {

@@ -10,7 +10,7 @@ import {PrivateKeyProviderConnector} from './connector/private-key-provider.conn
 import {contractAddresses} from './utils/limit-order-rfq.const';
 
 // eslint-disable-next-line max-lines-per-function
-describe('LimitOrderProtocolFacade - facade for Limit order protocol contract',() => {
+describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const chainId = 56;
     const contractAddress = contractAddresses[chainId];
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
