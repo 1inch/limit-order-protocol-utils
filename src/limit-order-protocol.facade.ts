@@ -37,6 +37,30 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
+    fillOrderToWithPermit(params: {
+        order: LimitOrder,
+        signature: LimitOrderSignature,
+        makerAmount: string,
+        takerAmount: string,
+        thresholdAmount: string,
+        targetAddress: string,
+        permit: string,
+    }): string {
+        const {
+            order, signature, makerAmount, takerAmount, thresholdAmount, targetAddress, permit,
+        } = params;
+
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderToWithPermit, [
+            order,
+            signature,
+            makerAmount,
+            takerAmount,
+            thresholdAmount,
+            targetAddress,
+            permit,
+        ]);
+    }
+
     fillRFQOrder(
         order: RFQOrder,
         signature: LimitOrderSignature,

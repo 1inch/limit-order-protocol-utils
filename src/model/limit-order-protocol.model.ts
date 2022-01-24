@@ -76,6 +76,7 @@ export enum LimitOrderProtocolMethods {
     getTakerAmount = 'getTakerAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
     fillOrder = 'fillOrder',
+    fillOrderToWithPermit = 'fillOrderToWithPermit',
     fillOrderRFQ = 'fillOrderRFQ',
     cancelOrder = 'cancelOrder',
     cancelOrderRFQ = 'cancelOrderRFQ',
