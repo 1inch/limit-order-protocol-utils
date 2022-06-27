@@ -47,26 +47,13 @@ export class LimitOrderProtocolFacade {
         permit: string;
     }): string {
         const {
-            order,
-            signature,
-            makerAmount,
-            takerAmount,
-            thresholdAmount,
-            targetAddress,
-            permit,
+            order, signature, makerAmount, takerAmount,
+            thresholdAmount, targetAddress, permit
         } = params;
 
         return this.getContractCallData(
             LimitOrderProtocolMethods.fillOrderToWithPermit,
-            [
-                order,
-                signature,
-                makerAmount,
-                takerAmount,
-                thresholdAmount,
-                targetAddress,
-                permit,
-            ]
+            [order, signature, makerAmount, takerAmount, thresholdAmount, targetAddress, permit]
         );
     }
 
