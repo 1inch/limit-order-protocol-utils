@@ -23,7 +23,7 @@ You can find general overview and docs on 1inch limit orders protocol [here](htt
 
 | Statements                                                               | Branches                                                                    | Functions                                                               | Lines                                                               |
 | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-81.19%25-yellow.svg) | ![Branches](https://img.shields.io/badge/Coverage-91.75%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-81.54%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-81.19%25-yellow.svg) |
+| ![Statements](https://img.shields.io/badge/Coverage-81.42%25-yellow.svg) | ![Branches](https://img.shields.io/badge/Coverage-92.23%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-81.54%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-81.42%25-yellow.svg) |
 
 ## Installation
 

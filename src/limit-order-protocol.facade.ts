@@ -47,13 +47,26 @@ export class LimitOrderProtocolFacade {
         permit: string;
     }): string {
         const {
-            order, signature, makerAmount, takerAmount,
-            thresholdAmount, targetAddress, permit
+            order,
+            signature,
+            makerAmount,
+            takerAmount,
+            thresholdAmount,
+            targetAddress,
+            permit,
         } = params;
 
         return this.getContractCallData(
             LimitOrderProtocolMethods.fillOrderToWithPermit,
-            [order, signature, makerAmount, takerAmount, thresholdAmount, targetAddress, permit]
+            [
+                order,
+                signature,
+                makerAmount,
+                takerAmount,
+                thresholdAmount,
+                targetAddress,
+                permit,
+            ]
         );
     }
 
@@ -232,9 +245,13 @@ export class LimitOrderProtocolFacade {
     }
 
     parseContractResponse(response: string): string {
+        // Aurora network wraps revert message into Revert()
+        const matched = response.match(/Revert\(([^)]+)\)/);
+        const message = matched && matched[1] ? matched[1] : response;
+
         return this.providerConnector.decodeABIParameter<string>(
             'string',
-            ZX + response.slice(10)
+            ZX + message.slice(10)
         );
     }
 
@@ -244,6 +261,18 @@ export class LimitOrderProtocolFacade {
 
         if (matched) {
             return !matched[0].includes('0');
+        } else {
+            try {
+                const matchParsed = this.parseContractResponse(message).match(
+                    regex
+                );
+
+                if (matchParsed) {
+                    return !matchParsed[0].includes('0');
+                }
+            } catch (e) {
+                console.error(e);
+            }
         }
 
         return null;

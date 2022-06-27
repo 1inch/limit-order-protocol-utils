@@ -195,7 +195,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 '0xbbcf91605c18a9859c1d47abfeed5d2cca7097cf'
             );
 
-            expect(nonce).toBe(0);
+            expect(nonce).toBe(2);
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {
@@ -420,6 +420,16 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
         const input = 'CALL_RESULTS_11';
+        const result = facade.parseSimulateTransferError(input);
+
+        expect(result).toBe(true);
+    });
+
+    it('parseSimulateTransferError() for Aurora network', () => {
+        const input =
+            'Internal JSON-RPC error. Revert(0x08c379a00000000000000000000000000000000000000000000000000' +
+            '000000000000020000000000000000000000000000000000000000000000000000000000000000e43414c4c5f52' +
+            '4553554c54535f31000000000000000000000000000000000000)';
         const result = facade.parseSimulateTransferError(input);
 
         expect(result).toBe(true);
