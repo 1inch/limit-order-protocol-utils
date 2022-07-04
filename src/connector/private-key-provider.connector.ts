@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import {EIP712TypedData} from '../model/eip712.model';
 import {AbiItem} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
-import {MsgParams, signTypedData_v4} from 'eth-sig-util';
+import { signTypedData, SignTypedDataVersion } from '@metamask/eth-sig-util';
 
 export class PrivateKeyProviderConnector implements ProviderConnector {
     constructor(
@@ -31,10 +31,12 @@ export class PrivateKeyProviderConnector implements ProviderConnector {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         _typedDataHash = ''
     ): Promise<string> {
-        const result = signTypedData_v4(Buffer.from(this.privateKey, 'hex'), {
+        const result = signTypedData({
+            privateKey: Buffer.from(this.privateKey, 'hex'),
             data: typedData,
+            version: SignTypedDataVersion.V4,
             /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        } as MsgParams<any>);
+        });
 
         return Promise.resolve(result);
     }
