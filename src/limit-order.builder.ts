@@ -19,7 +19,8 @@ import {
     RFQOrderData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
-import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
+import {bufferToHex} from 'ethereumjs-util';
+import {TypedDataUtils, TypedMessage, SignTypedDataVersion} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
 
 export function generateOrderSalt(): string {
@@ -56,7 +57,7 @@ export class LimitOrderBuilder {
             typedData.primaryType,
             typedData.message,
             typedData.types,
-            true
+            SignTypedDataVersion.V4
         ).toString('hex');
 
         return this.providerConnector.signTypedData(
@@ -68,8 +69,8 @@ export class LimitOrderBuilder {
 
     buildLimitOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
         const message = orderTypedData as TypedMessage<MessageTypes>;
-
-        return ZX + TypedDataUtils.sign(message).toString('hex');
+        const hash = bufferToHex(TypedDataUtils.eip712Hash(message, SignTypedDataVersion.V4));
+        return ZX + hash.substring(2);
     }
 
     buildLimitOrderTypedData(
