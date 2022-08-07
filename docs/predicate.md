@@ -74,13 +74,13 @@ const {
 } = limitOrderPredicateBuilder;
 
 const simplePredicate: LimitOrderPredicateCallData = and(
-    timestampBelow(Math.round(Date.now() / 1000) + 60_000), // a limit order is valid only for 1 minute
+    timestampBelow(Math.round(Date.now() / 1000) + 60), // a limit order is valid only for 1 minute
     nonceEquals(makerAddress, 4) // a limit order is valid until the nonce of makerAddress is equal to 4
 );
 
 const complexPredicate: LimitOrderPredicateCallData = or(
     and(
-        timestampBelow(Math.round(Date.now() / 1000) + 60_000),
+        timestampBelow(Math.round(Date.now() / 1000) + 60),
         nonceEquals(makerAddress, 4),
         gt('10', tokenAddress, balanceOfCallData)
     ),
