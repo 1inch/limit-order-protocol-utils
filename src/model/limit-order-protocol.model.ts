@@ -27,6 +27,11 @@ export interface LimitOrderData {
     predicate?: LimitOrderPredicateCallData;
     permit?: string;
     interaction?: string;
+
+    // todo remove this comment
+    //
+    preInteraction?: string;
+    postInteraction?: string;
 }
 
 export interface RFQOrderData {
@@ -45,20 +50,15 @@ export interface RFQOrderData {
 
 export interface LimitOrder extends EIP712Object {
     salt: string;
-    makerAsset: string;
-    takerAsset: string;
-    maker: string;
+    makerAsset: string; // maker asset address
+    takerAsset: string; // taker asset address
+    maker: string; // maker address
     receiver: string;
     allowedSender: string;
     makingAmount: string;
     takingAmount: string;
-    makerAssetData: string;
-    takerAssetData: string;
-    getMakerAmount: string;
-    getTakerAmount: string;
-    predicate: string;
-    permit: string;
-    interaction: string;
+    offsets: string;
+    interactions: string;
 }
 
 export interface RFQOrder extends EIP712Object {

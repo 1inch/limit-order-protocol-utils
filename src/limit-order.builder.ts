@@ -22,6 +22,7 @@ import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
 import {TypedDataUtils, TypedMessage, SignTypedDataVersion} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
+import {trim0x} from './utils/limit-order.utils';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -148,8 +149,52 @@ export class LimitOrderBuilder {
         takerAmount,
         predicate = ZX,
         permit = ZX,
-        interaction = ZX,
+        // todo
+        // interaction = ZX, // ???
+        preInteraction = ZX, // ???
+        postInteraction = ZX, // ???
     }: LimitOrderData): LimitOrder {
+
+        const makerAssetData = ZX;
+        const takerAssetData = ZX;
+
+        const getMakerAmount = this.getAmountData(
+            LimitOrderProtocolMethods.getMakerAmount,
+            makerAmount,
+            takerAmount
+        );
+
+        const getTakingAmount = this.getAmountData(
+            LimitOrderProtocolMethods.getTakerAmount,
+            makerAmount,
+            takerAmount
+        );
+
+        const allInteractions = [
+            makerAssetData,
+            takerAssetData,
+            getMakerAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        ];
+
+        const interactions = '0x' + allInteractions.map(trim0x).join('');
+
+        const cumulativeSum = (
+            (sum: bigint) => (value: bigint) => { sum += value; return sum; })
+        (BigInt(0));
+
+        const offsets = allInteractions
+            .map(a => a.length / 2 - 1)
+            .map(val => BigInt(val))
+            .map(cumulativeSum)
+            .reduce((acc, a, i) => {
+                return acc + (BigInt(a) << ((BigInt(32) * BigInt(i))));
+            }, BigInt(0));
+
         return {
             salt: this.generateSalt(),
             makerAsset: makerAssetAddress,
@@ -159,21 +204,8 @@ export class LimitOrderBuilder {
             allowedSender: takerAddress,
             makingAmount: makerAmount,
             takingAmount: takerAmount,
-            makerAssetData: ZX,
-            takerAssetData: ZX,
-            getMakerAmount: this.getAmountData(
-                LimitOrderProtocolMethods.getMakerAmount,
-                makerAmount,
-                takerAmount
-            ),
-            getTakerAmount: this.getAmountData(
-                LimitOrderProtocolMethods.getTakerAmount,
-                makerAmount,
-                takerAmount
-            ),
-            predicate,
-            permit,
-            interaction,
+            offsets: offsets.toString(),
+            interactions,
         };
     }
     /* eslint-enable max-lines-per-function */

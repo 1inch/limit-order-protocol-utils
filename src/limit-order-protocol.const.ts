@@ -32,13 +32,8 @@ export const ORDER_STRUCTURE = [
     {name: 'allowedSender', type: 'address'},
     {name: 'makingAmount', type: 'uint256'},
     {name: 'takingAmount', type: 'uint256'},
-    {name: 'makerAssetData', type: 'bytes'},
-    {name: 'takerAssetData', type: 'bytes'},
-    {name: 'getMakerAmount', type: 'bytes'},
-    {name: 'getTakerAmount', type: 'bytes'},
-    {name: 'predicate', type: 'bytes'},
-    {name: 'permit', type: 'bytes'},
-    {name: 'interaction', type: 'bytes'},
+    { name: 'offsets', type: 'uint256' },
+    { name: 'interactions', type: 'bytes' },
 ];
 
 export const RFQ_ORDER_STRUCTURE = [
