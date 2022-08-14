@@ -4,7 +4,7 @@ import ERC20ABISource from './abi/ERC20ABI.json';
 
 export const PROTOCOL_NAME = '1inch Limit Order Protocol';
 
-export const PROTOCOL_VERSION = '2';
+export const PROTOCOL_VERSION = '3';
 
 export const ZX = '0x';
 
