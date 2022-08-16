@@ -1,28 +1,28 @@
 import {
     EIP712_DOMAIN,
-    ORDER_STRUCTURE,
-    ZERO_ADDRESS,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ZX,
-    RFQ_ORDER_STRUCTURE,
+    ORDER_STRUCTURE,
     PROTOCOL_NAME,
     PROTOCOL_VERSION,
+    RFQ_ORDER_STRUCTURE,
+    ZERO_ADDRESS,
+    ZX,
 } from './limit-order-protocol.const';
 import {
     ChainId,
     LimitOrder,
-    LimitOrderProtocolMethods,
     LimitOrderData,
     LimitOrderHash,
+    LimitOrderProtocolMethods,
     LimitOrderSignature,
     RFQOrder,
     RFQOrderData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
-import {TypedDataUtils, TypedMessage, SignTypedDataVersion} from '@metamask/eth-sig-util';
+import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
-import {trim0x} from './utils/limit-order.utils';
+import {getOffsets, trim0x} from './utils/limit-order.utils';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -182,18 +182,7 @@ export class LimitOrderBuilder {
         ];
 
         const interactions = '0x' + allInteractions.map(trim0x).join('');
-
-        const cumulativeSum = (
-            (sum: bigint) => (value: bigint) => { sum += value; return sum; })
-        (BigInt(0));
-
-        const offsets = allInteractions
-            .map(a => a.length / 2 - 1)
-            .map(val => BigInt(val))
-            .map(cumulativeSum)
-            .reduce((acc, a, i) => {
-                return acc + (BigInt(a) << ((BigInt(32) * BigInt(i))));
-            }, BigInt(0));
+        const offsets = getOffsets(allInteractions);
 
         return {
             salt: this.generateSalt(),
@@ -204,7 +193,7 @@ export class LimitOrderBuilder {
             allowedSender: takerAddress,
             makingAmount: makerAmount,
             takingAmount: takerAmount,
-            offsets: offsets.toString(),
+            offsets,
             interactions,
         };
     }
