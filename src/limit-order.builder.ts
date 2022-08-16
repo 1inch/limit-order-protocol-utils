@@ -158,14 +158,14 @@ export class LimitOrderBuilder {
         const makerAssetData = ZX;
         const takerAssetData = ZX;
 
-        const getMakerAmount = this.getAmountData(
-            LimitOrderProtocolMethods.getMakerAmount,
+        const getMakingAmount = this.getAmountData(
+            LimitOrderProtocolMethods.getMakingAmount,
             makerAmount,
             takerAmount
         );
 
         const getTakingAmount = this.getAmountData(
-            LimitOrderProtocolMethods.getTakerAmount,
+            LimitOrderProtocolMethods.getTakingAmount,
             makerAmount,
             takerAmount
         );
@@ -173,7 +173,7 @@ export class LimitOrderBuilder {
         const allInteractions = [
             makerAssetData,
             takerAssetData,
-            getMakerAmount,
+            getMakingAmount,
             getTakingAmount,
             predicate,
             permit,

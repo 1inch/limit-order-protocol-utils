@@ -72,8 +72,8 @@ export interface RFQOrder extends EIP712Object {
 }
 
 export enum LimitOrderProtocolMethods {
-    getMakerAmount = 'getMakerAmount',
-    getTakerAmount = 'getTakerAmount',
+    getMakingAmount = 'getMakingAmount',
+    getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
     fillOrder = 'fillOrder',
     fillOrderToWithPermit = 'fillOrderToWithPermit',
