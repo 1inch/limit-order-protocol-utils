@@ -11,4 +11,3 @@ export * from './connector/private-key-provider.connector';
 export * from './model/abi.model';
 export * from './model/eip712.model';
 export * from './model/limit-order-protocol.model';
-export * from './utils/limit-order.utils';

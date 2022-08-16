@@ -1,6 +1,7 @@
 import {LimitOrderProtocolMethods} from './model/limit-order-protocol.model';
 import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
+import {joinStaticCalls} from './utils/limit-order.utils';
 
 export type LimitOrderPredicateCallData = string;
 
@@ -10,29 +11,31 @@ export class LimitOrderPredicateBuilder {
     and = (
         ...predicates: LimitOrderPredicateCallData[]
     ): LimitOrderPredicateCallData => {
+        const { offsets, data } = joinStaticCalls(predicates);
+
         return this.facade.getContractCallData(LimitOrderProtocolMethods.and, [
-            predicates.map(() => this.facade.contractAddress),
-            predicates,
+            offsets,
+            data,
         ]);
     };
 
     or = (
         ...predicates: LimitOrderPredicateCallData[]
     ): LimitOrderPredicateCallData => {
+        const { offsets, data } = joinStaticCalls(predicates);
+
         return this.facade.getContractCallData(LimitOrderProtocolMethods.or, [
-            predicates.map(() => this.facade.contractAddress),
-            predicates,
+            offsets,
+            data,
         ]);
     };
 
     eq = (
         value: string,
-        address: string,
         callData: string
     ): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(LimitOrderProtocolMethods.eq, [
             value,
-            address,
             callData,
         ]);
     };
