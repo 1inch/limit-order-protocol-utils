@@ -15,7 +15,8 @@ import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getRPCCode} from './utils/get-rpc-code';
 
-export interface FillLimitOrderParams {
+// todo move into model
+export interface FillOrderParams {
     order: LimitOrder;
     signature: LimitOrderSignature;
     interaction?: string;
@@ -24,13 +25,18 @@ export interface FillLimitOrderParams {
     skipPermitAndThresholdAmount: string;
 }
 
+export type FillLimitOrderWithPermitParams = FillOrderParams & {
+    targetAddress: string;
+    permit: string;
+}
+
 export class LimitOrderProtocolFacade {
     constructor(
         public readonly contractAddress: string,
         public readonly providerConnector: ProviderConnector
     ) {}
 
-    fillLimitOrder(params: FillLimitOrderParams): string {
+    fillLimitOrder(params: FillOrderParams): string {
         const {
             order,
             interaction = ZX,
@@ -50,23 +56,32 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
-    fillOrderToWithPermit(params: {
-        order: LimitOrder;
-        signature: LimitOrderSignature;
-        makerAmount: string;
-        takerAmount: string;
-        thresholdAmount: string;
-        targetAddress: string;
-        permit: string;
-    }): string {
+    // todo
+    // eslint-disable-next-line max-lines-per-function
+    fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
         const {
-            order, signature, makerAmount, takerAmount,
-            thresholdAmount, targetAddress, permit
+            order,
+            signature,
+            makingAmount,
+            takingAmount,
+            interaction = ZX,
+            skipPermitAndThresholdAmount,
+            targetAddress,
+            permit,
         } = params;
 
         return this.getContractCallData(
             LimitOrderProtocolMethods.fillOrderToWithPermit,
-            [order, signature, makerAmount, takerAmount, thresholdAmount, targetAddress, permit]
+            [
+                order,
+                signature,
+                interaction,
+                makingAmount,
+                takingAmount,
+                skipPermitAndThresholdAmount,
+                targetAddress,
+                permit
+            ],
         );
     }
 
