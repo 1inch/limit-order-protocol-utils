@@ -15,25 +15,38 @@ import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getRPCCode} from './utils/get-rpc-code';
 
+export interface FillLimitOrderParams {
+    order: LimitOrder;
+    signature: LimitOrderSignature;
+    interaction?: string;
+    makingAmount: string;
+    takingAmount: string;
+    skipPermitAndThresholdAmount: string;
+}
+
 export class LimitOrderProtocolFacade {
     constructor(
         public readonly contractAddress: string,
         public readonly providerConnector: ProviderConnector
     ) {}
 
-    fillLimitOrder(
-        order: LimitOrder,
-        signature: LimitOrderSignature,
-        makerAmount: string,
-        takerAmount: string,
-        thresholdAmount: string
-    ): string {
+    fillLimitOrder(params: FillLimitOrderParams): string {
+        const {
+            order,
+            interaction = ZX,
+            signature,
+            makingAmount,
+            takingAmount,
+            skipPermitAndThresholdAmount,
+        } = params;
+
         return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
             order,
             signature,
-            makerAmount,
-            takerAmount,
-            thresholdAmount,
+            interaction,
+            makingAmount,
+            takingAmount,
+            skipPermitAndThresholdAmount,
         ]);
     }
 
