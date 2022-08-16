@@ -42,24 +42,20 @@ export class LimitOrderPredicateBuilder {
 
     lt = (
         value: string,
-        address: string,
         callData: string
     ): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(LimitOrderProtocolMethods.lt, [
             value,
-            address,
             callData,
         ]);
     };
 
     gt = (
         value: string,
-        address: string,
         callData: string
     ): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(LimitOrderProtocolMethods.gt, [
             value,
-            address,
             callData,
         ]);
     };
