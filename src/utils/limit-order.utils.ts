@@ -33,3 +33,22 @@ const cumulativeSum = ((sum: bigint) => (value: bigint) => {
     return sum;
 })
 (BigInt(0));
+
+
+export function parseSimulateResult(
+    result: string
+): { success: boolean; result: string } | null {
+    const successResponseRegexp =
+        /SimulationResults\((true|false),*.("0x\d*")\)/gi;
+
+    const parsedResult = successResponseRegexp.exec(result);
+
+    if (parsedResult?.length === 3) {
+        return {
+            success: parsedResult[1] === 'true',
+            result: parsedResult[2],
+        };
+    }
+
+    return null;
+}

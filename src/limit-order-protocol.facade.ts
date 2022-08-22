@@ -14,6 +14,7 @@ import {
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getRPCCode} from './utils/get-rpc-code';
+import {parseSimulateResult} from './utils/limit-order.utils';
 
 // todo move into model
 export interface FillOrderParams {
@@ -180,27 +181,31 @@ export class LimitOrderProtocolFacade {
             });
     }
 
-    simulateCalls(tokens: string[], data: unknown[]): Promise<boolean> {
+    // eslint-disable-next-line max-lines-per-function
+    simulate(targetAddress: string, data: unknown): Promise<{ success: boolean, result: string }> {
         const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.simulateCalls,
-            [tokens, data]
+            LimitOrderProtocolMethods.simulate,
+            [targetAddress, data]
         );
 
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
+            // todo is it possible ?
             .then((result) => {
-                const parsed = this.parseSimulateTransferResponse(result);
+                const parsedResult = parseSimulateResult(result);
+                if (parsedResult) {
+                    return parsedResult;
+                }
 
-                if (parsed !== null) return parsed;
-
-                return Promise.reject(result);
+                throw result;
             })
-            .catch((error) => {
-                const parsed = this.parseSimulateTransferError(error);
+            .catch((result) => {
+                const parsedResult = parseSimulateResult(result);
+                if (parsedResult) {
+                    return parsedResult;
+                }
 
-                if (parsed !== null) return parsed;
-
-                return Promise.reject(error);
+                throw result;
             });
     }
 

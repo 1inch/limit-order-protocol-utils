@@ -94,6 +94,6 @@ export enum LimitOrderProtocolMethods {
     transferFrom = 'transferFrom',
     checkPredicate = 'checkPredicate',
     remainingsRaw = 'remainingsRaw',
-    simulateCalls = 'simulateCalls',
+    simulate = 'simulate',
     DOMAIN_SEPARATOR = 'DOMAIN_SEPARATOR',
 }
