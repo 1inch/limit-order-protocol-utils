@@ -52,3 +52,13 @@ export function parseSimulateResult(
 
     return null;
 }
+
+
+export function getMakingAmountForRFQ(amount: string): string {
+    return setN(BigInt(amount), 255, true).toString();
+}
+
+function setN(value: bigint, bitNumber: number, flag: boolean): bigint {
+    const bit = flag ? 1 : 0;
+    return value | (BigInt(bit) << BigInt(bitNumber));
+}

@@ -14,7 +14,7 @@ import {
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getRPCCode} from './utils/get-rpc-code';
-import {parseSimulateResult} from './utils/limit-order.utils';
+import {getMakingAmountForRFQ, parseSimulateResult} from './utils/limit-order.utils';
 
 // todo move into model
 export interface FillOrderParams {
@@ -89,12 +89,19 @@ export class LimitOrderProtocolFacade {
     fillRFQOrder(
         order: RFQOrder,
         signature: LimitOrderSignature,
-        makerAmount: string,
-        takerAmount: string
+        makerAmount?: string,
+        takerAmount?: string
     ): string {
+        let flagsAndAmount = '0';
+        if (makerAmount) {
+            flagsAndAmount = getMakingAmountForRFQ(makerAmount);
+        } else if (takerAmount) {
+            flagsAndAmount = takerAmount;
+        }
+
         return this.getContractCallData(
             LimitOrderProtocolMethods.fillOrderRFQ,
-            [order, signature, makerAmount, takerAmount]
+            [order, signature, flagsAndAmount]
         );
     }
 
