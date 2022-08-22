@@ -89,6 +89,7 @@ export enum LimitOrderProtocolMethods {
     lt = 'lt',
     gt = 'gt',
     timestampBelow = 'timestampBelow',
+    timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
     nonceEquals = 'nonceEquals',
     remaining = 'remaining',
     transferFrom = 'transferFrom',
