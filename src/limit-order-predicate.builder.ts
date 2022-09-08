@@ -2,7 +2,6 @@ import {LimitOrderProtocolMethods} from './model/limit-order-protocol.model';
 import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import {joinStaticCalls} from './utils/limit-order.utils';
-import {BigNumber} from '@ethersproject/bignumber';
 
 export type LimitOrderPredicateCallData = string;
 
