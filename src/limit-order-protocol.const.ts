@@ -2,9 +2,9 @@ import {AbiItem} from './model/abi.model';
 import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
 
-export const PROTOCOL_NAME = '1inch Limit Order Protocol';
+export const PROTOCOL_NAME = '1inch Aggregation Router';
 
-export const PROTOCOL_VERSION = '3';
+export const PROTOCOL_VERSION = '5';
 
 export const ZX = '0x';
 
