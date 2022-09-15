@@ -181,7 +181,7 @@ export class LimitOrderBuilder {
             postInteraction,
         ];
 
-        const interactions = '0x' + allInteractions.map(trim0x).join('');
+        const interactions = ZX + allInteractions.map(trim0x).join('');
         const offsets = getOffsets(allInteractions);
 
         return {
