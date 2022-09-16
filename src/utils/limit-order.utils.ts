@@ -8,9 +8,9 @@ export function trim0x(hexString: string): string {
 }
 
 // todo think about naming
-export function getOffsets(data: string[]): string {
+export function getOffsets(data: string[], subtrahend = 0): string {
     return data
-        .map(a => a.length / 2 - 1)
+        .map(a => a.length / 2 - subtrahend)
         .map(val => BigInt(val))
         .map(cumulativeSum)
         .reduce((acc, a, i) => {

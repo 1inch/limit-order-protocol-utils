@@ -174,7 +174,7 @@ export class LimitOrderBuilder {
         ];
 
         const interactions = ZX + allInteractions.map(trim0x).join('');
-        const offsets = getOffsets(allInteractions);
+        const offsets = getOffsets(allInteractions, 1);
 
         return {
             salt: this.generateSalt(),
