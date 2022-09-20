@@ -7,8 +7,13 @@ export function trim0x(hexString: string): string {
     return hexString;
 }
 
-// todo think about naming
 export function getOffsets(data: string[], subtrahend = 0): string {
+    const cumulativeSum = ((sum: bigint) => (value: bigint) => {
+        sum += value;
+        return sum;
+    })
+    (BigInt(0));
+
     return data
         .map(a => a.length / 2 - subtrahend)
         .map(val => BigInt(val))
@@ -27,12 +32,6 @@ export function joinStaticCalls (data: string[]): { offsets: string, data: strin
         data: ZX + trimmed.join(''),
     };
 }
-
-const cumulativeSum = ((sum: bigint) => (value: bigint) => {
-    sum += value;
-    return sum;
-})
-(BigInt(0));
 
 
 export function parseSimulateResult(
