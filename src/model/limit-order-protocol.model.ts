@@ -32,6 +32,7 @@ export interface LimitOrderData {
     //
     preInteraction?: string;
     postInteraction?: string;
+    salt?: string;
 }
 
 export interface RFQOrderData {

@@ -153,6 +153,7 @@ export class LimitOrderBuilder {
         // interaction = ZX, // ???
         preInteraction = ZX, // ???
         postInteraction = ZX, // ???
+        salt = this.generateSalt(),
     }: LimitOrderData): LimitOrder {
 
         const makerAssetData = ZX;
@@ -177,7 +178,7 @@ export class LimitOrderBuilder {
         const offsets = getOffsets(allInteractions, 1);
 
         return {
-            salt: this.generateSalt(),
+            salt,
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             maker: makerAddress,
