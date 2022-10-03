@@ -27,7 +27,8 @@ export interface LimitOrderData {
     predicate?: LimitOrderPredicateCallData;
     permit?: string;
     interaction?: string;
-
+    getMakingAmount?: string;
+    getTakingAmount?: string;
     // todo remove this comment
     //
     preInteraction?: string;

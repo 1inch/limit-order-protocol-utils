@@ -149,6 +149,8 @@ export class LimitOrderBuilder {
         takerAmount,
         predicate = ZX,
         permit = ZX,
+        getMakingAmount,
+        getTakingAmount,
         // todo
         // interaction = ZX, // ???
         preInteraction = ZX, // ???
@@ -159,9 +161,17 @@ export class LimitOrderBuilder {
         const makerAssetData = ZX;
         const takerAssetData = ZX;
 
-        const getMakingAmount = ZX;
+        getMakingAmount = getMakingAmount ?? this.getAmountData(
+            LimitOrderProtocolMethods.getMakingAmount,
+            makerAmount,
+            takerAmount
+        );
 
-        const getTakingAmount = ZX;
+        getTakingAmount = getTakingAmount ?? this.getAmountData(
+            LimitOrderProtocolMethods.getTakingAmount,
+            makerAmount,
+            takerAmount
+        );
 
         const allInteractions = [
             makerAssetData,
@@ -205,16 +215,16 @@ export class LimitOrderBuilder {
     }
 
     // Get nonce from contract (nonce method) and put it to predicate on order creating
-    // private getAmountData(
-    //     methodName: LimitOrderProtocolMethods,
-    //     makerAmount: string,
-    //     takerAmount: string,
-    //     swapTakerAmount = '0'
-    // ): string {
-    //     return this.getContractCallData(methodName, [
-    //         makerAmount,
-    //         takerAmount,
-    //         swapTakerAmount,
-    //     ]).substr(0, 2 + 68 * 2);
-    // }
+    private getAmountData(
+        methodName: LimitOrderProtocolMethods,
+        makerAmount: string,
+        takerAmount: string,
+        swapTakerAmount = '0'
+    ): string {
+        return this.getContractCallData(methodName, [
+            makerAmount,
+            takerAmount,
+            swapTakerAmount,
+        ]).substr(0, 2 + 68 * 2);
+    }
 }
