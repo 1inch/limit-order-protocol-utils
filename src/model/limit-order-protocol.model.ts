@@ -7,6 +7,11 @@ export enum ChainId {
     polygonMainnet = 137,
     optimismMainnet = 10,
     arbitrumMainnet = 42161,
+    gnosisMainnet = 100,
+    avalancheMainnet = 43114,
+    fantomMainnet = 250,
+    auroraMainnet = 1313161554,
+    klaytnMainnet = 8217,
 }
 
 export type LimitOrderSignature = string;
@@ -19,18 +24,15 @@ export type RFQOrderInfo = string;
 export interface LimitOrderData {
     makerAddress: string;
     receiver?: string; // Optional, by default = ZERO_ADDRESS
-    takerAddress?: string; // Optional, by default = ZERO_ADDRESS
+    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
     makerAssetAddress: string;
     takerAssetAddress: string;
-    makerAmount: string;
-    takerAmount: string;
+    makingAmount: string;
+    takingAmount: string;
     predicate?: LimitOrderPredicateCallData;
     permit?: string;
-    interaction?: string;
     getMakingAmount?: string;
     getTakingAmount?: string;
-    // todo remove this comment
-    //
     preInteraction?: string;
     postInteraction?: string;
     salt?: string;
@@ -50,7 +52,10 @@ export interface RFQOrderData {
     takerAddress?: string; // Optional, by default = ZERO_ADDRESS
 }
 
-export interface LimitOrder extends EIP712Object {
+/**
+ * Compatible with EIP712Object
+ */
+export type LimitOrder = {
     salt: string;
     makerAsset: string; // maker asset address
     takerAsset: string; // taker asset address
@@ -61,7 +66,17 @@ export interface LimitOrder extends EIP712Object {
     takingAmount: string;
     offsets: string;
     interactions: string;
+} & LimitOrderInteractions
+
+/**
+ * Partial from LimitOrder
+ */
+export type LimitOrderInteractions = {
+    offsets: string;
+    interactions: string;
 }
+
+export type Nonce = number | bigint;
 
 export interface RFQOrder extends EIP712Object {
     info: RFQOrderInfo;
@@ -98,5 +113,4 @@ export enum LimitOrderProtocolMethods {
     checkPredicate = 'checkPredicate',
     remainingsRaw = 'remainingsRaw',
     simulate = 'simulate',
-    DOMAIN_SEPARATOR = 'DOMAIN_SEPARATOR',
 }

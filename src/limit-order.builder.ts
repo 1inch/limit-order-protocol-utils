@@ -22,7 +22,7 @@ import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
 import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
-import {getOffsets, trim0x} from './utils/limit-order.utils';
+import { packInteractions } from './helpers';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -45,7 +45,7 @@ export function generateRFQOrderInfo(
 export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
-        private readonly chainId: ChainId,
+        private readonly chainId: ChainId | number,
         private readonly providerConnector: ProviderConnector,
         private readonly generateSalt = generateOrderSalt
     ) {}
@@ -139,22 +139,24 @@ export class LimitOrderBuilder {
     /* eslint-enable max-lines-per-function */
 
     /* eslint-disable max-lines-per-function */
+    /**
+     * @param allowedSender formerly `takerAddress` 
+     * @returns 
+     */
     buildLimitOrder({
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
         receiver = ZERO_ADDRESS,
-        takerAddress = ZERO_ADDRESS,
-        makerAmount,
-        takerAmount,
+        allowedSender = ZERO_ADDRESS,
+        makingAmount,
+        takingAmount,
         predicate = ZX,
         permit = ZX,
         getMakingAmount,
         getTakingAmount,
-        // todo
-        // interaction = ZX, // ???
-        preInteraction = ZX, // ???
-        postInteraction = ZX, // ???
+        preInteraction = ZX,
+        postInteraction = ZX,
         salt = this.generateSalt(),
     }: LimitOrderData): LimitOrder {
 
@@ -163,17 +165,17 @@ export class LimitOrderBuilder {
 
         getMakingAmount = getMakingAmount ?? this.getAmountData(
             LimitOrderProtocolMethods.getMakingAmount,
-            makerAmount,
-            takerAmount
+            makingAmount,
+            takingAmount
         );
 
         getTakingAmount = getTakingAmount ?? this.getAmountData(
             LimitOrderProtocolMethods.getTakingAmount,
-            makerAmount,
-            takerAmount
+            makingAmount,
+            takingAmount
         );
 
-        const allInteractions = [
+        const { offsets, interactions } = packInteractions({
             makerAssetData,
             takerAssetData,
             getMakingAmount,
@@ -182,10 +184,7 @@ export class LimitOrderBuilder {
             permit,
             preInteraction,
             postInteraction,
-        ];
-
-        const interactions = ZX + allInteractions.map(trim0x).join('');
-        const offsets = getOffsets(allInteractions, 1);
+        })
 
         return {
             salt,
@@ -193,9 +192,9 @@ export class LimitOrderBuilder {
             takerAsset: takerAssetAddress,
             maker: makerAddress,
             receiver,
-            allowedSender: takerAddress,
-            makingAmount: makerAmount,
-            takingAmount: takerAmount,
+            allowedSender,
+            makingAmount,
+            takingAmount,
             offsets,
             interactions,
         };

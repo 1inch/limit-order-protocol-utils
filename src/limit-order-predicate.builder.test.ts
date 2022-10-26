@@ -1,22 +1,17 @@
-import Web3 from 'web3';
-import {Web3ProviderConnector} from './connector/web3-provider.connector';
-import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import {
     LimitOrderPredicateBuilder,
     LimitOrderPredicateCallData,
 } from './limit-order-predicate.builder';
 import {Erc20Facade} from './erc20.facade';
-import {contractAddresses} from './utils/limit-order-rfq.const';
+import { ChainId } from './model/limit-order-protocol.model';
+import { mocksForChain } from './test/helpers';
 
 describe('PredicateBuilder - for build limit order predicate', () => {
-    const contractAddress = contractAddresses[56];
+    const chainId = ChainId.binanceMainnet;
+    
     const walletAddress = '0xfb3c7eb936caa12b5a884d612393969a557d4307';
     const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c';
 
-    const web3 = new Web3('https://bsc-dataseed.binance.org');
-    const providerConnector = new Web3ProviderConnector(web3);
-
-    let facade: LimitOrderProtocolFacade;
     let predicateBuilder: LimitOrderPredicateBuilder;
     let erc20Facade: Erc20Facade;
 
@@ -24,10 +19,6 @@ describe('PredicateBuilder - for build limit order predicate', () => {
         valuesInPredicate: string[];
         predicate: LimitOrderPredicateCallData;
     } {
-        const balanceOfCallData = erc20Facade.balanceOf(
-            WBNB_ADDRESS,
-            walletAddress
-        );
 
         const timestampBelow1 = 1619860038;
         const nonce1 = 13344354354;
@@ -53,31 +44,37 @@ describe('PredicateBuilder - for build limit order predicate', () => {
             gt,
             lt,
             eq,
+            arbitraryStaticCall,
         } = predicateBuilder;
+
+        const balanceOfCallData = arbitraryStaticCall(
+            WBNB_ADDRESS,
+            erc20Facade.balanceOf(
+                WBNB_ADDRESS,
+                walletAddress,
+            ),
+        );
 
         const predicate = or(
             and(
                 timestampBelow(timestampBelow1),
                 nonceEquals(walletAddress, nonce1),
-                gt(gt1.toString(), WBNB_ADDRESS, balanceOfCallData)
+                gt(gt1.toString(), balanceOfCallData)
             ),
             or(
                 timestampBelow(timestampBelow2),
-                lt(lt1.toString(), WBNB_ADDRESS, balanceOfCallData)
+                lt(lt1.toString(), balanceOfCallData)
             ),
-            eq(eq1.toString(), WBNB_ADDRESS, balanceOfCallData)
+            eq(eq1.toString(), balanceOfCallData)
         );
 
         return {valuesInPredicate, predicate};
     }
 
     beforeEach(() => {
-        facade = new LimitOrderProtocolFacade(
-            contractAddress,
-            providerConnector
-        );
-        erc20Facade = new Erc20Facade(providerConnector);
-        predicateBuilder = new LimitOrderPredicateBuilder(facade);
+        const mocks = mocksForChain(chainId);
+        erc20Facade = mocks.erc20Facade;
+        predicateBuilder = mocks.limitOrderPredicateBuilder;
     });
 
     it('Simple predicate must includes all values and match the snapshot', () => {
@@ -92,6 +89,29 @@ describe('PredicateBuilder - for build limit order predicate', () => {
         const predicate = predicateBuilder.and(
             predicateBuilder.nonceEquals(walletAddress, nonce),
             predicateBuilder.timestampBelow(timestampBelow)
+        );
+
+        const allValuesCheck = valuesInPredicate.every((value) =>
+            predicate.includes(value)
+        );
+
+        expect(predicate).toMatchSnapshot();
+        expect(allValuesCheck).toBe(true);
+    });
+
+    it('Simplyfied predicate must includes all values and match the snapshot', () => {
+        const nonce = 14;
+        const timestampBelow = 1619860038;
+
+        const valuesInPredicate = [
+            nonce.toString(16),
+            timestampBelow.toString(16),
+        ];
+
+        const predicate = predicateBuilder.timestampBelowAndNonceEquals(
+            timestampBelow,
+            nonce,
+            walletAddress,
         );
 
         const allValuesCheck = valuesInPredicate.every((value) =>

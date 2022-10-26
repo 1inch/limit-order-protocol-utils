@@ -1,26 +1,29 @@
-import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
-import Web3 from 'web3';
+import {ErrorResponse, LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import {
+    ChainId,
     LimitOrder,
     LimitOrderProtocolMethods,
 } from './model/limit-order-protocol.model';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
-import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
-import {contractAddresses} from './utils/limit-order-rfq.const';
+import {mocksForChain} from './test/helpers';
+import {unpackInteraction} from './helpers';
+
+class TestErrorResponse extends Error implements ErrorResponse {
+    data: string;
+    
+    constructor(message: string, result: string) {
+        super(message);
+        this.data = result;
+    }
+}
 
 // eslint-disable-next-line max-lines-per-function
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
-    const chainId = 56;
-    const contractAddress = contractAddresses[chainId];
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
 
-    const privateKey =
-        '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
-    const web3 = new Web3('https://bsc-dataseed.binance.org');
-
-    let providerConnector: PrivateKeyProviderConnector;
     let facade: LimitOrderProtocolFacade;
+    let contractAddress: string;
     let limitOrderPredicateBuilder: LimitOrderPredicateBuilder;
     let limitOrderBuilder: LimitOrderBuilder;
 
@@ -29,27 +32,19 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
             takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
             makerAddress: walletAddress,
-            makerAmount: '1000000000000000000',
-            takerAmount: '1000000000000000000',
+            makingAmount: '1000000000000000000',
+            takingAmount: '1000000000000000000',
             predicate,
         });
     }
 
     beforeEach(() => {
-        providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
-
-        facade = new LimitOrderProtocolFacade(
-            contractAddress,
-            providerConnector
-        );
-
-        limitOrderPredicateBuilder = new LimitOrderPredicateBuilder(facade);
-
-        limitOrderBuilder = new LimitOrderBuilder(
-            contractAddress,
-            chainId,
-            providerConnector
-        );
+        const chainId = ChainId.etherumMainnet;
+        const mocks = mocksForChain(chainId);
+        facade = mocks.facade;
+        limitOrderBuilder = mocks.limitOrderBuilder;
+        limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
+        contractAddress = mocks.contractAddress;
 
         jest.spyOn(console, 'error').mockImplementation();
     });
@@ -69,17 +64,17 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 walletAddress,
                 typedData
             );
-            const makerAmount = '1000000000000000000';
-            const takerAmount = '0';
-            const thresholdAmount = '0';
+            const makingAmount = '1000000000000000000';
+            const takingAmount = '0';
+            const skipPermitAndThresholdAmount = '0';
 
-            const callData = facade.fillLimitOrder(
+            const callData = facade.fillLimitOrder({
                 order,
                 signature,
-                makerAmount,
-                takerAmount,
-                thresholdAmount
-            );
+                makingAmount,
+                takingAmount,
+                skipPermitAndThresholdAmount,
+            });
 
             expect(callData).toMatchSnapshot();
         });
@@ -100,18 +95,18 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 walletAddress,
                 typedData
             );
-            const makerAmount = '1000000000000000000';
-            const takerAmount = '0';
-            const thresholdAmount = '0';
+            const makingAmount = '1000000000000000000';
+            const takingAmount = '0';
+            const skipPermitAndThresholdAmount = '0';
             const permit = '242342334320324';
             const targetAddress = walletAddress;
 
             const callData = facade.fillOrderToWithPermit({
                 order,
                 signature,
-                makerAmount,
-                takerAmount,
-                thresholdAmount,
+                makingAmount,
+                takingAmount,
+                skipPermitAndThresholdAmount,
                 permit,
                 targetAddress,
             });
@@ -192,16 +187,37 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
     describe('nonce()', () => {
         it('Return the nonce number of address (for real wallet address)', async () => {
             const nonce = await facade.nonce(
-                '0xbbcf91605c18a9859c1d47abfeed5d2cca7097cf'
+                '0x401394cd75d731e07658203fff34722a68316fca'
             );
 
-            expect(nonce).toBe(2);
+            expect(nonce).toBe(1);
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {
             const nonce = await facade.nonce(contractAddress);
 
             expect(nonce).toBe(0);
+        });
+
+        it('Valid zero nonce on Aurora', async () => {
+            const chainId = ChainId.auroraMainnet;
+            const mocks = mocksForChain(chainId);
+            facade = mocks.facade;
+        
+            const nonce = await facade.nonce(walletAddress);
+
+            expect(nonce).toBe(0);
+        });
+
+        it('Valid non-zero nonce on Aurora', async () => {
+            const chainId = ChainId.auroraMainnet;
+            const mocks = mocksForChain(chainId);
+            facade = mocks.facade;
+        
+            const walletAddress = '0x401394CD75D731e07658203fFF34722A68316FCa';
+            const nonce = await facade.nonce(walletAddress); // real nonce
+
+            expect(nonce).toBe(1);
         });
     });
 
@@ -233,7 +249,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 orderTypedData
             );
 
-            let error = null;
+            let error: ErrorResponse | null = null;
 
             try {
                 await facade.remaining(orderHash);
@@ -241,10 +257,13 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 error = e;
             }
 
-            expect(error?.message?.includes('LOP: Unknown order')).toBe(true);
+            expect(error?.data).toBe('0xb838de96'); // UnknownOrder()
         });
 
-        it('When order is partially filled, then must return remaining amount', async () => {
+        /**
+         * @TODO create tx
+         */
+        it.skip('When order is partially filled, then must return remaining amount', async () => {
             // Order 1INCH > DAI, filled for 40%:
             // https://bscscan.com/tx/0x094d5b48570faa28205d5619980a1eba2d27a0edbbb177ba1b24dc72069c4fd6
             const orderHash =
@@ -255,10 +274,22 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             expect(remaining.toString()).toBe('300000000000000000');
         });
 
-        it('When order is canceled, then must return zero', async () => {
+        /**
+         * @TODO create tx
+         */
+        it.skip('When order is canceled, then must return zero', async () => {
             // Canceled order
             const orderHash =
                 '0x088c329bd399a43b11986f8f873913789bae70ba6860949db094c935b81e975b';
+
+            const remaining = await facade.remaining(orderHash);
+
+            expect(remaining.toString()).toBe('0');
+        });
+
+        it('When order is comletely filled, then must return zero', async () => {
+            const orderHash =
+                '0xeee602fc37ab84704001080c24461473143faba8b4ab60036fc9235f0cb98643';
 
             const remaining = await facade.remaining(orderHash);
 
@@ -302,8 +333,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         it('When provider returns invalid value, then return false', async () => {
             const predicate = await limitOrderPredicateBuilder.eq(
                 '1',
-                walletAddress,
-                '0x000'
+                '0x000',
             );
 
             const order = createOrderWithPredicate(predicate);
@@ -332,12 +362,18 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const order = createOrderWithPredicate(predicate);
 
-            const tokens = [contractAddress, walletAddress];
-            const data = [order.predicate, order.makerAssetData];
+            const result1 = await facade.simulate(contractAddress, predicate);
+            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const result2 = await facade.simulate(walletAddress, makerAssetData);
 
-            const result = await facade.simulateCalls(tokens, data);
-
-            expect(result).toBe(false);
+            expect(result1).toMatchObject({
+                success: false,
+                rawResult: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            });
+            expect(result2).toMatchObject({
+                success: true,
+                rawResult: null,
+            });
         });
 
         it('When an order is invalid by the timestamp predicate then must return false', async () => {
@@ -357,12 +393,18 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const order = createOrderWithPredicate(predicate);
 
-            const tokens = [contractAddress, walletAddress];
-            const data = [order.predicate, order.makerAssetData];
+            const result1 = await facade.simulate(contractAddress, predicate);
+            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const result2 = await facade.simulate(walletAddress, makerAssetData);
 
-            const result = await facade.simulateCalls(tokens, data);
-
-            expect(result).toBe(false);
+            expect(result1).toMatchObject({
+                success: false,
+                rawResult: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            });
+            expect(result2).toMatchObject({
+                success: true,
+                rawResult: null,
+            });
         });
 
         it('When an order is valid by all predicates then must return true', async () => {
@@ -382,75 +424,115 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const order = createOrderWithPredicate(predicate);
 
-            const tokens = [contractAddress, walletAddress];
-            const data = [order.predicate, order.makerAssetData];
+            const result1 = await facade.simulate(contractAddress, predicate);
+            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const result2 = await facade.simulate(walletAddress, makerAssetData);
 
-            const result = await facade.simulateCalls(tokens, data);
+            expect(result1).toMatchObject({
+                success: true,
+                rawResult: '0x0000000000000000000000000000000000000000000000000000000000000001',
+            });
+            expect(result2).toMatchObject({
+                success: true,
+                rawResult: null,
+            });
+        });
 
-            expect(result).toBe(true);
+        it('Valid predicates on Aurora then must return true', async () => {
+            const chainId = ChainId.auroraMainnet;
+            const mocks = mocksForChain(chainId);
+            facade = mocks.facade;
+            limitOrderBuilder = mocks.limitOrderBuilder;
+            limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
+            contractAddress = mocks.contractAddress;
+
+            const timestamp = Math.floor(Date.now() / 1000) + 100; // valid value
+            const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
+                timestamp
+            ); // valid value
+            const nonce = await facade.nonce(walletAddress); // real nonce
+            const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
+                walletAddress,
+                nonce
+            ); // valid value
+
+            const predicate = await limitOrderPredicateBuilder.and(
+                timestampBelow,
+                nonceEquals
+            );
+            const order = createOrderWithPredicate(predicate);
+
+            const result1 = await facade.simulate(contractAddress, predicate);
+            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const result2 = await facade.simulate(walletAddress, makerAssetData);
+
+            expect(result1).toMatchObject({
+                success: true,
+                rawResult: '0x0000000000000000000000000000000000000000000000000000000000000001',
+            });
+            expect(result2).toMatchObject({
+                success: true,
+                rawResult: null,
+            });
         });
     });
 
     it('domainSeparator() return domain separator (used for signing typed data by Ledger)', async () => {
+        const { facade } = mocksForChain(1, '0x9b934b33fef7a899f502bc191e820ae655797ed3');
         const result = await facade.domainSeparator();
 
         expect(result).toBe(
-            '0x253b2ae0fba81f26b1cc99d41b81f2276833ee82b1c98e50bffefff8d4055070'
+            '0x36c0393c32224111f2ce6aef4b834b75ac4358b6fdee79412680cf7c713dbb6a'
         );
     });
 
-    it("parseSimulateTransferResponse() return null when response doesn't contain special prefix", () => {
-        const input =
-            '1111111111' +
-            '000000000000000000000000000000000000000000000000000000000000002' +
-            '000000000000000000000000000000000000000000000000000000000000000' +
-            '124c4f503a20556e6b6e6f776e206f726465720000000000000000000000000000';
+    it("parseSimulateTransferError() return false when simulation call failed", () => {
+        // no data in result
+        const input = new Error('Error: execution reverted');
 
-        const result = facade.parseSimulateTransferResponse(input);
+        const result = facade.parseSimulateTransferError(input as ErrorResponse);
 
-        expect(result).toBe(null);
+        expect(result).toBeNull();
     });
 
-    it("parseSimulateTransferError() return null when response doesn't contain special prefix", () => {
-        const input = 'dddddddddd';
+    it("parseSimulateTransferError() when result isn't returned", () => {
+        const input = new TestErrorResponse(
+            'Returned error: execution reverted',
+            // eslint-disable-next-line max-len
+            '0x1934afc8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000',
+        );
         const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toBe(null);
+        expect(result).toMatchObject({
+            success: true,
+            rawResult: null,
+        });
     });
 
-    it("parseSimulateTransferError() return true when response doesn't contain any zero chars", () => {
-        const input = 'CALL_RESULTS_11';
+    it("parseSimulateTransferError() when false-like result is returned", () => {
+        const input = new TestErrorResponse(
+            'Returned error: execution reverted',
+            // eslint-disable-next-line max-len
+            '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000',
+        );
         const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toBe(true);
+        expect(result).toMatchObject({
+            success: false,
+            rawResult: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        });
     });
 
-    it('parseSimulateTransferError() for Aurora network', () => {
-        const input =
-            'Internal JSON-RPC error. Revert(0x08c379a00000000000000000000000000000000000000000000000000' +
-            '000000000000020000000000000000000000000000000000000000000000000000000000000000e43414c4c5f52' +
-            '4553554c54535f31000000000000000000000000000000000000)';
+    it("parseSimulateTransferError() when true-like result is returned", () => {
+        const input = new TestErrorResponse(
+            'Returned error: execution reverted',
+            // eslint-disable-next-line max-len
+            '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001',
+        );
         const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toBe(true);
-    });
-
-    it('parseSimulateTransferError() return false when response contain zero chars', () => {
-        const input = 'CALL_RESULTS_01';
-        const result = facade.parseSimulateTransferError(input);
-
-        expect(result).toBe(false);
-    });
-
-    it('parseSimulateTransferError() return true when response contains CALL_RESULT as hex', () => {
-        const input = `Error: Internal JSON-RPC error.{
-          "code": -32015,
-          "message": "VM execution error.",
-          "data": "Reverted 0x43414c4c5f524553554c54535f31"}
-        `;
-
-        const result = facade.parseSimulateTransferError(input);
-
-        expect(result).toBe(true);
+        expect(result).toMatchObject({
+            success: true,
+        });
     });
 });

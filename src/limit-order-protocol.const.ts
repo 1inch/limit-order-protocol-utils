@@ -1,10 +1,13 @@
 import {AbiItem} from './model/abi.model';
 import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
+import { SignTypedDataVersion } from '@metamask/eth-sig-util';
 
 export const PROTOCOL_NAME = '1inch Aggregation Router';
 
 export const PROTOCOL_VERSION = '5';
+
+export const TypedDataVersion = SignTypedDataVersion.V4;
 
 export const ZX = '0x';
 

@@ -1,6 +1,6 @@
 {
-    "name": "@1inch/limit-order-protocol-3",
-    "version": "2.0.4",
+    "name": "@1inch/limit-order-protocol-utils",
+    "version": "3.0.0-pre.1",
     "description": "Utility for limit order protocol",
     "main": "index.js",
     "types": "index.d.ts",

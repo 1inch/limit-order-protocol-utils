@@ -1,4 +1,4 @@
-import {LimitOrderProtocolMethods} from './model/limit-order-protocol.model';
+import {LimitOrderProtocolMethods, Nonce} from './model/limit-order-protocol.model';
 import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import {joinStaticCalls} from './utils/limit-order.utils';
@@ -62,7 +62,7 @@ export class LimitOrderPredicateBuilder {
 
     nonceEquals = (
         makerAddress: string,
-        makerNonce: number
+        makerNonce: Nonce,
     ): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(
             LimitOrderProtocolMethods.nonceEquals,
@@ -77,7 +77,11 @@ export class LimitOrderPredicateBuilder {
         );
     };
 
-    timestampBelowAndNonceEquals = (timestamp: number, nonce: number, address: string) => {
+    timestampBelowAndNonceEquals = (
+        timestamp: number,
+        nonce: Nonce,
+        address: string,
+    ): LimitOrderPredicateCallData => {
         const predicateValue = BigInt(address)
             + (BigInt(nonce) << BigInt(160))
             + (BigInt(timestamp) << BigInt(208));
@@ -87,4 +91,14 @@ export class LimitOrderPredicateBuilder {
             [ZX + predicateValue.toString(16)]
         );
     }
+
+    arbitraryStaticCall = (
+        target: string,
+        callData: string
+    ): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(LimitOrderProtocolMethods.arbitraryStaticCall, [
+            target,
+            callData,
+        ]);
+    };
 }

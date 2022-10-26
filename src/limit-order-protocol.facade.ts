@@ -1,7 +1,10 @@
 import {
     LIMIT_ORDER_PROTOCOL_ABI,
-    CALL_RESULTS_PREFIX,
+    EIP712_DOMAIN,
+    PROTOCOL_NAME,
+    PROTOCOL_VERSION,
     ZX,
+    TypedDataVersion,
 } from './limit-order-protocol.const';
 import {
     LimitOrder,
@@ -10,11 +13,13 @@ import {
     LimitOrderSignature,
     RFQOrderInfo,
     RFQOrder,
+    ChainId,
 } from './model/limit-order-protocol.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
-import {getRPCCode} from './utils/get-rpc-code';
-import {getMakingAmountForRFQ, parseSimulateResult} from './utils/limit-order.utils';
+import {getMakingAmountForRFQ} from './utils/limit-order.utils';
+import {getABIFor} from './utils/abi';
+import {TypedDataUtils} from '@metamask/eth-sig-util';
 
 // todo move into model
 export interface FillOrderParams {
@@ -31,9 +36,14 @@ export type FillLimitOrderWithPermitParams = FillOrderParams & {
     permit: string;
 }
 
+export interface ErrorResponse extends Error {
+    data: string,
+}
+
 export class LimitOrderProtocolFacade {
     constructor(
         public readonly contractAddress: string,
+        private readonly chainId: ChainId | number,
         public readonly providerConnector: ProviderConnector
     ) {}
 
@@ -181,15 +191,18 @@ export class LimitOrderProtocolFacade {
                     return response;
                 }
 
-                // Parse error
-                const parsed = this.parseContractResponse(result);
-
-                return Promise.reject(parsed);
+                return Promise.reject(result);
             });
     }
 
     // eslint-disable-next-line max-lines-per-function
-    simulate(targetAddress: string, data: unknown): Promise<{ success: boolean, result: string }> {
+    simulate(
+        targetAddress: string,
+        data: unknown,
+    ): Promise<{
+        success: boolean,
+        rawResult: string,
+    }> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.simulate,
             [targetAddress, data]
@@ -197,17 +210,11 @@ export class LimitOrderProtocolFacade {
 
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
-            // todo is it possible ?
-            .then((result) => {
-                const parsedResult = parseSimulateResult(result);
-                if (parsedResult) {
-                    return parsedResult;
-                }
-
-                throw result;
+            .then(() => {
+                throw new Error('call was successful but revert was expected');
             })
             .catch((result) => {
-                const parsedResult = parseSimulateResult(result);
+                const parsedResult = this.parseSimulateTransferError(result);
                 if (parsedResult) {
                     return parsedResult;
                 }
@@ -216,12 +223,21 @@ export class LimitOrderProtocolFacade {
             });
     }
 
+    // https://github.com/1inch/limit-order-protocol/blob/v3-prerelease/test/helpers/eip712.js#L22
     domainSeparator(): Promise<string> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.DOMAIN_SEPARATOR
-        );
+        const hex = '0x' + TypedDataUtils.hashStruct(
+            'EIP712Domain',
+            {
+                name: PROTOCOL_NAME,
+                version: PROTOCOL_VERSION,
+                chainId: this.chainId,
+                verifyingContract: this.contractAddress,
+            },
+            { EIP712Domain: EIP712_DOMAIN },
+            TypedDataVersion,
+        ).toString('hex')
 
-        return this.providerConnector.ethCall(this.contractAddress, callData);
+        return Promise.resolve(hex);
     }
 
     getContractCallData(
@@ -244,76 +260,34 @@ export class LimitOrderProtocolFacade {
         return null;
     }
 
-    parseSimulateTransferResponse(response: string): boolean | null {
-        const parsed = this.parseContractResponse(response);
+    // eslint-disable-next-line max-lines-per-function
+    parseSimulateTransferError(
+        error: ErrorResponse | string,
+    ): { success: boolean, rawResult: string } | null {
+        const simulationResultsAbi = getABIFor(LIMIT_ORDER_PROTOCOL_ABI, 'SimulationResults');
 
-        if (parsed.startsWith(CALL_RESULTS_PREFIX)) {
-            const data = parsed.replace(CALL_RESULTS_PREFIX, '');
+        if (simulationResultsAbi && typeof error !== 'string' && error.data) {
+            const parsed = this.providerConnector.decodeABICallParameters(
+                simulationResultsAbi.inputs as [],
+                error['data'],
+            );
+            const parsedResult = parsed.res as string | null;
 
-            return !data.includes('0');
+            const success = parsed.success as boolean
+                && this.isSimulationResultResponseSuccessfull(parsedResult);
+            
+            return {
+                success,
+                rawResult: parsed.res as string,
+            };
         }
 
         return null;
     }
 
-    parseSimulateTransferError(error: Error | string): boolean | null {
-        const message = this.stringifyError(error);
-        const isCorrectCode = this.isMsgContainsCorrectCode(message);
-        if (isCorrectCode !== null) {
-            return isCorrectCode;
-        }
+    private isSimulationResultResponseSuccessfull(res: string | null) {
+        if (!res || !res.length) return true;
 
-        try {
-            const code = getRPCCode(message);
-            return code ? this.isMsgContainsCorrectCode(code) : null;
-        } catch (e) {
-            return null;
-        }
-    }
-
-    parseContractResponse(response: string): string {
-        // Aurora network wraps revert message into Revert()
-        const matched = response.match(/Revert\(([^)]+)\)/);
-        const message = matched && matched[1] ? matched[1] : response;
-
-        return this.providerConnector.decodeABIParameter<string>(
-            'string',
-            ZX + message.slice(10)
-        );
-    }
-
-    private isMsgContainsCorrectCode(message: string): boolean | null {
-        const regex = new RegExp('(' + CALL_RESULTS_PREFIX + '\\d+)');
-        const matched = message.match(regex);
-
-        if (matched) {
-            return !matched[0].includes('0');
-        } else {
-            try {
-                const matchParsed = this.parseContractResponse(message).match(
-                    regex
-                );
-
-                if (matchParsed) {
-                    return !matchParsed[0].includes('0');
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        return null;
-    }
-
-    private stringifyError(error: Error | string | unknown): string {
-        if (typeof error === 'string') {
-            return error;
-        }
-
-        if (error instanceof Error) {
-            return error.toString();
-        }
-
-        return JSON.stringify(error);
+        return this.providerConnector.decodeABIParameter<boolean>('bool', res)
     }
 }

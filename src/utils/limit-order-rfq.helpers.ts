@@ -25,7 +25,7 @@ import {PrivateKeyProviderConnector} from '../connector/private-key-provider.con
 export async function createOrderOperation(
     isRunningWithArgv: boolean,
     params?: CreatingParams
-) {
+): Promise<void> {
     const creatingParams =
         params || ((await prompts(createOrderSchema)) as CreatingParams);
 
@@ -43,7 +43,7 @@ export async function createOrderOperation(
 export async function fillOrderOperation(
     isRunningWithArgv: boolean,
     params?: FillingParams
-) {
+): Promise<void>  {
     const fillingParams =
         params || ((await prompts(fillOrderSchema)) as FillingParams);
     const orderForFill: RFQOrder = JSON.parse(fillingParams.order);
@@ -65,7 +65,7 @@ export async function fillOrderOperation(
 export async function cancelOrderOperation(
     isRunningWithArgv: boolean,
     params?: CancelingParams
-) {
+): Promise<void>  {
     const cancelingParams =
         params || ((await prompts(cancelOrderSchema)) as CancelingParams);
 
@@ -135,7 +135,8 @@ export async function fillOrder(
     );
     const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
         contractAddress,
-        providerConnector
+        params.chainId,
+        providerConnector,
     );
 
     const typedData = limitOrderBuilder.buildRFQOrderTypedData(
@@ -184,7 +185,8 @@ export async function cancelOrder(params: CancelingParams): Promise<string> {
 
     const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
         contractAddress,
-        providerConnector
+        params.chainId,
+        providerConnector,
     );
 
     const callData = limitOrderProtocolFacade.cancelRFQOrder(params.orderInfo);
