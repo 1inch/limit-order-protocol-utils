@@ -66,14 +66,15 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const makingAmount = '1000000000000000000';
             const takingAmount = '0';
-            const skipPermitAndThresholdAmount = '0';
+            const thresholdAmount = '0';
 
             const callData = facade.fillLimitOrder({
                 order,
                 signature,
                 makingAmount,
                 takingAmount,
-                skipPermitAndThresholdAmount,
+                thresholdAmount,
+                skipPermit: false,
             });
 
             expect(callData).toMatchSnapshot();
@@ -97,7 +98,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             );
             const makingAmount = '1000000000000000000';
             const takingAmount = '0';
-            const skipPermitAndThresholdAmount = '0';
+            const thresholdAmount = '0';
             const permit = '242342334320324';
             const targetAddress = walletAddress;
 
@@ -106,7 +107,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 signature,
                 makingAmount,
                 takingAmount,
-                skipPermitAndThresholdAmount,
+                thresholdAmount,
+                skipPermit: false,
                 permit,
                 targetAddress,
             });

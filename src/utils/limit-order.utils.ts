@@ -94,3 +94,13 @@ export function unpackTimestampAndNoncePredicate(callData: string): {
         timestamp: predicateValue >> BigInt(208) & BigInt('0xFFFFFFFF'),
     }
 }
+
+export function packSkipPermitAndThresholdAmount(
+    thresholdAmount: string,
+    skipPermit: boolean,
+): string {
+    const skipPermitAndThresholdAmount = BigInt(ZX + trim0x(thresholdAmount))
+        + (BigInt(skipPermit) << BigInt(255));
+
+    return skipPermitAndThresholdAmount.toString(16);
+}

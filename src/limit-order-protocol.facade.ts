@@ -17,7 +17,7 @@ import {
 } from './model/limit-order-protocol.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
-import {getMakingAmountForRFQ} from './utils/limit-order.utils';
+import {getMakingAmountForRFQ, packSkipPermitAndThresholdAmount} from './utils/limit-order.utils';
 import {getABIFor} from './utils/abi';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 
@@ -28,7 +28,8 @@ export interface FillOrderParams {
     interaction?: string;
     makingAmount: string;
     takingAmount: string;
-    skipPermitAndThresholdAmount: string;
+    thresholdAmount: string;
+    skipPermit?: boolean;
 }
 
 export type FillLimitOrderWithPermitParams = FillOrderParams & {
@@ -54,7 +55,8 @@ export class LimitOrderProtocolFacade {
             signature,
             makingAmount,
             takingAmount,
-            skipPermitAndThresholdAmount,
+            thresholdAmount,
+            skipPermit = false,
         } = params;
 
         return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
@@ -63,7 +65,8 @@ export class LimitOrderProtocolFacade {
             interaction,
             makingAmount,
             takingAmount,
-            skipPermitAndThresholdAmount,
+            // skipPermitAndThresholdAmount
+            packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
         ]);
     }
 
@@ -76,7 +79,8 @@ export class LimitOrderProtocolFacade {
             makingAmount,
             takingAmount,
             interaction = ZX,
-            skipPermitAndThresholdAmount,
+            thresholdAmount,
+            skipPermit = false,
             targetAddress,
             permit,
         } = params;
@@ -89,7 +93,8 @@ export class LimitOrderProtocolFacade {
                 interaction,
                 makingAmount,
                 takingAmount,
-                skipPermitAndThresholdAmount,
+                // skipPermitAndThresholdAmount
+                packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
                 targetAddress,
                 permit
             ],

@@ -1,4 +1,4 @@
-import { unpackTimestampAndNoncePredicate } from "./limit-order.utils";
+import { packSkipPermitAndThresholdAmount, unpackTimestampAndNoncePredicate } from "./limit-order.utils";
 
 describe("limit-order.utils", () => {
     describe("unpackTimestampAndNoncePredicate", () => {
@@ -42,5 +42,23 @@ describe("limit-order.utils", () => {
                 timestamp: 1619860038n,
             })
         });
+    });
+});
+
+
+describe("packSkipPermitAndThresholdAmount", () => {
+    const thresholdAmount = BigInt(2)**BigInt(254);
+    it("with skip", () => {
+        expect(
+            packSkipPermitAndThresholdAmount(thresholdAmount.toString(16), true)
+        ).toBe(
+            (thresholdAmount + (BigInt(1) << BigInt(255))).toString(16),
+        );
+    });
+
+    it("without skip", () => {
+        expect(
+            packSkipPermitAndThresholdAmount(thresholdAmount.toString(16), false)
+        ).toBe((thresholdAmount.toString(16)));
     });
 });
