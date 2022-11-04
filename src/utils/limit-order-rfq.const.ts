@@ -135,16 +135,16 @@ export const rpcUrls: {[key in ChainId]: string} = {
 };
 
 export const contractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x9b934b33fef7a899f502bc191e820ae655797ed3'.toLowerCase(),
-    [ChainId.binanceMainnet]: '0xA0F3B13fBD36DF6DBeB6E4865dFc2AD3a4b5a12D'.toLowerCase(),
-    [ChainId.polygonMainnet]: '0x0e6B8845f6a316F92EfBaF30af21FF9e78F0008f'.toLowerCase(),
-    [ChainId.optimismMainnet]: '0x0312f889B8B58B0deb73A3746b7Cb3e12632C80a'.toLowerCase(),
-    [ChainId.arbitrumMainnet]: '0x2A71693A4d88b4f6AE6697A87b3524c04B92ab38'.toLowerCase(),
-    [ChainId.auroraMainnet]: '0x8266c553f269b2eEb2370539193bCD0Eff8cC2De'.toLowerCase(),
-    [ChainId.gnosisMainnet]: '0xb707d89D29c189421163515c59E42147371D6857'.toLowerCase(),
-    [ChainId.avalancheMainnet]: '0x93131EFeE501d5721737C32576238F619548edda'.toLowerCase(),
-    [ChainId.fantomMainnet]: '0x2EC255797FEF7669fA243509b7a599121148FFba'.toLowerCase(),
-    [ChainId.klaytnMainnet]: '0x2EC255797FEF7669fA243509b7a599121148FFba'.toLowerCase(),
+    [ChainId.etherumMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.binanceMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.polygonMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.optimismMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.arbitrumMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.auroraMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.gnosisMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.avalancheMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.fantomMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582'.toLowerCase(),
+    [ChainId.klaytnMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
 };
 
 

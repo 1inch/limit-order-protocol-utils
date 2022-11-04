@@ -18,6 +18,11 @@ class TestErrorResponse extends Error implements ErrorResponse {
     }
 }
 
+const BETA_CONTRACT_ADDRESSES = {
+    [ChainId.etherumMainnet]: '0x9b934b33fef7a899f502bc191e820ae655797ed3',
+    [ChainId.auroraMainnet]: '0x8266c553f269b2eEb2370539193bCD0Eff8cC2De'.toLowerCase(),
+}
+
 // eslint-disable-next-line max-lines-per-function
 describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
@@ -40,7 +45,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     beforeEach(() => {
         const chainId = ChainId.etherumMainnet;
-        const mocks = mocksForChain(chainId);
+        
+        const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
         facade = mocks.facade;
         limitOrderBuilder = mocks.limitOrderBuilder;
         limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
@@ -203,7 +209,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
         it('Valid zero nonce on Aurora', async () => {
             const chainId = ChainId.auroraMainnet;
-            const mocks = mocksForChain(chainId);
+            const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
             facade = mocks.facade;
         
             const nonce = await facade.nonce(walletAddress);
@@ -213,7 +219,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
         it('Valid non-zero nonce on Aurora', async () => {
             const chainId = ChainId.auroraMainnet;
-            const mocks = mocksForChain(chainId);
+            const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
             facade = mocks.facade;
         
             const walletAddress = '0x401394CD75D731e07658203fFF34722A68316FCa';
