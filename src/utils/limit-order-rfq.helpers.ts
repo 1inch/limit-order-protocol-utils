@@ -106,8 +106,8 @@ export function createOrder(params: CreatingParams): RFQOrder {
         makerAddress: walletAddress,
         makerAssetAddress: params.makerAssetAddress,
         takerAssetAddress: params.takerAssetAddress,
-        makerAmount: params.makerAmount,
-        takerAmount: params.takerAmount,
+        makingAmount: params.makingAmount,
+        takingAmount: params.takingAmount,
         takerAddress: params.takerAddress || undefined,
     });
 }
@@ -151,8 +151,8 @@ export async function fillOrder(
     const callData = limitOrderProtocolFacade.fillRFQOrder(
         order,
         signature,
-        params.makerAmount,
-        params.takerAmount
+        params.makingAmount,
+        params.takingAmount
     );
 
     const txConfig: TransactionConfig = {

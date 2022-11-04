@@ -5,8 +5,8 @@ export interface CreatingParams {
     expiresIn: number;
     makerAssetAddress: string;
     takerAssetAddress: string;
-    makerAmount: string;
-    takerAmount: string;
+    makingAmount: string;
+    takingAmount: string;
     takerAddress?: string;
 }
 
@@ -15,8 +15,8 @@ export interface FillingParams {
     privateKey: string;
     gasPrice: number;
     order: string;
-    makerAmount: string;
-    takerAmount: string;
+    makingAmount: string;
+    takingAmount: string;
     domainName?: string;
 }
 

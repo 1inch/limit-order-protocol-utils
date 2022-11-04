@@ -104,14 +104,14 @@ export class LimitOrderProtocolFacade {
     fillRFQOrder(
         order: RFQOrder,
         signature: LimitOrderSignature,
-        makerAmount?: string,
-        takerAmount?: string
+        makingAmount?: string,
+        takingAmount?: string
     ): string {
         let flagsAndAmount = '0';
-        if (makerAmount) {
-            flagsAndAmount = getMakingAmountForRFQ(makerAmount);
-        } else if (takerAmount) {
-            flagsAndAmount = takerAmount;
+        if (makingAmount) {
+            flagsAndAmount = getMakingAmountForRFQ(makingAmount);
+        } else if (takingAmount) {
+            flagsAndAmount = takingAmount;
         }
 
         return this.getContractCallData(

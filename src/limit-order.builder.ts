@@ -123,8 +123,8 @@ export class LimitOrderBuilder {
         takerAssetAddress,
         makerAddress,
         takerAddress = ZERO_ADDRESS,
-        makerAmount,
-        takerAmount,
+        makingAmount,
+        takingAmount,
     }: RFQOrderData): RFQOrder {
         return {
             info: generateRFQOrderInfo(id, expiresInTimestamp, wrapEth),
@@ -132,8 +132,8 @@ export class LimitOrderBuilder {
             takerAsset: takerAssetAddress,
             maker: makerAddress,
             allowedSender: takerAddress,
-            makingAmount: makerAmount,
-            takingAmount: takerAmount,
+            makingAmount,
+            takingAmount,
         };
     }
     /* eslint-enable max-lines-per-function */
@@ -216,13 +216,13 @@ export class LimitOrderBuilder {
     // Get nonce from contract (nonce method) and put it to predicate on order creating
     private getAmountData(
         methodName: LimitOrderProtocolMethods,
-        makerAmount: string,
-        takerAmount: string,
+        makingAmount: string,
+        takingAmount: string,
         swapTakerAmount = '0'
     ): string {
         return this.getContractCallData(methodName, [
-            makerAmount,
-            takerAmount,
+            makingAmount,
+            takingAmount,
             swapTakerAmount,
         ]).substr(0, 2 + 68 * 2);
     }

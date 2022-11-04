@@ -132,8 +132,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
                 makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',
                 takerAssetAddress: '0x49feb353fdf1d396a959973216cbac10ef11e7bf',
-                makerAmount: '1000000000000000000',
-                takerAmount: '6500000000000000000',
+                makingAmount: '1000000000000000000',
+                takingAmount: '6500000000000000000',
             });
 
             const typedData = limitOrderBuilder.buildRFQOrderTypedData(order);
@@ -141,14 +141,14 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 walletAddress,
                 typedData
             );
-            const makerAmount = '1000000000000000000';
-            const takerAmount = '0';
+            const makingAmount = '1000000000000000000';
+            const takingAmount = '0';
 
             const callData = facade.fillRFQOrder(
                 order,
                 signature,
-                makerAmount,
-                takerAmount
+                makingAmount,
+                takingAmount
             );
 
             expect(callData).toMatchSnapshot();
@@ -180,8 +180,8 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 takerAddress: '0x9741db81f7b3b23ef66f285ed5c7dc2cb94b601e',
                 makerAssetAddress: '0xae6c77d06226742a333a6d2991fe3331889c09a6',
                 takerAssetAddress: '0x49feb353fdf1d396a959973216cbac10ef11e7bf',
-                makerAmount: '1000000000000000000',
-                takerAmount: '6500000000000000000',
+                makingAmount: '1000000000000000000',
+                takingAmount: '6500000000000000000',
             });
 
             const callData = facade.cancelRFQOrder(order.info);

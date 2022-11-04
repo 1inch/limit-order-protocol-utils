@@ -65,13 +65,13 @@ export const createOrderSchema: PromptObject[] = [
     },
     {
         type: 'text',
-        name: 'makerAmount',
-        message: 'Maker asset amount',
+        name: 'makingAmount',
+        message: 'Making asset amount',
     },
     {
         type: 'text',
-        name: 'takerAmount',
-        message: 'Taker asset amount',
+        name: 'takingAmount',
+        message: 'Taking asset amount',
     },
     {
         type: 'text',
@@ -95,14 +95,14 @@ export const fillOrderSchema: PromptObject[] = [
     },
     {
         type: 'text',
-        name: 'makerAmount',
+        name: 'makingAmount',
         message:
-            'Maker asset fill amount (set 0 if you will use taker asset amount)',
+            'Making asset fill amount (set 0 if you will use taking asset amount)',
     },
     {
         type: 'text',
-        name: 'takerAmount',
-        message: 'Taker asset amount (set 0 if has set maker asset amount)',
+        name: 'takingAmount',
+        message: 'Taking asset amount (set 0 if has set making asset amount)',
     },
 ];
 

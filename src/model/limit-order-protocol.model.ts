@@ -46,8 +46,8 @@ export interface RFQOrderData {
     expiresInTimestamp: number;
     makerAssetAddress: string;
     takerAssetAddress: string;
-    makerAmount: string;
-    takerAmount: string;
+    makingAmount: string;
+    takingAmount: string;
     makerAddress: string;
     takerAddress?: string; // Optional, by default = ZERO_ADDRESS
 }

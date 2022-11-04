@@ -195,8 +195,8 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 takerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 makerAddress,
-                makerAmount: '5',
-                takerAmount: '600',
+                makingAmount: '5',
+                takingAmount: '600',
             });
 
             expect(RFQorder).toMatchSnapshot();
