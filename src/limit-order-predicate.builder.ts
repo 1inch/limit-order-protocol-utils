@@ -70,15 +70,21 @@ export class LimitOrderPredicateBuilder {
         );
     };
 
-    timestampBelow = (timestamp: number): LimitOrderPredicateCallData => {
+    /**
+     * @param timestamp seconds unit
+     */
+    timestampBelow = (timestamp: number | bigint): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(
             LimitOrderProtocolMethods.timestampBelow,
             [ZX + timestamp.toString(16)]
         );
     };
 
+    /**
+     * @param timestamp seconds unit
+     */
     timestampBelowAndNonceEquals = (
-        timestamp: number,
+        timestamp: number | bigint,
         nonce: Nonce,
         address: string,
     ): LimitOrderPredicateCallData => {

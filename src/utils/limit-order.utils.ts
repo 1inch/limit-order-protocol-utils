@@ -1,5 +1,10 @@
 import {ZX} from '../limit-order-protocol.const';
 
+export const UINT32_BITS = BigInt(32);
+export const UINT32_BITMASK = BigInt('0xFFFFFFFF');
+export const UINT48_BITMASK = BigInt('0xFFFFFFFFFFFF');
+export const ADDRESS_MASK = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
+
 export function trim0x(hexString: string): string {
     if (hexString.startsWith('0x')) {
         return hexString.substring(2);
@@ -22,8 +27,8 @@ export function getOffsets(data: string[]): string {
             return BigInt(hex.length / 2);
         })
         .map(cumulativeSum)
-        .reduce((acc, a, i) => {
-            return acc + (BigInt(a) << ((BigInt(32) * BigInt(i))));
+        .reduce((bytesAccumularot, offset, index) => {
+            return bytesAccumularot + (BigInt(offset) << ((UINT32_BITS * BigInt(index))));
         }, BigInt(0))
         .toString();
 }
@@ -48,11 +53,10 @@ export function parseInteractionForField(
 }
 
 function getOffsetForInteraction(offsets: bigint, field: number) {
-    const mask = BigInt('0xFFFFFFFF');
     const fromByteBN = field === 0
         ? '0'
-        : offsets >> BigInt((field - 1) * 32) & mask;
-    const toByteBN = offsets >> BigInt(field * 32) & mask;
+        : offsets >> BigInt((field - 1) * 32) & UINT32_BITMASK;
+    const toByteBN = offsets >> BigInt(field * 32) & UINT32_BITMASK;
 
     return {
         fromByte: parseInt(fromByteBN.toString()),
@@ -70,28 +74,27 @@ function setN(value: bigint, bitNumber: number, flag: boolean): bigint {
     return value | (BigInt(bit) << BigInt(bitNumber));
 }
 
-export const ADDRESS_MASK = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
-export const TIMESTAMP_AND_NOUNCE_SELECTOR = '2cc2878d';
-
-const PREDICATE_REGEX = new RegExp(`^\\w*${TIMESTAMP_AND_NOUNCE_SELECTOR}0*`, 'g')
+export const TIMESTAMP_AND_NOUNCE_SELECTOR = '2cc2878d'; // timestampBelowAndNonceEquals(uint256)
+const TIMESTAMP_AND_NOUNCE_ARGS_SIZE = 256 / 4;
+const PREDICATE_REGEX = new RegExp(`^\\w*${TIMESTAMP_AND_NOUNCE_SELECTOR}`, 'g');
 
 export function unpackTimestampAndNoncePredicate(callData: string): {
     address: string,
     nonce: bigint,
     timestamp: bigint,
 } {
-    const predicateCalldata = trim0x(callData).length <= 60
+    const calldata = trim0x(callData).length <= TIMESTAMP_AND_NOUNCE_ARGS_SIZE
         ? trim0x(callData)
         : trim0x(callData).replace(
             PREDICATE_REGEX,
             '',
-        ).substring(0, 60);
+        ).substring(0, TIMESTAMP_AND_NOUNCE_ARGS_SIZE);
 
-    const predicateValue = BigInt(ZX + predicateCalldata);
+    const timeNonceAccount = BigInt(ZX + calldata);
     return {
-        address: ZX + (predicateValue >> BigInt(0) & ADDRESS_MASK).toString(16),
-        nonce: predicateValue >> BigInt(160) & BigInt('0xFFFFFF'),
-        timestamp: predicateValue >> BigInt(208) & BigInt('0xFFFFFFFF'),
+        address: ZX + (timeNonceAccount >> BigInt(0) & ADDRESS_MASK).toString(16),
+        nonce: timeNonceAccount >> BigInt(160) & UINT48_BITMASK,
+        timestamp: timeNonceAccount >> BigInt(208) & UINT48_BITMASK,
     }
 }
 
