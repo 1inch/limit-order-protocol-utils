@@ -42,6 +42,27 @@ export function joinStaticCalls(data: string[]): { offsets: string, data: string
     };
 }
 
+export function unpackStaticCalls(offsets: string | bigint, interactions: string): string[] {
+    const offsetsBI = BigInt(offsets);
+    const data = trim0x(interactions);
+
+    const result: string[] = [];
+    let previous = BigInt(0);
+    let current = BigInt(0);
+    // See PredicateHelper.and in limit-order-protocol
+    for (
+        let i = BigInt(0);
+        (current = (offsetsBI >> i) & UINT32_BITMASK);
+        i += UINT32_BITS
+    ) {
+        const calldata = data.slice(Number(previous) * 2, Number(current) * 2);
+        result.push(calldata);
+        previous = current;
+    }
+
+    return result;
+}
+
 export function parseInteractionForField(
     offsets: bigint,
     interactions: string,
