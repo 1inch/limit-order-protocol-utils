@@ -153,8 +153,8 @@ export class LimitOrderBuilder {
         takingAmount,
         predicate = ZX,
         permit = ZX,
-        getMakingAmount,
-        getTakingAmount,
+        getMakingAmount = ZX,
+        getTakingAmount = ZX,
         preInteraction = ZX,
         postInteraction = ZX,
         salt = this.generateSalt(),
@@ -162,18 +162,6 @@ export class LimitOrderBuilder {
 
         const makerAssetData = ZX;
         const takerAssetData = ZX;
-
-        getMakingAmount = getMakingAmount ?? this.getAmountData(
-            LimitOrderProtocolMethods.getMakingAmount,
-            makingAmount,
-            takingAmount
-        );
-
-        getTakingAmount = getTakingAmount ?? this.getAmountData(
-            LimitOrderProtocolMethods.getTakingAmount,
-            makingAmount,
-            takingAmount
-        );
 
         const { offsets, interactions } = packInteractions({
             makerAssetData,
@@ -213,8 +201,10 @@ export class LimitOrderBuilder {
         );
     }
 
-    // Get nonce from contract (nonce method) and put it to predicate on order creating
-    private getAmountData(
+    /**
+     * Get nonce from contract (nonce method) and put it to predicate on order creating
+     */
+    getCustomAmountData(
         methodName: LimitOrderProtocolMethods,
         makingAmount: string,
         takingAmount: string,
