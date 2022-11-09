@@ -6,7 +6,7 @@ import {
 } from './model/limit-order-protocol.model';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
-import {mocksForChain} from './test/helpers';
+import {BETA_CONTRACT_ADDRESSES, mocksForChain} from './test/helpers';
 import {unpackInteraction} from './helpers';
 
 class TestErrorResponse extends Error implements ErrorResponse {
@@ -16,11 +16,6 @@ class TestErrorResponse extends Error implements ErrorResponse {
         super(message);
         this.data = result;
     }
-}
-
-const BETA_CONTRACT_ADDRESSES = {
-    [ChainId.etherumMainnet]: '0x9b934b33fef7a899f502bc191e820ae655797ed3',
-    [ChainId.auroraMainnet]: '0x8266c553f269b2eEb2370539193bCD0Eff8cC2De'.toLowerCase(),
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -198,13 +193,13 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 '0x401394cd75d731e07658203fff34722a68316fca'
             );
 
-            expect(nonce).toBe(1);
+            expect(nonce).toBe(1n);
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {
             const nonce = await facade.nonce(contractAddress);
 
-            expect(nonce).toBe(0);
+            expect(nonce).toBe(0n);
         });
 
         it('Valid zero nonce on Aurora', async () => {
@@ -214,7 +209,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         
             const nonce = await facade.nonce(walletAddress);
 
-            expect(nonce).toBe(0);
+            expect(nonce).toBe(0n);
         });
 
         it('Valid non-zero nonce on Aurora', async () => {
@@ -225,7 +220,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const walletAddress = '0x401394CD75D731e07658203fFF34722A68316FCa';
             const nonce = await facade.nonce(walletAddress); // real nonce
 
-            expect(nonce).toBe(1);
+            expect(nonce).toBe(1n);
         });
     });
 
@@ -361,7 +356,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
-                nonce + 1
+                nonce + 1n,
             ); // invalid value
 
             const predicate = await limitOrderPredicateBuilder.and(
@@ -392,7 +387,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
-                nonce
+                nonce,
             ); // valid value
 
             const predicate = await limitOrderPredicateBuilder.and(
@@ -423,7 +418,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
-                nonce
+                nonce,
             ); // valid value
 
             const predicate = await limitOrderPredicateBuilder.and(
@@ -461,7 +456,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const nonce = await facade.nonce(walletAddress); // real nonce
             const nonceEquals = limitOrderPredicateBuilder.nonceEquals(
                 walletAddress,
-                nonce
+                nonce,
             ); // valid value
 
             const predicate = await limitOrderPredicateBuilder.and(

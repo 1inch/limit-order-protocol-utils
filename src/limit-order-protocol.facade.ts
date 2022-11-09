@@ -13,13 +13,12 @@ import {
     LimitOrderSignature,
     RFQOrderInfo,
     RFQOrder,
-    ChainId,
 } from './model/limit-order-protocol.model';
-import {ProviderConnector} from './connector/provider.connector';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getMakingAmountForRFQ, packSkipPermitAndThresholdAmount} from './utils/limit-order.utils';
 import {getABIFor} from './utils/abi';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
+import { AbstractSmartcontractFacade } from './utils/abstract-facade';
 
 // todo move into model
 export interface FillOrderParams {
@@ -41,12 +40,7 @@ export interface ErrorResponse extends Error {
     data: string,
 }
 
-export class LimitOrderProtocolFacade {
-    constructor(
-        public readonly contractAddress: string,
-        private readonly chainId: ChainId | number,
-        public readonly providerConnector: ProviderConnector
-    ) {}
+export class LimitOrderProtocolFacade extends AbstractSmartcontractFacade {
 
     fillLimitOrder(params: FillOrderParams): string {
         const {
@@ -70,7 +64,13 @@ export class LimitOrderProtocolFacade {
         ]);
     }
 
-    // todo
+    /**
+     * @param params.interaction pre-interaction in fact.
+     * @param params.skipPermit skip maker's permit evaluation if it was evaluated before.
+     * Useful if multiple orders was created with same nonce.
+     * 
+     * Tip: you can just check if allowance exsists and then set it to `true`.
+     */
     // eslint-disable-next-line max-lines-per-function
     fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
         const {
@@ -133,7 +133,7 @@ export class LimitOrderProtocolFacade {
         );
     }
 
-    nonce(makerAddress: string): Promise<number> {
+    nonce(makerAddress: string): Promise<bigint> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.nonce,
             [makerAddress]
@@ -141,7 +141,7 @@ export class LimitOrderProtocolFacade {
 
         return this.providerConnector
             .ethCall(this.contractAddress, callData)
-            .then((nonce) => BigNumber.from(nonce).toNumber());
+            .then((nonce) => BigInt(nonce));
     }
 
     advanceNonce(count: number): string {
