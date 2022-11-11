@@ -40,7 +40,10 @@ export interface ErrorResponse extends Error {
     data: string,
 }
 
-export class LimitOrderProtocolFacade extends AbstractSmartcontractFacade {
+export class LimitOrderProtocolFacade
+    extends AbstractSmartcontractFacade<LimitOrderProtocolMethods>
+{
+    ABI = LIMIT_ORDER_PROTOCOL_ABI;
 
     fillLimitOrder(params: FillOrderParams): string {
         const {
@@ -224,7 +227,7 @@ export class LimitOrderProtocolFacade extends AbstractSmartcontractFacade {
                     return parsedResult;
                 }
 
-                throw result;
+                throw { success: false, rawResult: result };
             });
     }
 
@@ -243,18 +246,6 @@ export class LimitOrderProtocolFacade extends AbstractSmartcontractFacade {
         ).toString('hex')
 
         return Promise.resolve(hex);
-    }
-
-    getContractCallData(
-        methodName: LimitOrderProtocolMethods,
-        methodParams: unknown[] = []
-    ): string {
-        return this.providerConnector.contractEncodeABI(
-            LIMIT_ORDER_PROTOCOL_ABI,
-            this.contractAddress,
-            methodName,
-            methodParams
-        );
     }
 
     parseRemainingResponse(response: string): BigNumber | null {

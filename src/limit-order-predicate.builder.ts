@@ -1,10 +1,18 @@
-import {LimitOrderProtocolMethods, Nonce} from './model/limit-order-protocol.model';
+import {
+    LimitOrderProtocolMethods,
+    Nonce,
+    PredicateTimestamp,
+} from './model/limit-order-protocol.model';
 import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import {joinStaticCalls} from './utils/limit-order.utils';
+import { AbstractSmartcontractFacade } from './utils/abstract-facade';
 
 export type LimitOrderPredicateCallData = string;
 
+/**
+ * All methods is lambdas to preserve `this` context and allow DSL-like usage
+ */
 export class LimitOrderPredicateBuilder {
     constructor(private readonly facade: LimitOrderProtocolFacade) {}
 
@@ -60,6 +68,13 @@ export class LimitOrderPredicateBuilder {
         ]);
     };
 
+    nonce(makerAddress: string): LimitOrderPredicateCallData {
+        return this.facade.getContractCallData(
+            LimitOrderProtocolMethods.nonce,
+            [makerAddress]
+        );
+    }
+
     nonceEquals = (
         makerAddress: string,
         makerNonce: Nonce,
@@ -73,7 +88,7 @@ export class LimitOrderPredicateBuilder {
     /**
      * @param timestamp seconds unit
      */
-    timestampBelow = (timestamp: number | bigint): LimitOrderPredicateCallData => {
+    timestampBelow = (timestamp: PredicateTimestamp): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(
             LimitOrderProtocolMethods.timestampBelow,
             [ZX + timestamp.toString(16)]
@@ -84,7 +99,7 @@ export class LimitOrderPredicateBuilder {
      * @param timestamp seconds unit
      */
     timestampBelowAndNonceEquals = (
-        timestamp: number | bigint,
+        timestamp: PredicateTimestamp,
         nonce: Nonce,
         address: string,
     ): LimitOrderPredicateCallData => {
@@ -99,12 +114,27 @@ export class LimitOrderPredicateBuilder {
     }
 
     arbitraryStaticCall = (
-        target: string,
+        target: string | AbstractSmartcontractFacade<string>,
         callData: string
     ): LimitOrderPredicateCallData => {
+        const address = target instanceof AbstractSmartcontractFacade
+            ? target.contractAddress
+            : target;
+
+        if (address.toLowerCase() === this.facade.contractAddress.toLowerCase()) {
+            console.warn(
+                'Unnecessary arbitraryStaticCall(). '
+                + 'Omit it when interacting with limit-order-protocol methods.'
+            );
+
+            return callData;
+        }
+
         return this.facade.getContractCallData(LimitOrderProtocolMethods.arbitraryStaticCall, [
-            target,
+            address,
             callData,
         ]);
     };
+
+    
 }

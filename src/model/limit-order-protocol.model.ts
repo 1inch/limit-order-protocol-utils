@@ -1,4 +1,3 @@
-import {EIP712Object} from './eip712.model';
 import {LimitOrderPredicateCallData} from '../limit-order-predicate.builder';
 
 export enum ChainId {
@@ -49,7 +48,10 @@ export interface RFQOrderData {
     makingAmount: string;
     takingAmount: string;
     makerAddress: string;
-    takerAddress?: string; // Optional, by default = ZERO_ADDRESS
+    /**
+     * Formerly takerAddress
+     */
+    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
 }
 
 /**
@@ -76,9 +78,17 @@ export type LimitOrderInteractions = {
     interactions: string;
 }
 
+/**
+ * uint40
+ */
 export type Nonce = number | bigint;
 
-export interface RFQOrder extends EIP712Object {
+/**
+ * seconds unit40
+ */
+export type PredicateTimestamp = number | bigint;
+
+export interface RFQOrder {
     info: RFQOrderInfo;
     makerAsset: string;
     takerAsset: string;
