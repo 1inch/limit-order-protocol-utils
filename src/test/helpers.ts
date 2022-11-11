@@ -8,6 +8,7 @@ import Web3 from "web3";
 import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
+import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
 
 
 export function mocksForChain(
@@ -41,13 +42,15 @@ export function mocksForChain(
         chainId,
         providerConnector,
     );
+    const seriesNonceManagerPredicateBuilder = new SeriesNonceManagerPredicateBuilder(seriesNonceManagerFacade);
 
     return {
         facade,
         erc20Facade,
-        seriesNonceManagerFacade,
         limitOrderPredicateBuilder,
         limitOrderBuilder,
+        seriesNonceManagerFacade,
+        seriesNonceManagerPredicateBuilder,
         contractAddress,
         seriesNonceManagerContractAddress,
         providerConnector,

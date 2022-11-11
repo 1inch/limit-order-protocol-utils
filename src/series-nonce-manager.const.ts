@@ -5,14 +5,14 @@ import SeriesNonceManagerABISource from './abi/SeriesNonceManagerABI.json';
 export const SERIES_NONCE_MANAGER_ABI: AbiItem[] = SeriesNonceManagerABISource;
 
 export const seriesNonceManagerContractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x2dadf9264db7eb9e24470a2e6c73efbc4bdf01aa',
-    [ChainId.binanceMainnet]: '0x1488a117641ed5d2d29ab3ed2397963fdefec25e',
-    [ChainId.polygonMainnet]: '0x302a6eda4e2b2c563a80cc17bd80a1251b986677',
-    [ChainId.optimismMainnet]: '0xcbdb7490968d4dbf183c60fc899c2e9fbd445308',
-    [ChainId.arbitrumMainnet]: '0xd41b24bba51fac0e4827b6f94c0d6ddeb183cd64',
-    [ChainId.gnosisMainnet]: '0xe26a18b00e4827ed86bc136b2c1e95d5ae115edd',
-    [ChainId.avalancheMainnet]: '0x735247fb0a604c0adc6cab38ace16d0dba31295f',
-    [ChainId.fantomMainnet]: '0x54431918cec22932fcf97e54769f4e00f646690f',
-    [ChainId.auroraMainnet]: '0x54431918cec22932fcf97e54769f4e00f646690f',
-    [ChainId.klaytnMainnet]: '0x54431918cEC22932fCF97E54769F4E00f646690F',
+    [ChainId.etherumMainnet]: '0x303389f541ff2d620e42832f180a08e767b28e10',
+    [ChainId.binanceMainnet]: '0x58ce0e6ef670c9a05622f4188faa03a9e12ee2e4',
+    [ChainId.polygonMainnet]: '0xa5eb255ef45dfb48b5d133d08833def69871691d',
+    [ChainId.optimismMainnet]: '0x32d12a25f539e341089050e2d26794f041fc9df8',
+    [ChainId.arbitrumMainnet]: '0xd7936052d1e096d48c81ef3918f9fd6384108480',
+    [ChainId.gnosisMainnet]: '0x11431a89893025d2a48dca4eddc396f8c8117187',
+    [ChainId.avalancheMainnet]: '0x2ec255797fef7669fa243509b7a599121148ffba',
+    [ChainId.auroraMainnet]: '0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9',
+    [ChainId.fantomMainnet]: '0x7871769b3816b23dB12E83a482aAc35F1FD35D4B',
+    [ChainId.klaytnMainnet]: '0x7871769b3816b23dB12E83a482aAc35F1FD35D4B',
 };

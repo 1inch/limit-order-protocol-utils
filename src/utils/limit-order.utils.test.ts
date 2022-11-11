@@ -90,7 +90,6 @@ describe("limit-order.utils", () => {
             );
 
             expect(
-                // eslint-disable-next-line max-len
                 unpackTimestampAndNoncePredicate(predicate)
             ).toMatchObject({
                 address: walletAddress.toLowerCase(),
@@ -106,11 +105,7 @@ describe("limit-order.utils", () => {
                 walletAddress,
             )
 
-            console.log({
-                UINT48_BITMASK, predicate
-            })
             expect(
-                // eslint-disable-next-line max-len
                 unpackTimestampAndNoncePredicate(predicate)
             ).toMatchObject({
                 address: walletAddress.toLowerCase(),
