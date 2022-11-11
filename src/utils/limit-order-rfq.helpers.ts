@@ -108,7 +108,7 @@ export function createOrder(params: CreatingParams): RFQOrder {
         takerAssetAddress: params.takerAssetAddress,
         makingAmount: params.makingAmount,
         takingAmount: params.takingAmount,
-        takerAddress: params.takerAddress || undefined,
+        allowedSender: params.allowedSender || undefined,
     });
 }
 /* eslint-enable max-lines-per-function */

@@ -110,7 +110,9 @@ export class LimitOrderBuilder {
                 chainId: this.chainId,
                 verifyingContract: this.contractAddress,
             },
-            message: order,
+            message: {
+                ...order
+            },
         };
     }
 
@@ -122,7 +124,7 @@ export class LimitOrderBuilder {
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
-        takerAddress = ZERO_ADDRESS,
+        allowedSender = ZERO_ADDRESS,
         makingAmount,
         takingAmount,
     }: RFQOrderData): RFQOrder {
@@ -131,7 +133,7 @@ export class LimitOrderBuilder {
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             maker: makerAddress,
-            allowedSender: takerAddress,
+            allowedSender,
             makingAmount,
             takingAmount,
         };

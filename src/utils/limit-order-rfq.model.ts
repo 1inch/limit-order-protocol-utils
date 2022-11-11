@@ -7,7 +7,10 @@ export interface CreatingParams {
     takerAssetAddress: string;
     makingAmount: string;
     takingAmount: string;
-    takerAddress?: string;
+    /**
+     * Formerly takerAddress
+     */
+    allowedSender?: string;
 }
 
 export interface FillingParams {
