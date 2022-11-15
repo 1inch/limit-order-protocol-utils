@@ -24,10 +24,11 @@
         "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
+        "@ethersproject/abi": "^5.1.1",
         "@ethersproject/bignumber": "^5.1.1",
-        "@metamask/eth-sig-util": "^4.0.1",
+        "@metamask/eth-sig-util": "^5.0.2",
         "prompts": "^2.4.1",
-        "web3": "^1.5.1",
+        "web3": "^1.8.1",
         "yargs": "^17.0.1"
     },
     "devDependencies": {
