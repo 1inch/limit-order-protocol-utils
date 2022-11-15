@@ -1,7 +1,10 @@
+import { Series } from '../model/series-nonce-manager.model';
 import {ZX} from '../limit-order-protocol.const';
 
 export const UINT32_BITS = BigInt(32);
 export const UINT32_BITMASK = BigInt('0xFFFFFFFF');
+export const UINT16_BITMASK = BigInt('0xFFFF');
+export const UINT40_BITMASK = BigInt('0xFFFFFFFFFF');
 export const UINT48_BITMASK = BigInt('0xFFFFFFFFFFFF');
 export const ADDRESS_MASK = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
 
@@ -31,36 +34,6 @@ export function getOffsets(data: string[]): string {
             return bytesAccumularot + (BigInt(offset) << ((UINT32_BITS * BigInt(index))));
         }, BigInt(0))
         .toString();
-}
-
-export function joinStaticCalls(data: string[]): { offsets: string, data: string } {
-    const trimmed = data.map(trim0x);
-
-    return {
-        offsets: getOffsets(trimmed),
-        data: ZX + trimmed.join(''),
-    };
-}
-
-export function unpackStaticCalls(offsets: string | bigint, interactions: string): string[] {
-    const offsetsBI = BigInt(offsets);
-    const data = trim0x(interactions);
-
-    const result: string[] = [];
-    let previous = BigInt(0);
-    let current = BigInt(0);
-    // See PredicateHelper.and in limit-order-protocol
-    for (
-        let i = BigInt(0);
-        (current = (offsetsBI >> i) & UINT32_BITMASK);
-        i += UINT32_BITS
-    ) {
-        const calldata = data.slice(Number(previous) * 2, Number(current) * 2);
-        result.push(calldata);
-        previous = current;
-    }
-
-    return result;
 }
 
 export function parseInteractionForField(
@@ -96,22 +69,61 @@ function setN(value: bigint, bitNumber: number, flag: boolean): bigint {
 }
 
 export const TIMESTAMP_AND_NOUNCE_SELECTOR = '2cc2878d'; // timestampBelowAndNonceEquals(uint256)
+export const ARBITRARY_STATIC_CALL_SELECTOR = '7638f1fe'; // timestampBelowAndNonceEquals(uint256)
 const TIMESTAMP_AND_NOUNCE_ARGS_SIZE = 256 / 4;
 const PREDICATE_REGEX = new RegExp(`^\\w*${TIMESTAMP_AND_NOUNCE_SELECTOR}`, 'g');
 
-export function unpackTimestampAndNoncePredicate(callData: string): {
+/**
+ * 
+ * @param calldata Any variant of calldata, such as
+ * - complete predicate
+ * - full method calldata
+ * - arguments calldata
+ * - argument value as hex or bigint
+ * @param isSeriesNonceManager Omit if you dont know exacly.
+ * Loose `arbitraryStaticCall` check will be performed
+ * @returns 
+ */
+// eslint-disable-next-line max-lines-per-function
+export function unpackTimestampAndNoncePredicate(
+    calldata: string | bigint,
+    isSeriesNonceManager: boolean | null = null,
+): {
+    series?: Series,
     address: string,
     nonce: bigint,
     timestamp: bigint,
 } {
-    const calldata = trim0x(callData).length <= TIMESTAMP_AND_NOUNCE_ARGS_SIZE
-        ? trim0x(callData)
-        : trim0x(callData).replace(
+    const hex = trim0x(
+        typeof calldata === 'string'
+            ? calldata
+            : BigInt(calldata).toString(16)
+    );
+    const timeNonceSeriesAccount = hex.length <= TIMESTAMP_AND_NOUNCE_ARGS_SIZE
+        ? hex
+        : hex.replace(
             PREDICATE_REGEX,
             '',
         ).substring(0, TIMESTAMP_AND_NOUNCE_ARGS_SIZE);
 
-    const timeNonceAccount = BigInt(ZX + calldata);
+    const timeNonceAccount = BigInt(ZX + timeNonceSeriesAccount);
+
+    const arbitraryStaticCallIndex = hex.indexOf(ARBITRARY_STATIC_CALL_SELECTOR);
+    if (
+        isSeriesNonceManager
+        || (
+            isSeriesNonceManager !== null
+            && arbitraryStaticCallIndex < hex.indexOf(TIMESTAMP_AND_NOUNCE_SELECTOR)
+        )
+    ) {
+        return {
+            address: ZX + (timeNonceAccount >> BigInt(0) & ADDRESS_MASK).toString(16),
+            series: timeNonceAccount >> BigInt(160) & UINT16_BITMASK,
+            nonce: timeNonceAccount >> BigInt(160 + 16) & UINT40_BITMASK,
+            timestamp: timeNonceAccount >> BigInt(160 + 16 + 40) & UINT40_BITMASK,
+        }
+    }
+
     return {
         address: ZX + (timeNonceAccount >> BigInt(0) & ADDRESS_MASK).toString(16),
         nonce: timeNonceAccount >> BigInt(160) & UINT48_BITMASK,

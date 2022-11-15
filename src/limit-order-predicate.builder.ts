@@ -5,8 +5,8 @@ import {
 } from './model/limit-order-protocol.model';
 import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
-import {joinStaticCalls} from './utils/limit-order.utils';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
+import { LimitOrderBuilder } from './limit-order.builder';
 
 export type LimitOrderPredicateCallData = string;
 
@@ -19,7 +19,7 @@ export class LimitOrderPredicateBuilder {
     and = (
         ...predicates: LimitOrderPredicateCallData[]
     ): LimitOrderPredicateCallData => {
-        const { offsets, data } = joinStaticCalls(predicates);
+        const { offsets, data } = LimitOrderBuilder.joinStaticCalls(predicates);
 
         return this.facade.getContractCallData(LimitOrderProtocolMethods.and, [
             offsets,
@@ -30,7 +30,7 @@ export class LimitOrderPredicateBuilder {
     or = (
         ...predicates: LimitOrderPredicateCallData[]
     ): LimitOrderPredicateCallData => {
-        const { offsets, data } = joinStaticCalls(predicates);
+        const { offsets, data } = LimitOrderBuilder.joinStaticCalls(predicates);
 
         return this.facade.getContractCallData(LimitOrderProtocolMethods.or, [
             offsets,
@@ -68,7 +68,7 @@ export class LimitOrderPredicateBuilder {
         ]);
     };
 
-    nonce(makerAddress: string): LimitOrderPredicateCallData {
+    nonce = (makerAddress: string): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(
             LimitOrderProtocolMethods.nonce,
             [makerAddress]

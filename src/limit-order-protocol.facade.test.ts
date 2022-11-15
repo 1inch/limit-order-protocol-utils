@@ -7,7 +7,7 @@ import {
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderPredicateBuilder} from './limit-order-predicate.builder';
 import {BETA_CONTRACT_ADDRESSES, mocksForChain} from './test/helpers';
-import {unpackInteraction} from './helpers';
+import { LimitOrderDecoder } from './limit-order.decoder';
 
 class TestErrorResponse extends Error implements ErrorResponse {
     data: string;
@@ -366,7 +366,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const order = createOrderWithPredicate(predicate);
 
             const result1 = await facade.simulate(contractAddress, predicate);
-            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const makerAssetData = LimitOrderDecoder.unpackInteraction(order, 'makerAssetData');
             const result2 = await facade.simulate(walletAddress, makerAssetData);
 
             expect(result1).toMatchObject({
@@ -397,7 +397,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const order = createOrderWithPredicate(predicate);
 
             const result1 = await facade.simulate(contractAddress, predicate);
-            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const makerAssetData = LimitOrderDecoder.unpackInteraction(order, 'makerAssetData');
             const result2 = await facade.simulate(walletAddress, makerAssetData);
 
             expect(result1).toMatchObject({
@@ -428,7 +428,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const order = createOrderWithPredicate(predicate);
 
             const result1 = await facade.simulate(contractAddress, predicate);
-            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const makerAssetData = LimitOrderDecoder.unpackInteraction(order, 'makerAssetData');
             const result2 = await facade.simulate(walletAddress, makerAssetData);
 
             expect(result1).toMatchObject({
@@ -466,7 +466,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const order = createOrderWithPredicate(predicate);
 
             const result1 = await facade.simulate(contractAddress, predicate);
-            const makerAssetData = unpackInteraction(order, 'makerAssetData');
+            const makerAssetData = LimitOrderDecoder.unpackInteraction(order, 'makerAssetData');
             const result2 = await facade.simulate(walletAddress, makerAssetData);
 
             expect(result1).toMatchObject({

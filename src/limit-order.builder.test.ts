@@ -1,9 +1,10 @@
+import {LimitOrderDecoder} from './limit-order.decoder';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 import {contractAddresses} from './utils/limit-order-rfq.const';
-import { packInteractions, unpackInteractions } from './helpers';
+import {largeInteractions, largeResult} from './test/mocks';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const chainId = 56;
@@ -30,7 +31,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             const dataHash =
                 '7cb7e268d5a5f0d8da9a5904a0084b3c4f17a7826413e83d69784a50d4154878';
 
-            const { interactions, offsets } = packInteractions({
+            const { interactions, offsets } = LimitOrderBuilder.packInteractions({
                 makerAssetData: '0xf0',
                 takerAssetData: '0xf1',
                 getMakingAmount: '0xf2',
@@ -76,7 +77,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         });
 
         it('buildLimitOrderHash() must create a hash of order with 0x prefix', () => {
-            const { interactions, offsets } = packInteractions({
+            const { interactions, offsets } = LimitOrderBuilder.packInteractions({
                 makerAssetData: '0xf0',
                 takerAssetData: '0xf1',
                 getMakingAmount: '0xf2',
@@ -122,7 +123,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             });
 
             expect(
-                unpackInteractions(order.offsets, order.interactions)
+                LimitOrderDecoder.unpackInteractions(order.offsets, order.interactions)
             ).toMatchSnapshot();
 
             expect(+order.salt).toBeGreaterThan(1);
@@ -202,4 +203,13 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             expect(RFQorder).toMatchSnapshot();
         });
     });
+
+    describe("packInteractions", () => {
+            it("should pack", () => {
+                const { offsets, interactions } = LimitOrderBuilder.packInteractions(largeInteractions);
+    
+                expect(offsets).toBe(largeResult.offsets);
+                expect(interactions).toBe(largeResult.interactions);
+            })
+    })
 });

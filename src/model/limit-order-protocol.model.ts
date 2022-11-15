@@ -88,6 +88,24 @@ export type Nonce = number | bigint;
  */
 export type PredicateTimestamp = number | bigint;
 
+export const InteractionsFields = {
+    makerAssetData: 0,
+    takerAssetData: 1,
+    getMakingAmount: 2,
+    getTakingAmount: 3,
+    predicate: 4,
+    permit: 5,
+    preInteraction: 6,
+    postInteraction: 7,
+// cuz enum has numeric keys also
+} as const;
+
+export type InteractionName = keyof typeof InteractionsFields;
+
+export type Interactions = {
+    [key in InteractionName]: string;
+};
+
 export interface RFQOrder {
     info: RFQOrderInfo;
     makerAsset: string;

@@ -10,9 +10,11 @@ import {
 } from './limit-order-protocol.const';
 import {
     ChainId,
+    Interactions,
     LimitOrder,
     LimitOrderData,
     LimitOrderHash,
+    LimitOrderInteractions,
     LimitOrderProtocolMethods,
     LimitOrderSignature,
     RFQOrder,
@@ -22,7 +24,7 @@ import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
 import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
-import { packInteractions } from './helpers';
+import { getOffsets, trim0x } from './utils/limit-order.utils';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -49,6 +51,41 @@ export class LimitOrderBuilder {
         private readonly providerConnector: ProviderConnector,
         private readonly generateSalt = generateOrderSalt
     ) {}
+
+    // eslint-disable-next-line max-lines-per-function
+    static packInteractions({
+        makerAssetData = ZX,
+        takerAssetData = ZX,
+        getMakingAmount = ZX,
+        getTakingAmount = ZX,
+        predicate = ZX,
+        permit = ZX,
+        preInteraction = ZX,
+        postInteraction = ZX,
+    }: Partial<Interactions>): LimitOrderInteractions {
+        const allInteractions = [
+            makerAssetData,
+            takerAssetData,
+            getMakingAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        ];
+    
+        const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
+        return { offsets, interactions };
+    }
+
+    static joinStaticCalls(data: string[]): { offsets: string, data: string } {
+        const trimmed = data.map(trim0x);
+    
+        return {
+            offsets: getOffsets(trimmed),
+            data: ZX + trimmed.join(''),
+        };
+    }
 
     buildOrderSignature(
         walletAddress: string,
@@ -165,7 +202,7 @@ export class LimitOrderBuilder {
         const makerAssetData = ZX;
         const takerAssetData = ZX;
 
-        const { offsets, interactions } = packInteractions({
+        const { offsets, interactions } = LimitOrderBuilder.packInteractions({
             makerAssetData,
             takerAssetData,
             getMakingAmount,
