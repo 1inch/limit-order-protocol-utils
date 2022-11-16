@@ -15,7 +15,11 @@ import {
     RFQOrder,
 } from './model/limit-order-protocol.model';
 import {BigNumber} from '@ethersproject/bignumber';
-import {getMakingAmountForRFQ, packSkipPermitAndThresholdAmount} from './utils/limit-order.utils';
+import {
+    extractWeb3OriginalErrorData,
+    getMakingAmountForRFQ,
+    packSkipPermitAndThresholdAmount,
+} from './utils/limit-order.utils';
 import {getABIFor} from './utils/abi';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
@@ -258,14 +262,15 @@ export class LimitOrderProtocolFacade
 
     // eslint-disable-next-line max-lines-per-function
     parseSimulateTransferError(
-        error: ErrorResponse | string,
+        error: ErrorResponse | Error | string,
     ): { success: boolean, rawResult: string } | null {
         const simulationResultsAbi = getABIFor(LIMIT_ORDER_PROTOCOL_ABI, 'SimulationResults');
+        const revertionData = extractWeb3OriginalErrorData(error);
 
-        if (simulationResultsAbi && typeof error !== 'string' && error.data) {
+        if (simulationResultsAbi && revertionData) {
             const parsed = this.providerConnector.decodeABICallParameters(
                 simulationResultsAbi.inputs as [],
-                error['data'],
+                revertionData,
             );
             const parsedResult = parsed.res as string | null;
 

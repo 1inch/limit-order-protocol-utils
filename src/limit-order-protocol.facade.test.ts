@@ -489,53 +489,76 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         );
     });
 
-    it("parseSimulateTransferError() return false when simulation call failed", () => {
-        // no data in result
-        const input = new Error('Error: execution reverted');
+    describe("parseSimulateTransferError()", () => {
 
-        const result = facade.parseSimulateTransferError(input as ErrorResponse);
+        it("return false when simulation call failed", () => {
+            // no data in result
+            const input = new Error('Error: execution reverted');
 
-        expect(result).toBeNull();
-    });
+            const result = facade.parseSimulateTransferError(input as ErrorResponse);
 
-    it("parseSimulateTransferError() when result isn't returned", () => {
-        const input = new TestErrorResponse(
-            'Returned error: execution reverted',
-            // eslint-disable-next-line max-len
-            '0x1934afc8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000',
-        );
-        const result = facade.parseSimulateTransferError(input);
-
-        expect(result).toMatchObject({
-            success: true,
-            rawResult: null,
+            expect(result).toBeNull();
         });
-    });
 
-    it("parseSimulateTransferError() when false-like result is returned", () => {
-        const input = new TestErrorResponse(
-            'Returned error: execution reverted',
-            // eslint-disable-next-line max-len
-            '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000',
-        );
-        const result = facade.parseSimulateTransferError(input);
+        it("when result isn't returned", () => {
+            const input = new TestErrorResponse(
+                'Returned error: execution reverted',
+                // eslint-disable-next-line max-len
+                '0x1934afc8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000',
+            );
+            const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toMatchObject({
-            success: false,
-            rawResult: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            expect(result).toMatchObject({
+                success: true,
+                rawResult: null,
+            });
         });
-    });
 
-    it("parseSimulateTransferError() when true-like result is returned", () => {
-        const input = new TestErrorResponse(
-            'Returned error: execution reverted',
+        it("when false-like result is returned", () => {
+            const input = new TestErrorResponse(
+                'Returned error: execution reverted',
+                // eslint-disable-next-line max-len
+                '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000',
+            );
+            const result = facade.parseSimulateTransferError(input);
+
+            expect(result).toMatchObject({
+                success: false,
+                rawResult: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            });
+        });
+
+        it("when true-like result is returned", () => {
+            const input = new TestErrorResponse(
+                'Returned error: execution reverted',
+                // eslint-disable-next-line max-len
+                '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001',
+            );
+            const result = facade.parseSimulateTransferError(input);
+
+            expect(result).toMatchObject({
+                success: true,
+            });
+        });
+
+        it("when metamsk-like error returned", () => {
             // eslint-disable-next-line max-len
-            '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001',
-        );
-        const result = facade.parseSimulateTransferError(input);
+            const data = '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001'
+            const input = new Error(
+                `execution reverted
+                {
+                  "originalError": {
+                    "code": 3,
+                    "data": "${data}",
+                    "message": "execution reverted"
+                  }
+                }`
+            );
+            const result = facade.parseSimulateTransferError(input);
 
-        expect(result).toMatchObject({
-            success: true,
+            expect(result).toMatchObject({
+                success: true,
+            });
         });
     });
 });

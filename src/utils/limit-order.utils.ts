@@ -1,5 +1,6 @@
 import { Series } from '../model/series-nonce-manager.model';
 import {ZX} from '../limit-order-protocol.const';
+import { ErrorResponse } from '../limit-order-protocol.facade';
 
 export const UINT32_BITS = BigInt(32);
 export const UINT32_BITMASK = BigInt('0xFFFFFFFF');
@@ -139,4 +140,29 @@ export function packSkipPermitAndThresholdAmount(
         + (BigInt(skipPermit) << BigInt(255));
 
     return skipPermitAndThresholdAmount.toString(16);
+}
+
+export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | string): string | null {
+    if (error && typeof error !== 'string' && (error as ErrorResponse).data) {
+        return (error as ErrorResponse).data;
+    }
+
+    const message = (error && typeof error !== 'string')
+        ? error.message
+        : error as string;
+
+    const bracesIndexStart = message.indexOf('{');
+    const bracesIndexEnd = message.lastIndexOf('}');
+
+    if ((bracesIndexStart + 1) && (bracesIndexEnd + 1)) {
+        try {
+            const json = JSON.parse(message.substring(bracesIndexStart, bracesIndexEnd + 1));
+
+            return json.originalError.data;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    return null;
 }
