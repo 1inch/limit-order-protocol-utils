@@ -3,10 +3,8 @@ import { ZX } from "../limit-order-protocol.const";
 import { ChainId } from "../model/limit-order-protocol.model";
 import { mocksForChain } from "../test/helpers";
 import {
-    joinStaticCalls,
     packSkipPermitAndThresholdAmount,
     UINT48_BITMASK,
-    unpackStaticCalls,
     unpackTimestampAndNoncePredicate,
 } from "./limit-order.utils";
 
