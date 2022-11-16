@@ -52,7 +52,6 @@ export class LimitOrderBuilder {
         private readonly generateSalt = generateOrderSalt
     ) {}
 
-    // eslint-disable-next-line max-lines-per-function
     static packInteractions({
         makerAssetData = ZX,
         takerAssetData = ZX,
@@ -153,7 +152,6 @@ export class LimitOrderBuilder {
         };
     }
 
-    /* eslint-disable max-lines-per-function */
     buildRFQOrder({
         id,
         wrapEth = false,
@@ -175,13 +173,12 @@ export class LimitOrderBuilder {
             takingAmount,
         };
     }
-    /* eslint-enable max-lines-per-function */
-
-    /* eslint-disable max-lines-per-function */
+    
     /**
      * @param allowedSender formerly `takerAddress` 
      * @returns 
      */
+    // eslint-disable-next-line max-lines-per-function
     buildLimitOrder({
         makerAssetAddress,
         takerAssetAddress,
@@ -226,7 +223,6 @@ export class LimitOrderBuilder {
             interactions,
         };
     }
-    /* eslint-enable max-lines-per-function */
 
     getContractCallData(
         methodName: LimitOrderProtocolMethods,

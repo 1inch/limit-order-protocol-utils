@@ -4,7 +4,7 @@ import {EIP712TypedData} from '../model/eip712.model';
 import {AbiItem, AbiOutput} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
 import {signTypedData, SignTypedDataVersion} from '@metamask/eth-sig-util';
-import { ZX } from '../limit-order-protocol.const';
+import { trim0x } from '../utils/limit-order.utils';
 
 export class PrivateKeyProviderConnector implements ProviderConnector {
     constructor(
@@ -53,7 +53,7 @@ export class PrivateKeyProviderConnector implements ProviderConnector {
     }
 
     decodeABICallParameters(types: Array<AbiOutput | string>, callData: string): AbiDecodeResult {
-        const parameters = callData.replace(ZX, '').substring(8);
+        const parameters = trim0x(callData).substring(8);
         return this.web3Provider.eth.abi.decodeParameters([...types], parameters);
     }
 }

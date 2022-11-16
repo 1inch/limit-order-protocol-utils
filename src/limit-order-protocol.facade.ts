@@ -78,7 +78,6 @@ export class LimitOrderProtocolFacade
      * 
      * Tip: you can just check if allowance exsists and then set it to `true`.
      */
-    // eslint-disable-next-line max-lines-per-function
     fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
         const {
             order,
@@ -207,7 +206,6 @@ export class LimitOrderProtocolFacade
             });
     }
 
-    // eslint-disable-next-line max-lines-per-function
     simulate(
         targetAddress: string,
         data: unknown,
@@ -260,7 +258,6 @@ export class LimitOrderProtocolFacade
         return null;
     }
 
-    // eslint-disable-next-line max-lines-per-function
     parseSimulateTransferError(
         error: ErrorResponse | Error | string,
     ): { success: boolean, rawResult: string } | null {

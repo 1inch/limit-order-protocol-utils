@@ -82,7 +82,6 @@ export async function cancelOrderOperation(
     );
 }
 
-/* eslint-disable max-lines-per-function */
 export function createOrder(params: CreatingParams): RFQOrder {
     const contractAddress = contractAddresses[params.chainId as ChainId];
     const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
@@ -111,9 +110,8 @@ export function createOrder(params: CreatingParams): RFQOrder {
         allowedSender: params.allowedSender || undefined,
     });
 }
-/* eslint-enable max-lines-per-function */
 
-/* eslint-disable max-lines-per-function */
+// eslint-disable-next-line max-lines-per-function
 export async function fillOrder(
     params: FillingParams,
     order: RFQOrder
@@ -167,9 +165,7 @@ export async function fillOrder(
 
     return sendSignedTransaction(web3, txConfig, params.privateKey);
 }
-/* eslint-enable max-lines-per-function */
 
-/* eslint-disable max-lines-per-function */
 export async function cancelOrder(params: CancelingParams): Promise<string> {
     const contractAddress = contractAddresses[params.chainId as ChainId];
     const web3 = new Web3(
@@ -202,7 +198,6 @@ export async function cancelOrder(params: CancelingParams): Promise<string> {
 
     return sendSignedTransaction(web3, txConfig, params.privateKey);
 }
-/* eslint-enable max-lines-per-function */
 
 export async function sendSignedTransaction(
     web3: Web3,
