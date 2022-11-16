@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PrivateKeyProviderConnector signTypedData() must sign typed data by private key 1`] = `"0xae84710a5b27736e17be0cde5b02753e4bfe8b2558c371b932ce935b3fbf61976ed86fac1f969b6f8869926ab9fa74bb7d5539ce8081abc5bd02c97c7347ab3a1b"`;
+exports[`PrivateKeyProviderConnector signTypedData() must sign typed data by private key 1`] = `"0x3aa68183623054d13de78a66c257aea98b5a45722b330d5d9f424d87482553987d5bfe04d492e35d0031b91ba06904ffa295d9e9914ce0cb653709a439e94f6d1b"`;

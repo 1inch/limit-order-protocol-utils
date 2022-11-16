@@ -1,27 +1,30 @@
 import {
     EIP712_DOMAIN,
-    ORDER_STRUCTURE,
-    ZERO_ADDRESS,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ZX,
-    RFQ_ORDER_STRUCTURE,
+    ORDER_STRUCTURE,
     PROTOCOL_NAME,
     PROTOCOL_VERSION,
+    RFQ_ORDER_STRUCTURE,
+    ZERO_ADDRESS,
+    ZX,
 } from './limit-order-protocol.const';
 import {
     ChainId,
+    Interactions,
     LimitOrder,
-    LimitOrderProtocolMethods,
     LimitOrderData,
     LimitOrderHash,
+    LimitOrderInteractions,
+    LimitOrderProtocolMethods,
     LimitOrderSignature,
     RFQOrder,
     RFQOrderData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
-import {TypedDataUtils, TypedMessage, SignTypedDataVersion} from '@metamask/eth-sig-util';
+import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
+import { getOffsets, trim0x } from './utils/limit-order.utils';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -44,10 +47,44 @@ export function generateRFQOrderInfo(
 export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
-        private readonly chainId: ChainId,
+        private readonly chainId: ChainId | number,
         private readonly providerConnector: ProviderConnector,
         private readonly generateSalt = generateOrderSalt
     ) {}
+
+    static packInteractions({
+        makerAssetData = ZX,
+        takerAssetData = ZX,
+        getMakingAmount = ZX,
+        getTakingAmount = ZX,
+        predicate = ZX,
+        permit = ZX,
+        preInteraction = ZX,
+        postInteraction = ZX,
+    }: Partial<Interactions>): LimitOrderInteractions {
+        const allInteractions = [
+            makerAssetData,
+            takerAssetData,
+            getMakingAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        ];
+    
+        const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
+        return { offsets, interactions };
+    }
+
+    static joinStaticCalls(data: string[]): { offsets: string, data: string } {
+        const trimmed = data.map(trim0x);
+    
+        return {
+            offsets: getOffsets(trimmed),
+            data: ZX + trimmed.join(''),
+        };
+    }
 
     buildOrderSignature(
         walletAddress: string,
@@ -109,11 +146,12 @@ export class LimitOrderBuilder {
                 chainId: this.chainId,
                 verifyingContract: this.contractAddress,
             },
-            message: order,
+            message: {
+                ...order
+            },
         };
     }
 
-    /* eslint-disable max-lines-per-function */
     buildRFQOrder({
         id,
         wrapEth = false,
@@ -121,62 +159,70 @@ export class LimitOrderBuilder {
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
-        takerAddress = ZERO_ADDRESS,
-        makerAmount,
-        takerAmount,
+        allowedSender = ZERO_ADDRESS,
+        makingAmount,
+        takingAmount,
     }: RFQOrderData): RFQOrder {
         return {
             info: generateRFQOrderInfo(id, expiresInTimestamp, wrapEth),
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             maker: makerAddress,
-            allowedSender: takerAddress,
-            makingAmount: makerAmount,
-            takingAmount: takerAmount,
+            allowedSender,
+            makingAmount,
+            takingAmount,
         };
     }
-    /* eslint-enable max-lines-per-function */
-
-    /* eslint-disable max-lines-per-function */
+    
+    /**
+     * @param allowedSender formerly `takerAddress` 
+     * @returns 
+     */
+    // eslint-disable-next-line max-lines-per-function
     buildLimitOrder({
         makerAssetAddress,
         takerAssetAddress,
         makerAddress,
         receiver = ZERO_ADDRESS,
-        takerAddress = ZERO_ADDRESS,
-        makerAmount,
-        takerAmount,
+        allowedSender = ZERO_ADDRESS,
+        makingAmount,
+        takingAmount,
         predicate = ZX,
         permit = ZX,
-        interaction = ZX,
+        getMakingAmount = ZX,
+        getTakingAmount = ZX,
+        preInteraction = ZX,
+        postInteraction = ZX,
+        salt = this.generateSalt(),
     }: LimitOrderData): LimitOrder {
+
+        const makerAssetData = ZX;
+        const takerAssetData = ZX;
+
+        const { offsets, interactions } = LimitOrderBuilder.packInteractions({
+            makerAssetData,
+            takerAssetData,
+            getMakingAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        })
+
         return {
-            salt: this.generateSalt(),
+            salt,
             makerAsset: makerAssetAddress,
             takerAsset: takerAssetAddress,
             maker: makerAddress,
             receiver,
-            allowedSender: takerAddress,
-            makingAmount: makerAmount,
-            takingAmount: takerAmount,
-            makerAssetData: ZX,
-            takerAssetData: ZX,
-            getMakerAmount: this.getAmountData(
-                LimitOrderProtocolMethods.getMakerAmount,
-                makerAmount,
-                takerAmount
-            ),
-            getTakerAmount: this.getAmountData(
-                LimitOrderProtocolMethods.getTakerAmount,
-                makerAmount,
-                takerAmount
-            ),
-            predicate,
-            permit,
-            interaction,
+            allowedSender,
+            makingAmount,
+            takingAmount,
+            offsets,
+            interactions,
         };
     }
-    /* eslint-enable max-lines-per-function */
 
     getContractCallData(
         methodName: LimitOrderProtocolMethods,
@@ -190,16 +236,18 @@ export class LimitOrderBuilder {
         );
     }
 
-    // Get nonce from contract (nonce method) and put it to predicate on order creating
-    private getAmountData(
+    /**
+     * Get nonce from contract (nonce method) and put it to predicate on order creating
+     */
+    getCustomAmountData(
         methodName: LimitOrderProtocolMethods,
-        makerAmount: string,
-        takerAmount: string,
+        makingAmount: string,
+        takingAmount: string,
         swapTakerAmount = '0'
     ): string {
         return this.getContractCallData(methodName, [
-            makerAmount,
-            takerAmount,
+            makingAmount,
+            takingAmount,
             swapTakerAmount,
         ]).substr(0, 2 + 68 * 2);
     }

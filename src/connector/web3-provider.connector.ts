@@ -1,8 +1,9 @@
-import {ProviderConnector} from './provider.connector';
+import {AbiDecodeResult, ProviderConnector} from './provider.connector';
 import Web3 from 'web3';
 import {EIP712TypedData} from '../model/eip712.model';
-import {AbiItem} from '../model/abi.model';
+import {AbiItem, AbiOutput} from '../model/abi.model';
 import {AbiItem as Web3AbiItem} from 'web3-utils';
+import { trim0x } from '../utils/limit-order.utils';
 
 interface ExtendedWeb3 extends Web3 {
     signTypedDataV4(walletAddress: string, typedData: string): Promise<string>;
@@ -54,7 +55,12 @@ export class Web3ProviderConnector implements ProviderConnector {
         });
     }
 
-    decodeABIParameter<T>(type: string, hex: string): T {
+    decodeABIParameter<T>(type: AbiOutput | string, hex: string): T {
         return this.web3Provider.eth.abi.decodeParameter(type, hex) as T;
+    }
+
+    decodeABICallParameters(types: Array<AbiOutput | string>, callData: string): AbiDecodeResult {
+        const parameters = trim0x(callData).substring(8);
+        return this.web3Provider.eth.abi.decodeParameters([...types], parameters);
     }
 }

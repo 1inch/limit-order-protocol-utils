@@ -1,10 +1,13 @@
 import {AbiItem} from './model/abi.model';
 import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
+import { SignTypedDataVersion } from '@metamask/eth-sig-util';
 
-export const PROTOCOL_NAME = '1inch Limit Order Protocol';
+export const PROTOCOL_NAME = '1inch Aggregation Router';
 
-export const PROTOCOL_VERSION = '2';
+export const PROTOCOL_VERSION = '5';
+
+export const TypedDataVersion = SignTypedDataVersion.V4;
 
 export const ZX = '0x';
 
@@ -32,13 +35,8 @@ export const ORDER_STRUCTURE = [
     {name: 'allowedSender', type: 'address'},
     {name: 'makingAmount', type: 'uint256'},
     {name: 'takingAmount', type: 'uint256'},
-    {name: 'makerAssetData', type: 'bytes'},
-    {name: 'takerAssetData', type: 'bytes'},
-    {name: 'getMakerAmount', type: 'bytes'},
-    {name: 'getTakerAmount', type: 'bytes'},
-    {name: 'predicate', type: 'bytes'},
-    {name: 'permit', type: 'bytes'},
-    {name: 'interaction', type: 'bytes'},
+    { name: 'offsets', type: 'uint256' },
+    { name: 'interactions', type: 'bytes' },
 ];
 
 export const RFQ_ORDER_STRUCTURE = [

@@ -25,7 +25,7 @@ import {PrivateKeyProviderConnector} from '../connector/private-key-provider.con
 export async function createOrderOperation(
     isRunningWithArgv: boolean,
     params?: CreatingParams
-) {
+): Promise<void> {
     const creatingParams =
         params || ((await prompts(createOrderSchema)) as CreatingParams);
 
@@ -43,7 +43,7 @@ export async function createOrderOperation(
 export async function fillOrderOperation(
     isRunningWithArgv: boolean,
     params?: FillingParams
-) {
+): Promise<void>  {
     const fillingParams =
         params || ((await prompts(fillOrderSchema)) as FillingParams);
     const orderForFill: RFQOrder = JSON.parse(fillingParams.order);
@@ -65,7 +65,7 @@ export async function fillOrderOperation(
 export async function cancelOrderOperation(
     isRunningWithArgv: boolean,
     params?: CancelingParams
-) {
+): Promise<void>  {
     const cancelingParams =
         params || ((await prompts(cancelOrderSchema)) as CancelingParams);
 
@@ -82,7 +82,6 @@ export async function cancelOrderOperation(
     );
 }
 
-/* eslint-disable max-lines-per-function */
 export function createOrder(params: CreatingParams): RFQOrder {
     const contractAddress = contractAddresses[params.chainId as ChainId];
     const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
@@ -106,14 +105,13 @@ export function createOrder(params: CreatingParams): RFQOrder {
         makerAddress: walletAddress,
         makerAssetAddress: params.makerAssetAddress,
         takerAssetAddress: params.takerAssetAddress,
-        makerAmount: params.makerAmount,
-        takerAmount: params.takerAmount,
-        takerAddress: params.takerAddress || undefined,
+        makingAmount: params.makingAmount,
+        takingAmount: params.takingAmount,
+        allowedSender: params.allowedSender || undefined,
     });
 }
-/* eslint-enable max-lines-per-function */
 
-/* eslint-disable max-lines-per-function */
+// eslint-disable-next-line max-lines-per-function
 export async function fillOrder(
     params: FillingParams,
     order: RFQOrder
@@ -135,7 +133,8 @@ export async function fillOrder(
     );
     const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
         contractAddress,
-        providerConnector
+        params.chainId,
+        providerConnector,
     );
 
     const typedData = limitOrderBuilder.buildRFQOrderTypedData(
@@ -150,8 +149,8 @@ export async function fillOrder(
     const callData = limitOrderProtocolFacade.fillRFQOrder(
         order,
         signature,
-        params.makerAmount,
-        params.takerAmount
+        params.makingAmount,
+        params.takingAmount
     );
 
     const txConfig: TransactionConfig = {
@@ -166,9 +165,7 @@ export async function fillOrder(
 
     return sendSignedTransaction(web3, txConfig, params.privateKey);
 }
-/* eslint-enable max-lines-per-function */
 
-/* eslint-disable max-lines-per-function */
 export async function cancelOrder(params: CancelingParams): Promise<string> {
     const contractAddress = contractAddresses[params.chainId as ChainId];
     const web3 = new Web3(
@@ -184,7 +181,8 @@ export async function cancelOrder(params: CancelingParams): Promise<string> {
 
     const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
         contractAddress,
-        providerConnector
+        params.chainId,
+        providerConnector,
     );
 
     const callData = limitOrderProtocolFacade.cancelRFQOrder(params.orderInfo);
@@ -200,7 +198,6 @@ export async function cancelOrder(params: CancelingParams): Promise<string> {
 
     return sendSignedTransaction(web3, txConfig, params.privateKey);
 }
-/* eslint-enable max-lines-per-function */
 
 export async function sendSignedTransaction(
     web3: Web3,

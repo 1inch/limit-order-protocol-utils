@@ -23,8 +23,8 @@ describe.skip('Limit order rfq utils', () => {
             expiresIn: Math.ceil((Date.now() + 20_000) / 1000),
             makerAssetAddress: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', // DAI
             takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302', // 1inch
-            makerAmount: '100000000000000000',
-            takerAmount: '23000000000000000',
+            makingAmount: '100000000000000000',
+            takingAmount: '23000000000000000',
         });
 
         const txHash = await fillOrder(
@@ -33,8 +33,8 @@ describe.skip('Limit order rfq utils', () => {
                 chainId,
                 gasPrice: 15, // GWEI
                 order: JSON.stringify(order),
-                makerAmount: order.makingAmount,
-                takerAmount: '0',
+                makingAmount: order.makingAmount,
+                takingAmount: '0',
             },
             order
         );
@@ -61,15 +61,16 @@ describe.skip('Limit order rfq utils', () => {
 
         const limitOrderProtocolFacade = new LimitOrderProtocolFacade(
             contractAddress,
-            providerConnector
+            chainId,
+            providerConnector,
         );
 
         const order = limitOrderBuilder.buildLimitOrder({
             makerAddress: walletAddress,
             makerAssetAddress: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', // DAI
             takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302', // 1inch
-            makerAmount: '100000000000000000',
-            takerAmount: '23000000000000000',
+            makingAmount: '100000000000000000',
+            takingAmount: '23000000000000000',
         });
 
         const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
@@ -78,13 +79,13 @@ describe.skip('Limit order rfq utils', () => {
             typedData
         );
 
-        const callData = limitOrderProtocolFacade.fillLimitOrder(
+        const callData = limitOrderProtocolFacade.fillLimitOrder({
             order,
             signature,
-            order.makingAmount,
-            '0',
-            '100000000000000001'
-        );
+            makingAmount: order.makingAmount,
+            takingAmount: '0',
+            thresholdAmount: '100000000000000001',
+        });
 
         const txConfig: TransactionConfig = {
             to: contractAddress,

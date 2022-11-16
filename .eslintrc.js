@@ -14,7 +14,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'max-len': ['error', {code: 100}],
         'max-depth': ['error', 3],
-        'max-lines-per-function': ['error', 25],
+        'max-lines-per-function': ['error', 35],
         'max-params': ['error', 5],
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',

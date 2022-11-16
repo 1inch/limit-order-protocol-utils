@@ -1,6 +1,6 @@
 {
-    "name": "@1inch/limit-order-protocol",
-    "version": "2.0.4",
+    "name": "@1inch/limit-order-protocol-utils",
+    "version": "3.0.0-pre.1",
     "description": "Utility for limit order protocol",
     "main": "index.js",
     "types": "index.d.ts",
@@ -24,10 +24,11 @@
         "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
+        "@ethersproject/abi": "^5.1.1",
         "@ethersproject/bignumber": "^5.1.1",
         "@metamask/eth-sig-util": "^4.0.1",
         "prompts": "^2.4.1",
-        "web3": "^1.5.1",
+        "web3": "^1.8.1",
         "yargs": "^17.0.1"
     },
     "devDependencies": {

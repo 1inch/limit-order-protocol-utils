@@ -1,8 +1,10 @@
+import {LimitOrderDecoder} from './limit-order.decoder';
 import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 import {contractAddresses} from './utils/limit-order-rfq.const';
+import {largeInteractions, largeResult} from './test/mocks';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const chainId = 56;
@@ -27,7 +29,18 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         it('buildOrderSignature() must call the provider signTypedData method', async () => {
             const walletAddress = '0x1548dAdf412Eaaf3c80bEad35CDa83a4bf7dF6ce';
             const dataHash =
-                '95df8d0fce8b2ce47b508d19a3d2c9df9678f2f4b0c6d9c1563d37476bc78dcd';
+                '7cb7e268d5a5f0d8da9a5904a0084b3c4f17a7826413e83d69784a50d4154878';
+
+            const { interactions, offsets } = LimitOrderBuilder.packInteractions({
+                makerAssetData: '0xf0',
+                takerAssetData: '0xf1',
+                getMakingAmount: '0xf2',
+                getTakingAmount: '0xf3',
+                predicate: '0xf4',
+                permit: '0xf5',
+                preInteraction: '0xf6',
+                postInteraction: '0xf7',
+            });
 
             const order: LimitOrder = {
                 salt: '1',
@@ -38,13 +51,9 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 allowedSender: 'allowedSender',
                 makingAmount: 'makingAmount',
                 takingAmount: 'takingAmount',
-                makerAssetData: 'makerAssetData',
-                takerAssetData: 'takerAssetData',
-                getMakerAmount: 'getMakerAmount',
-                getTakerAmount: 'getTakerAmount',
-                predicate: 'predicate',
-                permit: 'permit',
-                interaction: 'interaction',
+
+                offsets,
+                interactions,
             };
             const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
 
@@ -63,11 +72,22 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             expect(signTypedDataSpy).toHaveBeenCalledWith(
                 walletAddress,
                 typedData,
-                dataHash
+                dataHash,
             );
         });
 
         it('buildLimitOrderHash() must create a hash of order with 0x prefix', () => {
+            const { interactions, offsets } = LimitOrderBuilder.packInteractions({
+                makerAssetData: '0xf0',
+                takerAssetData: '0xf1',
+                getMakingAmount: '0xf2',
+                getTakingAmount: '0xf3',
+                predicate: '0xf4',
+                permit: '0xf5',
+                preInteraction: '0xf6',
+                postInteraction: '0xf7',
+            });
+
             const order: LimitOrder = {
                 salt: '1',
                 makerAsset: 'makerAsset',
@@ -77,13 +97,9 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 allowedSender: 'allowedSender',
                 makingAmount: 'makingAmount',
                 takingAmount: 'takingAmount',
-                makerAssetData: 'makerAssetData',
-                takerAssetData: 'takerAssetData',
-                getMakerAmount: 'getMakerAmount',
-                getTakerAmount: 'getTakerAmount',
-                predicate: 'predicate',
-                permit: 'permit',
-                interaction: 'interaction',
+                
+                offsets,
+                interactions,
             };
             const typedData = limitOrderBuilder.buildLimitOrderTypedData(order);
 
@@ -99,12 +115,16 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 makerAddress,
-                makerAmount: '3',
-                takerAmount: '100',
-                predicate: '0x111',
-                permit: '0x222',
-                interaction: '0x333',
+                makingAmount: '3',
+                takingAmount: '100',
+                predicate: '0x11',
+                permit: '0x22',
+                postInteraction: '0x33',
             });
+
+            expect(
+                LimitOrderDecoder.unpackInteractions(order.offsets, order.interactions)
+            ).toMatchSnapshot();
 
             expect(+order.salt).toBeGreaterThan(1);
 
@@ -176,11 +196,20 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 makerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 takerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 makerAddress,
-                makerAmount: '5',
-                takerAmount: '600',
+                makingAmount: '5',
+                takingAmount: '600',
             });
 
             expect(RFQorder).toMatchSnapshot();
         });
     });
+
+    describe("packInteractions", () => {
+            it("should pack", () => {
+                const { offsets, interactions } = LimitOrderBuilder.packInteractions(largeInteractions);
+    
+                expect(offsets).toBe(largeResult.offsets);
+                expect(interactions).toBe(largeResult.interactions);
+            })
+    })
 });

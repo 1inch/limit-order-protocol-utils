@@ -12,6 +12,11 @@ const commonProperties: PromptObject[] = [
             {title: 'Polygon', value: ChainId.polygonMainnet},
             {title: 'Optimism', value: ChainId.optimismMainnet},
             {title: 'Arbitrum', value: ChainId.arbitrumMainnet},
+            {title: 'Gnosis Chain', value: ChainId.gnosisMainnet},
+            {title: 'Avalanche', value: ChainId.avalancheMainnet},
+            {title: 'Fantom', value: ChainId.fantomMainnet},
+            {title: 'Aurora', value: ChainId.auroraMainnet},
+            {title: 'Klaytn', value: ChainId.klaytnMainnet},
         ],
     },
     {
@@ -60,13 +65,13 @@ export const createOrderSchema: PromptObject[] = [
     },
     {
         type: 'text',
-        name: 'makerAmount',
-        message: 'Maker asset amount',
+        name: 'makingAmount',
+        message: 'Making asset amount',
     },
     {
         type: 'text',
-        name: 'takerAmount',
-        message: 'Taker asset amount',
+        name: 'takingAmount',
+        message: 'Taking asset amount',
     },
     {
         type: 'text',
@@ -90,14 +95,14 @@ export const fillOrderSchema: PromptObject[] = [
     },
     {
         type: 'text',
-        name: 'makerAmount',
+        name: 'makingAmount',
         message:
-            'Maker asset fill amount (set 0 if you will use taker asset amount)',
+            'Making asset fill amount (set 0 if you will use taking asset amount)',
     },
     {
         type: 'text',
-        name: 'takerAmount',
-        message: 'Taker asset amount (set 0 if has set maker asset amount)',
+        name: 'takingAmount',
+        message: 'Taking asset amount (set 0 if has set making asset amount)',
     },
 ];
 
@@ -122,15 +127,26 @@ export const rpcUrls: {[key in ChainId]: string} = {
     [ChainId.polygonMainnet]: 'https://bor-nodes.1inch.io',
     [ChainId.optimismMainnet]: 'https://optimism-nodes.1inch.io',
     [ChainId.arbitrumMainnet]: 'https://arbitrum-nodes.1inch.io',
+    [ChainId.gnosisMainnet]: 'https://gnosis-nodes.1inch.io',
+    [ChainId.avalancheMainnet]: 'https://avalanche-nodes.1inch.io',
+    [ChainId.fantomMainnet]: 'https://fantom-nodes.1inch.io',
+    [ChainId.auroraMainnet]: 'https://aurora-nodes.1inch.io',
+    [ChainId.klaytnMainnet]: 'https://klaytn-nodes.1inch.io',
 };
 
 export const contractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
-    [ChainId.binanceMainnet]: '0x1e38eff998df9d3669e32f4ff400031385bf6362',
-    [ChainId.polygonMainnet]: '0x94bc2a1c732bcad7343b25af48385fe76e08734f',
-    [ChainId.optimismMainnet]: '0x11431a89893025d2a48dca4eddc396f8c8117187',
-    [ChainId.arbitrumMainnet]: '0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9',
+    [ChainId.etherumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.binanceMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.polygonMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.optimismMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.arbitrumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.auroraMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.gnosisMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.avalancheMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.fantomMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
+    [ChainId.klaytnMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
 };
+
 
 export const explorersUrls: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: 'https://etherscan.io',
@@ -138,4 +154,9 @@ export const explorersUrls: {[key in ChainId]: string} = {
     [ChainId.polygonMainnet]: 'https://polygonscan.com',
     [ChainId.optimismMainnet]: 'https://optimistic.etherscan.io',
     [ChainId.arbitrumMainnet]: 'https://arbiscan.io',
+    [ChainId.gnosisMainnet]: 'https://gnosisscan.io',
+    [ChainId.avalancheMainnet]: 'https://snowtrace.io',
+    [ChainId.fantomMainnet]: 'https://ftmscan.com',
+    [ChainId.auroraMainnet]: 'https://aurorascan.dev',
+    [ChainId.klaytnMainnet]: 'https://scope.klaytn.com',
 };
