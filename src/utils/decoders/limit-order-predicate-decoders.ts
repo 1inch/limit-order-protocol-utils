@@ -38,7 +38,7 @@ export class LimitOrderPredicateDecoders
         return new PredicateFn(
             fn.name,
             {
-                time: new PredicateBytes(data.time, contract),
+                timestamp: new PredicateBytes(data.time, contract),
             },
             contract,
         );
@@ -74,7 +74,7 @@ export class LimitOrderPredicateDecoders
             fn.name,
             {
                 makerAddress: new PredicateBytes(data.makerAddress, contract),
-                makerNonce: new PredicateBytes(data.makerNonce.toHexString(), contract),
+                nonce: new PredicateBytes(data.makerNonce.toHexString(), contract),
             },
             contract,
         );
@@ -113,7 +113,7 @@ export class LimitOrderPredicateDecoders
         return new PredicateFn(
             fn.name,
             {
-                value: new PredicateBytes(data.value, contract),
+                value: new PredicateBytes(data.value.toString(), contract),
                 data: new DecodableCall(data.data, contract),
             },
             contract,

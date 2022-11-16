@@ -45,7 +45,7 @@ export class SeriesNonceManagerDecoders
             fn.name,
             {
                 makerAddress: new PredicateBytes(data.makerAddress, contract),
-                makerNonce: new PredicateBytes(data.makerNonce.toHexString(), contract),
+                nonce: new PredicateBytes(data.makerNonce.toHexString(), contract),
             },
             contract,
         );
