@@ -164,5 +164,9 @@ export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | stri
         }
     }
 
+    if (message.startsWith(ZX)) {
+        return message;
+    }
+    
     return null;
 }

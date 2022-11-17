@@ -560,5 +560,15 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 success: true,
             });
         });
+
+        it("when calldata only returned (mostle MultiCallService calls)", () => {
+            // eslint-disable-next-line max-len
+            const input = '0x1934afc80000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001'
+            const result = facade.parseSimulateTransferError(input);
+
+            expect(result).toMatchObject({
+                success: true,
+            });
+        });
     });
 });
