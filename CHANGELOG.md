@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.4...v3.0.0) (2022-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* limit-order-protocol v3 (#30)
+
+### Features
+
+* limit-order-protocol v3 ([#30](https://github.com/1inch/limit-order-protocol-utils/issues/30)) ([fdbb559](https://github.com/1inch/limit-order-protocol-utils/commit/fdbb559509eeb6e22e2697cccb22887d69617652))
+
+
+### Bug Fixes
+
+* .parseSimulateTransferError now supports raw calldata ([279dc03](https://github.com/1inch/limit-order-protocol-utils/commit/279dc03642480af4e1147bd25d998d99fb25a45d))
+* **facade:** handle SimulateTransfer parsing for Aurora network ([236c93e](https://github.com/1inch/limit-order-protocol-utils/commit/236c93ec496aa4c6d89f18e2597ac2af65e631a5))
+
 ### [2.0.4](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.3...v2.0.4) (2022-06-27)
 
 ### [2.0.3](https://github.com/1inch/limit-order-protocol-utils/compare/v2.0.2...v2.0.3) (2022-01-24)
