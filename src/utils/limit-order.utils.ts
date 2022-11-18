@@ -132,14 +132,21 @@ export function unpackTimestampAndNoncePredicate(
     }
 }
 
+function setBit(num: bigint, bitPosition: number, bitValue: boolean): bigint {
+    if (bitValue) {
+        return BigInt(num) | (BigInt(1) << BigInt(bitPosition));
+    } else {
+        return BigInt(num) & (~(BigInt(1) << BigInt(bitPosition)));
+    }
+}
+
 export function packSkipPermitAndThresholdAmount(
     thresholdAmount: string,
     skipPermit: boolean,
 ): string {
-    const skipPermitAndThresholdAmount = BigInt(ZX + trim0x(thresholdAmount))
-        + (BigInt(skipPermit) << BigInt(255));
-
-    return skipPermitAndThresholdAmount.toString(16);
+    const thresholdBigInt = BigInt(thresholdAmount);
+    const skipPermitAndThresholdAmount = setBit(thresholdBigInt, 255, skipPermit)
+    return '0x' + skipPermitAndThresholdAmount.toString(16);
 }
 
 export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | string): string | null {

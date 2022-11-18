@@ -114,21 +114,39 @@ describe("limit-order.utils", () => {
     });
 
 
-    describe("packSkipPermitAndThresholdAmount", () => {
+    describe("packSkipPermitAndThresholdAmount when thresholdAmount is hex string", () => {
         const thresholdAmount = BigInt(2)**BigInt(254);
         const skipPermit = (BigInt(1) << BigInt(255));
         it("with skip", () => {
             expect(
-                packSkipPermitAndThresholdAmount(thresholdAmount.toString(16), true)
+                packSkipPermitAndThresholdAmount(ZX + thresholdAmount.toString(16), true)
             ).toBe(
-                (thresholdAmount + skipPermit).toString(16),
+                ZX + (thresholdAmount + skipPermit).toString(16),
             );
         });
     
         it("without skip", () => {
             expect(
-                packSkipPermitAndThresholdAmount(thresholdAmount.toString(16), false)
-            ).toBe((thresholdAmount.toString(16)));
+                packSkipPermitAndThresholdAmount(ZX + thresholdAmount.toString(16), false)
+            ).toBe((ZX + thresholdAmount.toString(16)));
+        });
+    });
+
+    describe("packSkipPermitAndThresholdAmount when thresholdAmount is 10 radix string", () => {
+        const thresholdAmount = BigInt(2)**BigInt(254);
+        const skipPermit = (BigInt(1) << BigInt(255));
+        it("with skip", () => {
+            expect(
+                packSkipPermitAndThresholdAmount(thresholdAmount.toString(), true)
+            ).toBe(
+                ZX + (thresholdAmount + skipPermit).toString(16),
+            );
+        });
+
+        it("without skip", () => {
+            expect(
+                packSkipPermitAndThresholdAmount(thresholdAmount.toString(), false)
+            ).toBe((ZX + thresholdAmount.toString(16)));
         });
     });
 
