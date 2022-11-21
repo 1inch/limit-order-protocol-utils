@@ -3,12 +3,12 @@ import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
-import {contractAddresses} from './utils/limit-order-rfq.const';
+import {limirOrderProtocolAdresses} from './limit-order-protocol.const';
 import {largeInteractions, largeResult} from './test/mocks';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const chainId = 56;
-    const contractAddress = contractAddresses[chainId];
+    const contractAddress = limirOrderProtocolAdresses[chainId];
 
     const web3 = new Web3('https://bsc-dataseed.binance.org');
     const privateKey =

@@ -2,6 +2,7 @@ import {AbiItem} from './model/abi.model';
 import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
 import { SignTypedDataVersion } from '@metamask/eth-sig-util';
+import { ChainId } from './model/limit-order-protocol.model';
 
 export const PROTOCOL_NAME = '1inch Aggregation Router';
 
@@ -48,3 +49,21 @@ export const RFQ_ORDER_STRUCTURE = [
     {name: 'makingAmount', type: 'uint256'},
     {name: 'takingAmount', type: 'uint256'},
 ];
+
+export const limirOrderProtocolAdresses: {[key in ChainId]: string} = {
+    [ChainId.etherumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.binanceMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.polygonMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.optimismMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.arbitrumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.auroraMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.gnosisMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.avalancheMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.fantomMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
+    [ChainId.klaytnMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
+} as const;
+
+/**
+ * @deprecated Change to `limirOrderProtocolAdresses`
+ */
+export const contractAddresses = limirOrderProtocolAdresses;

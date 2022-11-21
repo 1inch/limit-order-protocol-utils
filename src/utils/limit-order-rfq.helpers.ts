@@ -8,7 +8,6 @@ import {ChainId, RFQOrder} from '../model/limit-order-protocol.model';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
 import {
     cancelOrderSchema,
-    contractAddresses,
     createOrderSchema,
     explorersUrls,
     fillOrderSchema,
@@ -21,6 +20,7 @@ import {
 } from './limit-order-rfq.model';
 import {TransactionConfig} from 'web3-core';
 import {PrivateKeyProviderConnector} from '../connector/private-key-provider.connector';
+import { limirOrderProtocolAdresses } from '../limit-order-protocol.const';
 
 export async function createOrderOperation(
     isRunningWithArgv: boolean,
@@ -83,7 +83,7 @@ export async function cancelOrderOperation(
 }
 
 export function createOrder(params: CreatingParams): RFQOrder {
-    const contractAddress = contractAddresses[params.chainId as ChainId];
+    const contractAddress = limirOrderProtocolAdresses[params.chainId as ChainId];
     const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
     const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
@@ -116,7 +116,7 @@ export async function fillOrder(
     params: FillingParams,
     order: RFQOrder
 ): Promise<string> {
-    const contractAddress = contractAddresses[params.chainId as ChainId];
+    const contractAddress = limirOrderProtocolAdresses[params.chainId as ChainId];
     const web3 = new Web3(rpcUrls[params.chainId as ChainId]);
     const providerConnector = new PrivateKeyProviderConnector(
         params.privateKey,
@@ -167,7 +167,7 @@ export async function fillOrder(
 }
 
 export async function cancelOrder(params: CancelingParams): Promise<string> {
-    const contractAddress = contractAddresses[params.chainId as ChainId];
+    const contractAddress = limirOrderProtocolAdresses[params.chainId as ChainId];
     const web3 = new Web3(
         new Web3.providers.HttpProvider(rpcUrls[params.chainId as ChainId])
     );

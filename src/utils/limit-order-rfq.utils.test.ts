@@ -4,12 +4,13 @@ import {
     gweiToWei,
     sendSignedTransaction,
 } from './limit-order-rfq.helpers';
-import {contractAddresses, rpcUrls} from './limit-order-rfq.const';
+import {rpcUrls} from './limit-order-rfq.const';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from '../connector/private-key-provider.connector';
 import {LimitOrderBuilder} from '../limit-order.builder';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
 import {TransactionConfig} from 'web3-core';
+import { limirOrderProtocolAdresses } from '../limit-order-protocol.const';
 
 describe.skip('Limit order rfq utils', () => {
     const chainId = 56;
@@ -43,7 +44,7 @@ describe.skip('Limit order rfq utils', () => {
     });
 
     it('Fill limit order', async () => {
-        const contractAddress = contractAddresses[chainId];
+        const contractAddress = limirOrderProtocolAdresses[chainId];
         const web3 = new Web3(rpcUrls[chainId]);
         const providerConnector = new PrivateKeyProviderConnector(
             privateKey,

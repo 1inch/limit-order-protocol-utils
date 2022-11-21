@@ -3,12 +3,13 @@ import { LimitOrderPredicateBuilder } from "../limit-order-predicate.builder";
 import { LimitOrderProtocolFacade } from "../limit-order-protocol.facade";
 import { LimitOrderBuilder } from "../limit-order.builder";
 import { ChainId } from "../model/limit-order-protocol.model";
-import { contractAddresses, rpcUrls } from "../utils/limit-order-rfq.const";
+import { rpcUrls } from "../utils/limit-order-rfq.const";
 import Web3 from "web3";
 import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
 import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
+import { limirOrderProtocolAdresses } from "../limit-order-protocol.const";
 
 
 export function mocksForChain(
@@ -16,7 +17,7 @@ export function mocksForChain(
     contractAddressOverride?: string,
     seriesNonceManagerContractAddressOverride?: string,
 ) {
-    const contractAddress = contractAddressOverride || contractAddresses[chainId];
+    const contractAddress = contractAddressOverride || limirOrderProtocolAdresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
     const web3 = new Web3(rpcUrls[chainId]);
     const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';

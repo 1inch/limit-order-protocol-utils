@@ -20,5 +20,3 @@ export * from './model/abi.model';
 export * from './model/eip712.model';
 export * from './model/limit-order-protocol.model';
 export * from './model/series-nonce-manager.model';
-
-export { contractAddresses as limirOrderProtocolAdresses } from './utils/limit-order-rfq.const';

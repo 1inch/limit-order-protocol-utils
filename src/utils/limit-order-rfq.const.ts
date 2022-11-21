@@ -134,20 +134,6 @@ export const rpcUrls: {[key in ChainId]: string} = {
     [ChainId.klaytnMainnet]: 'https://klaytn-nodes.1inch.io',
 };
 
-export const contractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.binanceMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.polygonMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.optimismMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.arbitrumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.auroraMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.gnosisMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.avalancheMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.fantomMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
-    [ChainId.klaytnMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
-};
-
-
 export const explorersUrls: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: 'https://etherscan.io',
     [ChainId.binanceMainnet]: 'https://bscscan.com',

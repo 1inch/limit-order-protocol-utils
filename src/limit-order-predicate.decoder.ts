@@ -10,7 +10,7 @@ import { FunctionFragment, Interface, Result } from '@ethersproject/abi'
 import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
 import { AbiItem } from "./model/abi.model";
-import { limirOrderProtocolAdresses } from "./";
+import { limirOrderProtocolAdresses } from "./limit-order-protocol.const";
 import { isIterable, mapObject } from "./utils/helpers";
 import { LimitOrderPredicateDecoders } from "./utils/decoders/limit-order-predicate-decoders";
 import { BigNumber } from "@ethersproject/bignumber";
