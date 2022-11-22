@@ -75,7 +75,7 @@ const TIMESTAMP_AND_NOUNCE_ARGS_SIZE = 256 / 4;
 const PREDICATE_REGEX = new RegExp(`^\\w*${TIMESTAMP_AND_NOUNCE_SELECTOR}`, 'g');
 
 /**
- * 
+ *
  * @param calldata Any variant of calldata, such as
  * - complete predicate
  * - full method calldata
@@ -83,7 +83,7 @@ const PREDICATE_REGEX = new RegExp(`^\\w*${TIMESTAMP_AND_NOUNCE_SELECTOR}`, 'g')
  * - argument value as hex or bigint
  * @param isSeriesNonceManager Omit if you dont know exacly.
  * Loose `arbitraryStaticCall` check will be performed
- * @returns 
+ * @returns
  */
 // eslint-disable-next-line max-lines-per-function
 export function unpackTimestampAndNoncePredicate(
@@ -165,7 +165,13 @@ export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | stri
         try {
             const json = JSON.parse(message.substring(bracesIndexStart, bracesIndexEnd + 1));
 
-            return json.originalError.data;
+            if (json.originalError) {
+                return json.originalError.data;
+            } else if (json.data) {
+                return json.data;
+            }
+
+            return null;
         } catch (e) {
             return null;
         }
@@ -174,6 +180,6 @@ export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | stri
     if (message.startsWith(ZX)) {
         return message;
     }
-    
+
     return null;
 }
