@@ -1,7 +1,8 @@
 {
     "name": "@1inch/limit-order-protocol-utils",
-    "version": "3.0.0-pre.4",
+    "version": "3.0.0-pre.5",
     "description": "Utility for limit order protocol",
+    "license": "MIT",
     "main": "index.js",
     "types": "index.d.ts",
     "repository": {
