@@ -3,12 +3,12 @@ import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrder, RFQOrder} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
-import {limirOrderProtocolAdresses} from './limit-order-protocol.const';
+import {limitOrderProtocolAddresses} from './limit-order-protocol.const';
 import {largeInteractions, largeResult} from './test/mocks';
 
 describe('LimitOrderBuilder - for build new limit order', () => {
     const chainId = 56;
-    const contractAddress = limirOrderProtocolAdresses[chainId];
+    const contractAddress = limitOrderProtocolAddresses[chainId];
 
     const web3 = new Web3('https://bsc-dataseed.binance.org');
     const privateKey =
@@ -97,7 +97,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 allowedSender: 'allowedSender',
                 makingAmount: 'makingAmount',
                 takingAmount: 'takingAmount',
-                
+
                 offsets,
                 interactions,
             };
@@ -207,7 +207,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
     describe("packInteractions", () => {
             it("should pack", () => {
                 const { offsets, interactions } = LimitOrderBuilder.packInteractions(largeInteractions);
-    
+
                 expect(offsets).toBe(largeResult.offsets);
                 expect(interactions).toBe(largeResult.interactions);
             })

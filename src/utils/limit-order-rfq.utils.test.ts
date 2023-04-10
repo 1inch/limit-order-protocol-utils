@@ -10,7 +10,7 @@ import {PrivateKeyProviderConnector} from '../connector/private-key-provider.con
 import {LimitOrderBuilder} from '../limit-order.builder';
 import {LimitOrderProtocolFacade} from '../limit-order-protocol.facade';
 import {TransactionConfig} from 'web3-core';
-import { limirOrderProtocolAdresses } from '../limit-order-protocol.const';
+import { limitOrderProtocolAddresses } from '../limit-order-protocol.const';
 
 describe.skip('Limit order rfq utils', () => {
     const chainId = 56;
@@ -44,7 +44,7 @@ describe.skip('Limit order rfq utils', () => {
     });
 
     it('Fill limit order', async () => {
-        const contractAddress = limirOrderProtocolAdresses[chainId];
+        const contractAddress = limitOrderProtocolAddresses[chainId];
         const web3 = new Web3(rpcUrls[chainId]);
         const providerConnector = new PrivateKeyProviderConnector(
             privateKey,
