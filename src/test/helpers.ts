@@ -9,7 +9,7 @@ import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
 import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
-import { limirOrderProtocolAdresses } from "../limit-order-protocol.const";
+import { limitOrderProtocolAddresses } from "../limit-order-protocol.const";
 
 
 export function mocksForChain(
@@ -17,7 +17,7 @@ export function mocksForChain(
     contractAddressOverride?: string,
     seriesNonceManagerContractAddressOverride?: string,
 ) {
-    const contractAddress = contractAddressOverride || limirOrderProtocolAdresses[chainId];
+    const contractAddress = contractAddressOverride || limitOrderProtocolAddresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
     const web3 = new Web3(rpcUrls[chainId]);
     const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';

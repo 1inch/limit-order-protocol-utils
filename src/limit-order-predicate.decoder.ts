@@ -10,7 +10,7 @@ import { FunctionFragment, Interface, Result } from '@ethersproject/abi'
 import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
 import { AbiItem } from "./model/abi.model";
-import { limirOrderProtocolAdresses } from "./limit-order-protocol.const";
+import { limitOrderProtocolAddresses } from "./limit-order-protocol.const";
 import { isIterable, mapObject } from "./utils/helpers";
 import { LimitOrderPredicateDecoders } from "./utils/decoders/limit-order-predicate-decoders";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -38,7 +38,7 @@ export class DecodableCall {
     ) {}
 }
 
-export type DecodableArguments = 
+export type DecodableArguments =
     Record<string, DecodableCall | PredicateBytes>
     | Array<DecodableCall | PredicateBytes>;
 
@@ -85,10 +85,10 @@ export type ABI = AbiItem[];
 
 /**
  * An ifaceContext.decodeFunctionData result.
- * 
+ *
  * Object contains arguments by indexed and named keys.
  * Eg:
- * 
+ *
  * ```
  * solMethod(255, '0xff') // solMethod(uint8 count, bytes data)
  * // ->
@@ -104,7 +104,7 @@ export type CallArguments = Result | { [key: string]: string | BigNumber };
 
 /**
  * See [CallArguments] for details.
- * 
+ *
  * @param interfaces access it in case if you want implement arbitraryStaticCall-like method
  */
 type Decoder = (
@@ -156,14 +156,14 @@ export class LimitOrderPredicateDecoder<
         DecodableInterfaces<Decoders>
         | DecodableInterfaces<LimitOrderPredicateDecoders>
         | DecodableInterfaces<SeriesNonceManagerDecoders>;
-    
+
     defaultAddress: string;
 
     constructor(
         private readonly chainId: T,
         decodableContracts: DecodableContracts<Decoders> = {},
     ) {
-        this.defaultAddress = limirOrderProtocolAdresses[this.chainId].toLowerCase();
+        this.defaultAddress = limitOrderProtocolAddresses[this.chainId].toLowerCase();
 
         this.decodableInterfaces = {
             [this.defaultAddress]: {

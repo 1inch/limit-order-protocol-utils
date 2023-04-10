@@ -13,6 +13,7 @@ export const seriesNonceManagerContractAddresses: {[key in ChainId]: string} = {
     [ChainId.gnosisMainnet]: '0x11431a89893025d2a48dca4eddc396f8c8117187',
     [ChainId.avalancheMainnet]: '0x2ec255797fef7669fa243509b7a599121148ffba',
     [ChainId.auroraMainnet]: '0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9',
-    [ChainId.fantomMainnet]: '0x7871769b3816b23dB12E83a482aAc35F1FD35D4B',
-    [ChainId.klaytnMainnet]: '0x7871769b3816b23dB12E83a482aAc35F1FD35D4B',
+    [ChainId.fantomMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
+    [ChainId.klaytnMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
+    [ChainId.zkSyncEraMainnet]: '0xce3cf049b99ca75d520287c8f9c35e5bdbf0376b',
 };

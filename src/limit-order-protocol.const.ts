@@ -50,7 +50,7 @@ export const RFQ_ORDER_STRUCTURE = [
     {name: 'takingAmount', type: 'uint256'},
 ];
 
-export const limirOrderProtocolAdresses: {[key in ChainId]: string} = {
+export const limitOrderProtocolAddresses: {[key in ChainId]: string} = {
     [ChainId.etherumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.binanceMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.polygonMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
@@ -59,11 +59,12 @@ export const limirOrderProtocolAdresses: {[key in ChainId]: string} = {
     [ChainId.auroraMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.gnosisMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.avalancheMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.fantomMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
-    [ChainId.klaytnMainnet]: '0x1111111254EEB25477B68fb85Ed929f73A960582',
+    [ChainId.fantomMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.klaytnMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.zkSyncEraMainnet]: '0x165ccec4b340e36d6fea99765e35b5727ca60d8f',
 } as const;
 
 /**
- * @deprecated Change to `limirOrderProtocolAdresses`
+ * @deprecated Change to `limitOrderProtocolAddresses`
  */
-export const contractAddresses = limirOrderProtocolAdresses;
+export const contractAddresses = limitOrderProtocolAddresses;
