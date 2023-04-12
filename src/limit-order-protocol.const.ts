@@ -61,7 +61,7 @@ export const limitOrderProtocolAddresses: {[key in ChainId]: string} = {
     [ChainId.avalancheMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.fantomMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.klaytnMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
-    [ChainId.zkSyncEraMainnet]: '0x165ccec4b340e36d6fea99765e35b5727ca60d8f',
+    [ChainId.zkSyncEraMainnet]: '0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f',
 } as const;
 
 /**
