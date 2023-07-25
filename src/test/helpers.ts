@@ -19,7 +19,11 @@ export function mocksForChain(
 ) {
     const contractAddress = contractAddressOverride || limitOrderProtocolAddresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
-    const web3 = new Web3(rpcUrls[chainId]);
+    const web3Provider = new Web3.providers.HttpProvider(
+        rpcUrls[chainId],
+        { headers: [{ name: 'auth-key', value: process.env.AUTHKEY || '' }] }
+    );
+    const web3 = new Web3(web3Provider);
     const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
 
     const providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
