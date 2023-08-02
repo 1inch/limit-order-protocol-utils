@@ -31,6 +31,8 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          AUTHKEY: ${{ secrets.NODE_AUTH_KEY }}
 
       - name: Publish
         run: yarn publish
@@ -66,6 +68,8 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          AUTHKEY: ${{ secrets.NODE_AUTH_KEY }}
 
       - name: Publish
         run: yarn publish
