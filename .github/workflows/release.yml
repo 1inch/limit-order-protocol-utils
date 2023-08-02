@@ -27,7 +27,7 @@ jobs:
           cat package.json
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build
         run: yarn build
@@ -64,7 +64,7 @@ jobs:
           cat package.json
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build
         run: yarn build
