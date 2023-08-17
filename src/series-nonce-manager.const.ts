@@ -16,4 +16,5 @@ export const seriesNonceManagerContractAddresses: {[key in ChainId]: string} = {
     [ChainId.fantomMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
     [ChainId.klaytnMainnet]: '0x7871769b3816b23db12e83a482aac35f1fd35d4b',
     [ChainId.zkSyncEraMainnet]: '0xce3cf049b99ca75d520287c8f9c35e5bdbf0376b',
+    [ChainId.baseMainnet]: '0xd9cc0a957cac93135596f98c20fbaca8bf515909',
 };

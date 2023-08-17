@@ -133,6 +133,7 @@ export const rpcUrls: {[key in ChainId]: string} = {
     [ChainId.auroraMainnet]: 'https://aurora-nodes.1inch.io',
     [ChainId.klaytnMainnet]: 'https://klaytn-nodes.1inch.io',
     [ChainId.zkSyncEraMainnet]: 'https://mainnet.era.zksync.io',
+    [ChainId.baseMainnet]: 'https://mainnet.base.org',
 };
 
 export const explorersUrls: {[key in ChainId]: string} = {
@@ -147,4 +148,5 @@ export const explorersUrls: {[key in ChainId]: string} = {
     [ChainId.auroraMainnet]: 'https://aurorascan.dev',
     [ChainId.klaytnMainnet]: 'https://scope.klaytn.com',
     [ChainId.zkSyncEraMainnet]: 'https://explorer.zksync.io',
+    [ChainId.baseMainnet]: 'https://mainnet.base.org',
 };
