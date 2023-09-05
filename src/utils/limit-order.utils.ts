@@ -16,7 +16,7 @@ export function trim0x(hexString: string): string {
     return hexString;
 }
 
-export function getOffsets(data: string[]): string {
+export function getOffsets(data: string[]): bigint {
     const cumulativeSum = ((sum: bigint) => (value: bigint) => {
         sum += value;
         return sum;
@@ -34,7 +34,6 @@ export function getOffsets(data: string[]): string {
         .reduce((bytesAccumularot, offset, index) => {
             return bytesAccumularot + (BigInt(offset) << ((UINT32_BITS * BigInt(index))));
         }, BigInt(0))
-        .toString();
 }
 
 export function parseInteractionForField(
@@ -64,7 +63,7 @@ export function getMakingAmountForRFQ(amount: string): string {
     return setN(BigInt(amount), 255, true).toString();
 }
 
-function setN(value: bigint, bitNumber: number, flag: boolean): bigint {
+export function setN(value: bigint, bitNumber: number | bigint, flag: boolean): bigint {
     const bit = flag ? 1 : 0;
     return value | (BigInt(bit) << BigInt(bitNumber));
 }

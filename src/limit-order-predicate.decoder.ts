@@ -227,16 +227,17 @@ export class LimitOrderPredicateDecoder<
 
     // eslint-disable-next-line
     private parseCalldata = (calldata: string, address: Address): PredicateAstNode => {
-        const sig = calldata.substring(0, 10);
+        const selector = calldata.substring(0, 10);
         const decodableIface = this.decodableInterfaces[address];
 
         if (!decodableIface) return new PredicateBytes(calldata, address);
 
         let fn: FunctionFragment;
         try {
-            fn = decodableIface.iface.getFunction(sig);
+            fn = decodableIface.iface.getFunction(selector);
         } catch (e) {
-            console.warn(`Tried to decode unknown function with signature ${sig} on ${address}.`);
+            // eslint-disable-next-line max-len
+            console.warn(`Tried to decode unknown function with signature ${selector} on ${address}.`);
             return new PredicateBytes(calldata, address);
         }
 
@@ -245,8 +246,8 @@ export class LimitOrderPredicateDecoder<
         type decoderKey = keyof typeof decodableIface.decoders
         const decoder = (
             decodableIface.decoders[fn.name as decoderKey]
-            || decodableIface.decoders[sig as decoderKey]
-            || decodableIface.decoders[sig.substring(2) as decoderKey]
+            || decodableIface.decoders[selector as decoderKey]
+            || decodableIface.decoders[selector.substring(2) as decoderKey]
         ) as Decoder;
 
         if (!decoder) return new PredicateBytes(calldata, address);

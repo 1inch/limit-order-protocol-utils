@@ -9,14 +9,13 @@ import {
     ZX,
 } from './limit-order-protocol.const';
 import {
-    ChainId,
-    Interactions,
+    ChainId, ExtensionParams, ExtensionParamsWithCustomData,
     LimitOrder,
     LimitOrderData,
     LimitOrderHash,
     LimitOrderInteractions,
     LimitOrderProtocolMethods,
-    LimitOrderSignature,
+    LimitOrderSignature, LimitOrderWithExtension,
     RFQOrder,
     RFQOrderData,
 } from './model/limit-order-protocol.model';
@@ -24,7 +23,18 @@ import {EIP712TypedData, MessageTypes} from './model/eip712.model';
 import {bufferToHex} from 'ethereumjs-util';
 import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
 import {ProviderConnector} from './connector/provider.connector';
-import { getOffsets, trim0x } from './utils/limit-order.utils';
+import {getOffsets, setN, trim0x} from './utils/limit-order.utils';
+import Web3 from 'web3';
+
+const _NO_PARTIAL_FILLS_FLAG = BigInt(255);
+const _ALLOW_MULTIPLE_FILLS_FLAG = BigInt(254);
+const _NO_PRICE_IMPROVEMENT_FLAG = BigInt(253);
+const _NEED_PREINTERACTION_FLAG = BigInt(252);
+const _NEED_POSTINTERACTION_FLAG = BigInt(251);
+const _NEED_EPOCH_CHECK_FLAG = BigInt(250);
+const _HAS_EXTENSION_FLAG = BigInt(249);
+const _USE_PERMIT2_FLAG = BigInt(248);
+const _UNWRAP_WETH_FLAG = BigInt(247);
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -49,37 +59,37 @@ export class LimitOrderBuilder {
         private readonly contractAddress: string,
         private readonly chainId: ChainId | number,
         private readonly providerConnector: ProviderConnector,
-        private readonly generateSalt = generateOrderSalt
     ) {}
 
-    static packInteractions({
-        makerAssetData = ZX,
-        takerAssetData = ZX,
-        getMakingAmount = ZX,
-        getTakingAmount = ZX,
-        predicate = ZX,
-        permit = ZX,
-        preInteraction = ZX,
-        postInteraction = ZX,
-    }: Partial<Interactions>): LimitOrderInteractions {
+    static packInteractions(
+        {
+            makerAssetSuffix,
+            takerAssetSuffix,
+            makingAmountGetter,
+            takingAmountGetter,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        }: ExtensionParams): LimitOrderInteractions {
         const allInteractions = [
-            makerAssetData,
-            takerAssetData,
-            getMakingAmount,
-            getTakingAmount,
+            makerAssetSuffix,
+            takerAssetSuffix,
+            makingAmountGetter,
+            takingAmountGetter,
             predicate,
             permit,
             preInteraction,
             postInteraction,
         ];
-    
+
         const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
         return { offsets, interactions };
     }
 
-    static joinStaticCalls(data: string[]): { offsets: string, data: string } {
+    static joinStaticCalls(data: string[]): { offsets: bigint, data: string } {
         const trimmed = data.map(trim0x);
-    
+
         return {
             offsets: getOffsets(trimmed),
             data: ZX + trimmed.join(''),
@@ -102,6 +112,38 @@ export class LimitOrderBuilder {
             typedData,
             dataHash
         );
+    }
+
+    buildMakerTraits ({
+       allowedSender = ZERO_ADDRESS,
+       shouldCheckEpoch = false,
+       allowPartialFill = true,
+       allowPriceImprovement = true,
+       allowMultipleFills = true,
+       usePermit2 = false,
+       unwrapWeth = false,
+       expiry = 0,
+       nonce = 0,
+       series = 0,
+   } = {}) {
+        // assert(BigInt(expiry) >= BigInt(0) && BigInt(expiry) < (BigInt(1) << BigInt(40)), 'Expiry should be less than 40 bits');
+        // assert(BigInt(nonce) >= 0 && BigInt(nonce) < (BigInt(1) << BigInt(40)), 'Nonce should be less than 40 bits');
+        // assert(BigInt(series) >= 0 && BigInt(series) < (BigInt(1) << BigInt(40)), 'Series should be less than 40 bits');
+
+        return '0x' + (
+            (BigInt(series) << BigInt(160)) |
+            (BigInt(nonce) << BigInt(120)) |
+            (BigInt(expiry) << BigInt(80)) |
+            (BigInt(allowedSender) & ((BigInt(1) << BigInt(80)) - BigInt(1))) |
+            // 247 - 255
+            setN(BigInt(0), _UNWRAP_WETH_FLAG, unwrapWeth) |
+            setN(BigInt(0), _ALLOW_MULTIPLE_FILLS_FLAG, allowMultipleFills) |
+            setN(BigInt(0), _NO_PARTIAL_FILLS_FLAG, !allowPartialFill) |
+            setN(BigInt(0), _NO_PRICE_IMPROVEMENT_FLAG, !allowPriceImprovement) |
+            setN(BigInt(0), _NEED_EPOCH_CHECK_FLAG, shouldCheckEpoch) |
+            setN(BigInt(0), _USE_PERMIT2_FLAG, usePermit2)
+            // 256 bit value
+        ).toString(16).padStart(64, '0');
     }
 
     buildLimitOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
@@ -173,54 +215,67 @@ export class LimitOrderBuilder {
             takingAmount,
         };
     }
-    
+
     /**
-     * @param allowedSender formerly `takerAddress` 
-     * @returns 
+     * @param allowedSender formerly `takerAddress`
+     * @returns
      */
     // eslint-disable-next-line max-lines-per-function
-    buildLimitOrder({
-        makerAssetAddress,
-        takerAssetAddress,
-        makerAddress,
-        receiver = ZERO_ADDRESS,
-        allowedSender = ZERO_ADDRESS,
-        makingAmount,
-        takingAmount,
-        predicate = ZX,
-        permit = ZX,
-        getMakingAmount = ZX,
-        getTakingAmount = ZX,
-        preInteraction = ZX,
-        postInteraction = ZX,
-        salt = this.generateSalt(),
-    }: LimitOrderData): LimitOrder {
-
-        const makerAssetData = ZX;
-        const takerAssetData = ZX;
-
-        const { offsets, interactions } = LimitOrderBuilder.packInteractions({
-            makerAssetData,
-            takerAssetData,
-            getMakingAmount,
-            getTakingAmount,
-            predicate,
-            permit,
-            preInteraction,
-            postInteraction,
-        })
-
-        return {
-            salt,
-            makerAsset: makerAssetAddress,
-            takerAsset: takerAssetAddress,
-            maker: makerAddress,
-            receiver,
-            allowedSender,
+    buildLimitOrder(
+        {
+            maker,
+            receiver = ZERO_ADDRESS,
+            makerAsset,
+            takerAsset,
             makingAmount,
             takingAmount,
-            offsets,
-            interactions,
+            makerTraits = this.buildMakerTraits()
+        }: LimitOrderData,
+        extensionParams: ExtensionParamsWithCustomData
+    ): LimitOrderWithExtension {
+
+        const { offsets, interactions } = LimitOrderBuilder.packInteractions(extensionParams);
+
+        const allInteractionsConcat = interactions + trim0x(extensionParams.customData);
+
+        let extension = '0x';
+        if (allInteractionsConcat.length > 0) {
+            // increase offsets to 256 uint + interactions + customData
+            extension += offsets.toString(16).padStart(64, '0') + allInteractionsConcat;
+        }
+
+        let salt = BigInt(1);
+        // if extension exists - put its hash to salt and set flag
+        if (trim0x(extension).length > 0) {
+            salt = BigInt(Web3.utils.keccak256(extension))
+                & ((BigInt(1) << BigInt(160)) - BigInt(1));
+            // wtf?
+            makerTraits = BigInt(makerTraits) | (BigInt(1) << _HAS_EXTENSION_FLAG);
+        }
+
+        const { preInteraction } = extensionParams;
+        makerTraits = BigInt(makerTraits);
+        if (trim0x(preInteraction).length > 0) {
+            makerTraits = BigInt(makerTraits) | (BigInt(1) << _NEED_PREINTERACTION_FLAG);
+        }
+
+        const { postInteraction } = extensionParams;
+        if (trim0x(postInteraction).length > 0) {
+            makerTraits = BigInt(makerTraits) | (BigInt(1) << _NEED_POSTINTERACTION_FLAG);
+        }
+
+        return {
+            order: {
+                salt: salt.toString(),
+                maker,
+                receiver,
+                makerAsset,
+                takerAsset,
+                makingAmount,
+                takingAmount,
+                makerTraits: makerTraits.toString(),
+            },
+            extension
         };
     }
 

@@ -22,21 +22,30 @@ export type LimitOrderHash = string;
 export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
-    makerAddress: string;
-    receiver?: string; // Optional, by default = ZERO_ADDRESS
-    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
-    makerAssetAddress: string;
-    takerAssetAddress: string;
-    makingAmount: string;
-    takingAmount: string;
-    predicate?: LimitOrderPredicateCallData;
-    permit?: string;
-    getMakingAmount?: string;
-    getTakingAmount?: string;
-    preInteraction?: string;
-    postInteraction?: string;
-    salt?: string;
+    maker: Address,
+    receiver: Address,
+    makerAsset: Address,
+    takerAsset: Address,
+    makingAmount: string,
+    takingAmount: string,
+    makerTraits: bigint | string,
 }
+
+export type ExtensionParamsWithCustomData = ExtensionParams & {
+    customData: string;
+}
+
+export interface ExtensionParams {
+    makerAssetSuffix: string;
+    takerAssetSuffix: string;
+    makingAmountGetter: string;
+    takingAmountGetter: string;
+    predicate: string;
+    permit: string;
+    preInteraction: string;
+    postInteraction: string;
+}
+
 
 export interface RFQOrderData {
     // Index number of RFQ limit order. Example: 1
@@ -55,27 +64,34 @@ export interface RFQOrderData {
     allowedSender?: string; // Optional, by default = ZERO_ADDRESS
 }
 
+export type Address = string;
+
+export type MakerTraits = string;
+
 /**
  * Compatible with EIP712Object
  */
 export type LimitOrder = {
     salt: string;
-    makerAsset: string; // maker asset address
-    takerAsset: string; // taker asset address
-    maker: string; // maker address
-    receiver: string;
-    allowedSender: string;
+    maker: Address; // maker address
+    receiver: Address;
+    makerAsset: Address; // maker asset address
+    takerAsset: Address; // taker asset address
     makingAmount: string;
     takingAmount: string;
-    offsets: string;
-    interactions: string;
-} & LimitOrderInteractions
+    makerTraits: MakerTraits;
+}
+
+export type LimitOrderWithExtension = {
+    order: LimitOrder;
+    extension: string;
+}
 
 /**
  * Partial from LimitOrder
  */
 export type LimitOrderInteractions = {
-    offsets: string;
+    offsets: bigint;
     interactions: string;
 }
 
