@@ -1,7 +1,3 @@
-// import "@matterlabs/hardhat-zksync-deploy";
-// import "@matterlabs/hardhat-zksync-solc";
-// import "@matterlabs/hardhat-zksync-verify";
-// import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomicfoundation/hardhat-chai-matchers";
@@ -42,8 +38,8 @@ const config: HardhatUserConfig =  {
         ],
     },
     paths: {
-        sources: "./src/e2e-tests/contracts",
-        tests: "./src/e2e-tests",
+        sources: "./src/e2e-tests/smart-contracts/contracts",
+        tests: "./src/e2e-tests/tests",
         cache: "./cache",
         artifacts: "./artifacts"
     },

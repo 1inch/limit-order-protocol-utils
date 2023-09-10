@@ -1,5 +1,7 @@
 node_modules
 .idea
 coverage
+cache
+artifacts
 
 dist
