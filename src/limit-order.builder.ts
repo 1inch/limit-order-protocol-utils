@@ -137,17 +137,17 @@ export class LimitOrderBuilder {
         wallet: Address,
         typedData: EIP712TypedData
     ): Promise<LimitOrderSignature> {
-        // const dataHash = TypedDataUtils.hashStruct(
-        //     typedData.domain,
-        //     typedData.types,
-        //     typedData.value,
-        //     SignTypedDataVersion.V4
-        // ).toString('hex');
+        const dataHash = TypedDataUtils.hashStruct(
+            typedData.primaryType,
+            typedData.message,
+            typedData.types,
+            SignTypedDataVersion.V4
+        ).toString('hex');
 
         return this.providerConnector.signTypedData(
             wallet,
             typedData,
-            ''
+            dataHash,
         );
     }
 
@@ -163,13 +163,6 @@ export class LimitOrderBuilder {
        nonce = 0,
        series = 0,
    } = {}) {
-        // eslint-disable-next-line max-len
-        // assert(BigInt(expiry) >= BigInt(0) && BigInt(expiry) < (BigInt(1) << BigInt(40)), 'Expiry should be less than 40 bits');
-        // eslint-disable-next-line max-len
-        // assert(BigInt(nonce) >= 0 && BigInt(nonce) < (BigInt(1) << BigInt(40)), 'Nonce should be less than 40 bits');
-        // eslint-disable-next-line max-len
-        // assert(BigInt(series) >= 0 && BigInt(series) < (BigInt(1) << BigInt(40)), 'Series should be less than 40 bits');
-
         return '0x' + (
             (BigInt(series) << BigInt(160)) |
             (BigInt(nonce) << BigInt(120)) |
@@ -190,50 +183,6 @@ export class LimitOrderBuilder {
         const message = orderTypedData as TypedMessage<MessageTypes>;
         const hash = bufferToHex(TypedDataUtils.eip712Hash(message, SignTypedDataVersion.V4));
         return ZX + hash.substring(2);
-    }
-
-    // buildRFQOrderTypedData(
-    //     order: RFQOrder,
-    //     domainName = PROTOCOL_NAME
-    // ): EIP712TypedData {
-    //     return {
-    //         primaryType: 'OrderRFQ',
-    //         types: {
-    //             EIP712Domain: EIP712_DOMAIN,
-    //             OrderRFQ: RFQ_ORDER_STRUCTURE,
-    //         },
-    //         domain: {
-    //             name: domainName,
-    //             version: PROTOCOL_VERSION,
-    //             chainId: this.chainId,
-    //             verifyingContract: this.contractAddress,
-    //         },
-    //         message: {
-    //             ...order
-    //         },
-    //     };
-    // }
-
-    buildRFQOrder({
-        id,
-        wrapEth = false,
-        expiresInTimestamp,
-        makerAssetAddress,
-        takerAssetAddress,
-        makerAddress,
-        allowedSender = ZERO_ADDRESS,
-        makingAmount,
-        takingAmount,
-    }: RFQOrderData): RFQOrder {
-        return {
-            info: generateRFQOrderInfo(id, expiresInTimestamp, wrapEth),
-            makerAsset: makerAssetAddress,
-            takerAsset: takerAssetAddress,
-            maker: makerAddress,
-            allowedSender,
-            makingAmount,
-            takingAmount,
-        };
     }
 
     /**

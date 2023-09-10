@@ -1,13 +1,14 @@
 import {
     fillWithMakingAmount,
     getOrderBuilder,
-    getOrderFacade, getPredicateBuilder,
+    getOrderFacade,
+    getPredicateBuilder,
 } from './helpers/utils';
 import { ether } from './helpers/utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import {deployArbitraryPredicate, deploySwapTokens} from './helpers/fixtures';
+import { deployArbitraryPredicate, deploySwapTokens } from './helpers/fixtures';
 import { ethers } from 'hardhat'
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
