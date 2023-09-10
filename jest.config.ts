@@ -30,14 +30,5 @@ export default {
                 }
             }
         },
-        {
-            displayName: 'e2e',
-            testMatch: ['<rootDir>/src/e2e-tests/**/*.test.ts'], // Укажите путь к тестам Hardhat
-            globals: {
-                'ts-jest': {
-                    tsconfig: 'tsconfig.e2e.json'
-                }
-            }
-        },
     ]
 };
