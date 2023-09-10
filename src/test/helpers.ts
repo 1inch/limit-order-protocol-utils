@@ -1,7 +1,7 @@
 import { PrivateKeyProviderConnector } from "../connector/private-key-provider.connector";
 import { LimitOrderPredicateBuilder } from "../limit-order-predicate.builder";
 import { LimitOrderProtocolFacade } from "../limit-order-protocol.facade";
-import { LimitOrderBuilder } from "../limit-order.builder";
+import {EIP712Params, LimitOrderBuilder} from "../limit-order.builder";
 import { ChainId } from "../model/limit-order-protocol.model";
 import { rpcUrls } from "../utils/limit-order-rfq.const";
 import Web3 from "web3";
@@ -16,6 +16,7 @@ export function mocksForChain(
     chainId: ChainId,
     contractAddressOverride?: string,
     seriesNonceManagerContractAddressOverride?: string,
+    domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4' }
 ) {
     const contractAddress = contractAddressOverride || limitOrderProtocolAddresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
@@ -32,7 +33,8 @@ export function mocksForChain(
 
     const limitOrderBuilder = new LimitOrderBuilder(
         contractAddress,
-        providerConnector
+        providerConnector,
+        domainSettings,
     );
 
     const erc20Facade = new Erc20Facade(providerConnector);

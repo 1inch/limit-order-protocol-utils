@@ -20,15 +20,7 @@ export default {
         '**/__tests__/**/*.[jt]s?(x)',
         '**/?(*.)+(spec|test).[tj]s?(x)',
     ],
-    projects: [
-        {
-            displayName: 'main',
-            testMatch: ['<rootDir>/src/tests/**/*.test.ts'], // Укажите путь к вашим другим тестам
-            globals: {
-                'ts-jest': {
-                    tsconfig: 'tsconfig.json'
-                }
-            }
-        },
+    testPathIgnorePatterns: [
+        'src/e2e-tests/'
     ]
 };

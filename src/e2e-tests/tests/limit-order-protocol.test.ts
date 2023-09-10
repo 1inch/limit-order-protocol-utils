@@ -8,21 +8,8 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import {deployArbitraryPredicate, deploySwapTokens} from './helpers/fixtures';
 import { ethers } from 'hardhat'
 import {expect} from 'chai';
-import {trim0x} from "@1inch/solidity-utils";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
-// todo replace from library
-function joinStaticCalls (dataArray: string[]) {
-    const trimmed = dataArray.map(trim0x);
-    const cumulativeSum = (sum => value => { sum += value; return sum; })(0);
-    return {
-        offsets: trimmed
-            .map(d => d.length / 2)
-            .map(cumulativeSum)
-            .reduce((acc, val, i) => acc | BigInt(val) << BigInt(32 * i), BigInt(0)),
-        data: '0x' + trimmed.join(''),
-    };
-}
 
 describe('LimitOrderProtocol',  () => {
     let addr, addr1;
