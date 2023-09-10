@@ -2,7 +2,6 @@ import {
     InteractionName,
     Interactions,
     InteractionsFields,
-    LimitOrder,
 } from "./model/limit-order-protocol.model";
 import {
     parseInteractionForField,
@@ -29,30 +28,30 @@ export class LimitOrderDecoder {
         return parsedInteractions
     }
 
-    static unpackInteraction<T extends InteractionName>(
-        order: LimitOrder,
-        name: T,
-    ): Interactions[T] {
-        return parseInteractionForField(
-            BigInt(order.offsets),
-            order.interactions,
-            InteractionsFields[name],
-        )
-    }
+    // static unpackInteraction<T extends InteractionName>(
+    //     order: LimitOrder,
+    //     name: T,
+    // ): Interactions[T] {
+    //     return parseInteractionForField(
+    //         BigInt(order.offsets),
+    //         order.interactions,
+    //         InteractionsFields[name],
+    //     )
+    // }
 
     /**
      * @returns `true` if interaction value is empty of 0x
      */
-    static hasInteraction(order: LimitOrder, name: InteractionName): boolean {
-        const interaction = this.unpackInteraction(order, name);
-
-        return trim0x(interaction) !== '';
-    }
+    // static hasInteraction(order: LimitOrder, name: InteractionName): boolean {
+    //     const interaction = this.unpackInteraction(order, name);
+    //
+    //     return trim0x(interaction) !== '';
+    // }
 
     static unpackStaticCalls(offsets: string | bigint, interactions: string): string[] {
         const offsetsBI = BigInt(offsets);
         const data = trim0x(interactions);
-    
+
         const result: string[] = [];
         let previous = BigInt(0);
         let current = BigInt(0);
@@ -66,7 +65,7 @@ export class LimitOrderDecoder {
             result.push(calldata);
             previous = current;
         }
-    
+
         return result;
     }
 }

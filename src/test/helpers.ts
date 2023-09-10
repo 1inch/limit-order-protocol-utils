@@ -32,7 +32,6 @@ export function mocksForChain(
 
     const limitOrderBuilder = new LimitOrderBuilder(
         contractAddress,
-        chainId,
         providerConnector
     );
 

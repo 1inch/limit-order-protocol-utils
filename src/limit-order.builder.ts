@@ -1,30 +1,26 @@
 import {
     EIP712_DOMAIN,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ORDER_STRUCTURE,
-    PROTOCOL_NAME,
-    PROTOCOL_VERSION,
-    RFQ_ORDER_STRUCTURE,
     ZERO_ADDRESS,
     ZX,
 } from './limit-order-protocol.const';
 import {
-    ChainId, ExtensionParams, ExtensionParamsWithCustomData,
+    ExtensionParams, ExtensionParamsWithCustomData,
     LimitOrder,
-    LimitOrderData,
-    LimitOrderHash,
+    LimitOrderData, LimitOrderHash,
     LimitOrderInteractions,
     LimitOrderProtocolMethods,
     LimitOrderSignature, LimitOrderWithExtension,
     RFQOrder,
     RFQOrderData,
 } from './model/limit-order-protocol.model';
-import {EIP712TypedData, MessageTypes} from './model/eip712.model';
-import {bufferToHex} from 'ethereumjs-util';
-import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from '@metamask/eth-sig-util';
+import {EIP712TypedData, MessageTypes, ORDER_STRUCTURE} from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {getOffsets, setN, trim0x} from './utils/limit-order.utils';
 import Web3 from 'web3';
+import {Address} from './model/eth.model';
+import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from "@metamask/eth-sig-util";
+import {bufferToHex} from 'ethereumjs-util';
 
 const _NO_PARTIAL_FILLS_FLAG = BigInt(255);
 const _ALLOW_MULTIPLE_FILLS_FLAG = BigInt(254);
@@ -36,9 +32,6 @@ const _HAS_EXTENSION_FLAG = BigInt(249);
 const _USE_PERMIT2_FLAG = BigInt(248);
 const _UNWRAP_WETH_FLAG = BigInt(247);
 
-export function generateOrderSalt(): string {
-    return Math.round(Math.random() * Date.now()) + '';
-}
 
 export function generateRFQOrderInfo(
     id: number,
@@ -54,11 +47,17 @@ export function generateRFQOrderInfo(
     return info.toString(10);
 }
 
+export interface EIP712Params {
+    domainName: string;
+    version: string;
+}
+
 export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
-        private readonly chainId: ChainId | number,
+        // private readonly chainId: ChainId | number,
         private readonly providerConnector: ProviderConnector,
+        private readonly eip712Params: EIP712Params,
     ) {}
 
     static packInteractions(
@@ -96,21 +95,59 @@ export class LimitOrderBuilder {
         };
     }
 
+    buildLimitOrderTypedData(
+        order: LimitOrder,
+        chainId: number,
+        verifyingContract: Address,
+        domainName = this.eip712Params.domainName
+    ): EIP712TypedData {
+        return {
+            primaryType: 'Order',
+            types: {
+                EIP712Domain: EIP712_DOMAIN,
+                Order: ORDER_STRUCTURE,
+            },
+            domain: {
+                name: domainName,
+                version: this.eip712Params.version,
+                chainId: chainId,
+                verifyingContract: verifyingContract,
+            },
+            message: order,
+        };
+    }
+
+    buildTypedDataAndSign(
+        order: LimitOrder,
+        chainId: number,
+        verifyingContract: Address,
+        wallet: Address,
+        domainName = this.eip712Params.domainName
+    ): Promise<LimitOrderSignature> {
+        const typedData = this.buildLimitOrderTypedData(
+            order,
+            chainId,
+            verifyingContract,
+            domainName
+        );
+        return this.buildOrderSignature(wallet, typedData);
+    }
+
     buildOrderSignature(
-        walletAddress: string,
+        wallet: Address,
         typedData: EIP712TypedData
     ): Promise<LimitOrderSignature> {
-        const dataHash = TypedDataUtils.hashStruct(
-            typedData.primaryType,
-            typedData.message,
-            typedData.types,
-            SignTypedDataVersion.V4
-        ).toString('hex');
+        // const dataHash = TypedDataUtils.hashStruct(
+        //     typedData.domain,
+        //     typedData.types,
+        //     typedData.value,
+        //     SignTypedDataVersion.V4
+        // ).toString('hex');
 
         return this.providerConnector.signTypedData(
-            walletAddress,
+            wallet,
             typedData,
-            dataHash
+            ''
         );
     }
 
@@ -126,8 +163,11 @@ export class LimitOrderBuilder {
        nonce = 0,
        series = 0,
    } = {}) {
+        // eslint-disable-next-line max-len
         // assert(BigInt(expiry) >= BigInt(0) && BigInt(expiry) < (BigInt(1) << BigInt(40)), 'Expiry should be less than 40 bits');
+        // eslint-disable-next-line max-len
         // assert(BigInt(nonce) >= 0 && BigInt(nonce) < (BigInt(1) << BigInt(40)), 'Nonce should be less than 40 bits');
+        // eslint-disable-next-line max-len
         // assert(BigInt(series) >= 0 && BigInt(series) < (BigInt(1) << BigInt(40)), 'Series should be less than 40 bits');
 
         return '0x' + (
@@ -152,47 +192,27 @@ export class LimitOrderBuilder {
         return ZX + hash.substring(2);
     }
 
-    buildLimitOrderTypedData(
-        order: LimitOrder,
-        domainName = PROTOCOL_NAME
-    ): EIP712TypedData {
-        return {
-            primaryType: 'Order',
-            types: {
-                EIP712Domain: EIP712_DOMAIN,
-                Order: ORDER_STRUCTURE,
-            },
-            domain: {
-                name: domainName,
-                version: PROTOCOL_VERSION,
-                chainId: this.chainId,
-                verifyingContract: this.contractAddress,
-            },
-            message: order,
-        };
-    }
-
-    buildRFQOrderTypedData(
-        order: RFQOrder,
-        domainName = PROTOCOL_NAME
-    ): EIP712TypedData {
-        return {
-            primaryType: 'OrderRFQ',
-            types: {
-                EIP712Domain: EIP712_DOMAIN,
-                OrderRFQ: RFQ_ORDER_STRUCTURE,
-            },
-            domain: {
-                name: domainName,
-                version: PROTOCOL_VERSION,
-                chainId: this.chainId,
-                verifyingContract: this.contractAddress,
-            },
-            message: {
-                ...order
-            },
-        };
-    }
+    // buildRFQOrderTypedData(
+    //     order: RFQOrder,
+    //     domainName = PROTOCOL_NAME
+    // ): EIP712TypedData {
+    //     return {
+    //         primaryType: 'OrderRFQ',
+    //         types: {
+    //             EIP712Domain: EIP712_DOMAIN,
+    //             OrderRFQ: RFQ_ORDER_STRUCTURE,
+    //         },
+    //         domain: {
+    //             name: domainName,
+    //             version: PROTOCOL_VERSION,
+    //             chainId: this.chainId,
+    //             verifyingContract: this.contractAddress,
+    //         },
+    //         message: {
+    //             ...order
+    //         },
+    //     };
+    // }
 
     buildRFQOrder({
         id,
@@ -231,12 +251,31 @@ export class LimitOrderBuilder {
             takingAmount,
             makerTraits = this.buildMakerTraits()
         }: LimitOrderData,
-        extensionParams: ExtensionParamsWithCustomData
+        {
+            makerAssetSuffix = '0x',
+            takerAssetSuffix = '0x',
+            makingAmountGetter = '0x',
+            takingAmountGetter = '0x',
+            predicate = '0x',
+            permit = '0x',
+            preInteraction = '0x',
+            postInteraction = '0x',
+            customData = '0x'
+        }: ExtensionParamsWithCustomData = {}
     ): LimitOrderWithExtension {
 
-        const { offsets, interactions } = LimitOrderBuilder.packInteractions(extensionParams);
+        const { offsets, interactions } = LimitOrderBuilder.packInteractions({
+            makerAssetSuffix,
+            takerAssetSuffix,
+            makingAmountGetter,
+            takingAmountGetter,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        });
 
-        const allInteractionsConcat = interactions + trim0x(extensionParams.customData);
+        const allInteractionsConcat = trim0x(interactions) + trim0x(customData);
 
         let extension = '0x';
         if (allInteractionsConcat.length > 0) {
@@ -253,13 +292,11 @@ export class LimitOrderBuilder {
             makerTraits = BigInt(makerTraits) | (BigInt(1) << _HAS_EXTENSION_FLAG);
         }
 
-        const { preInteraction } = extensionParams;
         makerTraits = BigInt(makerTraits);
         if (trim0x(preInteraction).length > 0) {
             makerTraits = BigInt(makerTraits) | (BigInt(1) << _NEED_PREINTERACTION_FLAG);
         }
 
-        const { postInteraction } = extensionParams;
         if (trim0x(postInteraction).length > 0) {
             makerTraits = BigInt(makerTraits) | (BigInt(1) << _NEED_POSTINTERACTION_FLAG);
         }
@@ -273,7 +310,7 @@ export class LimitOrderBuilder {
                 takerAsset,
                 makingAmount,
                 takingAmount,
-                makerTraits: makerTraits.toString(),
+                makerTraits: `0x${makerTraits.toString(16)}`,
             },
             extension
         };

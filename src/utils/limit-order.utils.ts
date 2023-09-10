@@ -1,6 +1,7 @@
 import { Series } from '../model/series-nonce-manager.model';
 import {ZX} from '../limit-order-protocol.const';
 import { ErrorResponse } from '../limit-order-protocol.facade';
+import {splitSignature} from 'ethers/lib/utils';
 
 export const UINT32_BITS = BigInt(32);
 export const UINT32_BITMASK = BigInt('0xFFFFFFFF');
@@ -181,4 +182,12 @@ export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | stri
     }
 
     return null;
+}
+
+export function compactSignature(signature: string): { r: string, vs: string } {
+    const sig = splitSignature(signature);
+    return {
+        r: sig.r,
+        vs: sig._vs,
+    };
 }

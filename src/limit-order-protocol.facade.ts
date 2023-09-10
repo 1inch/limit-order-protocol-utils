@@ -3,7 +3,6 @@ import {
     EIP712_DOMAIN,
     PROTOCOL_NAME,
     PROTOCOL_VERSION,
-    ZX,
     TypedDataVersion,
 } from './limit-order-protocol.const';
 import {
@@ -12,27 +11,28 @@ import {
     LimitOrderHash,
     LimitOrderSignature,
     RFQOrderInfo,
-    RFQOrder,
+    RFQOrder, MakerTraits, LimitOrderProtocolMethodsV3, Address,
 } from './model/limit-order-protocol.model';
 import {BigNumber} from '@ethersproject/bignumber';
 import {
-    extractWeb3OriginalErrorData,
-    getMakingAmountForRFQ,
-    packSkipPermitAndThresholdAmount,
+    compactSignature,
+    getMakingAmountForRFQ, setN,
 } from './utils/limit-order.utils';
-import {getABIFor} from './utils/abi';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
 
+
+export type TakerTraits = string;
 // todo move into model
 export interface FillOrderParams {
     order: LimitOrder;
     signature: LimitOrderSignature;
-    interaction?: string;
-    makingAmount: string;
-    takingAmount: string;
-    thresholdAmount: string;
-    skipPermit?: boolean;
+    amount: string;
+    takerTraits: TakerTraits;
+}
+
+export type FillOrderParamsExt = FillOrderParams & {
+    extension: string;
 }
 
 export type FillLimitOrderWithPermitParams = FillOrderParams & {
@@ -44,30 +44,52 @@ export interface ErrorResponse extends Error {
     data: string,
 }
 
+export function fillWithMakingAmount (amount: bigint): string {
+    return setN(amount, 255, true).toString();
+}
+
 export class LimitOrderProtocolFacade
-    extends AbstractSmartcontractFacade<LimitOrderProtocolMethods>
+    extends AbstractSmartcontractFacade<LimitOrderProtocolMethods | LimitOrderProtocolMethodsV3>
 {
     ABI = LIMIT_ORDER_PROTOCOL_ABI;
 
     fillLimitOrder(params: FillOrderParams): string {
         const {
             order,
-            interaction = ZX,
             signature,
-            makingAmount,
-            takingAmount,
-            thresholdAmount,
-            skipPermit = false,
+            amount,
+            takerTraits
         } = params;
+
+        const { r, vs } = compactSignature(signature);
 
         return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
             order,
+            r,
+            vs,
+            amount,
+            takerTraits,
+        ]);
+    }
+
+    fillLimitOrderExt(params: FillOrderParamsExt): string {
+        const {
+            order,
             signature,
-            interaction,
-            makingAmount,
-            takingAmount,
-            // skipPermitAndThresholdAmount
-            packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
+            amount,
+            takerTraits,
+            extension
+        } = params;
+
+        const { r, vs } = compactSignature(signature);
+
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderExt, [
+            order,
+            r,
+            vs,
+            amount,
+            takerTraits,
+            extension,
         ]);
     }
 
@@ -75,37 +97,37 @@ export class LimitOrderProtocolFacade
      * @param params.interaction pre-interaction in fact.
      * @param params.skipPermit skip maker's permit evaluation if it was evaluated before.
      * Useful if multiple orders was created with same nonce.
-     * 
+     *
      * Tip: you can just check if allowance exsists and then set it to `true`.
      */
-    fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
-        const {
-            order,
-            signature,
-            makingAmount,
-            takingAmount,
-            interaction = ZX,
-            thresholdAmount,
-            skipPermit = false,
-            targetAddress,
-            permit,
-        } = params;
-
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.fillOrderToWithPermit,
-            [
-                order,
-                signature,
-                interaction,
-                makingAmount,
-                takingAmount,
-                // skipPermitAndThresholdAmount
-                packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
-                targetAddress,
-                permit
-            ],
-        );
-    }
+    // fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
+    //     const {
+    //         order,
+    //         signature,
+    //         makingAmount,
+    //         takingAmount,
+    //         interaction = ZX,
+    //         thresholdAmount,
+    //         skipPermit = false,
+    //         targetAddress,
+    //         permit,
+    //     } = params;
+    //
+    //     return this.getContractCallData(
+    //         LimitOrderProtocolMethods.fillOrderToWithPermit,
+    //         [
+    //             order,
+    //             signature,
+    //             interaction,
+    //             makingAmount,
+    //             takingAmount,
+    //             // skipPermitAndThresholdAmount
+    //             packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
+    //             targetAddress,
+    //             permit
+    //         ],
+    //     );
+    // }
 
     fillRFQOrder(
         order: RFQOrder,
@@ -126,11 +148,40 @@ export class LimitOrderProtocolFacade
         );
     }
 
-    cancelLimitOrder(order: LimitOrder): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
+    cancelLimitOrderV3(order: LimitOrder): string {
+        // use old ABI
+        return this.getContractCallData(LimitOrderProtocolMethodsV3.cancelOrder, [
             order,
         ]);
     }
+
+    cancelLimitOrder(makerTraits: MakerTraits, orderHash: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
+            makerTraits,
+            orderHash,
+        ]);
+    }
+
+    increaseEpoch(series: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.increaseEpoch, [
+            series
+        ]);
+    }
+
+    epoch(maker: Address, series: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.epoch, [
+            maker,
+            series,
+        ]);
+    }
+
+    remainingInvalidatorForOrder(maker: Address, orderHash: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.remainingInvalidatorForOrder, [
+            maker,
+            orderHash,
+        ]);
+    }
+
 
     cancelRFQOrder(orderInfo: RFQOrderInfo): string {
         return this.getContractCallData(
@@ -206,33 +257,6 @@ export class LimitOrderProtocolFacade
             });
     }
 
-    simulate(
-        targetAddress: string,
-        data: unknown,
-    ): Promise<{
-        success: boolean,
-        rawResult: string,
-    }> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.simulate,
-            [targetAddress, data]
-        );
-
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .then(() => {
-                throw new Error('call was successful but revert was expected');
-            })
-            .catch((result) => {
-                const parsedResult = this.parseSimulateTransferError(result);
-                if (parsedResult) {
-                    return parsedResult;
-                }
-
-                throw { success: false, rawResult: result };
-            });
-    }
-
     // https://github.com/1inch/limit-order-protocol/blob/v3-prerelease/test/helpers/eip712.js#L22
     domainSeparator(): Promise<string> {
         const hex = '0x' + TypedDataUtils.hashStruct(
@@ -256,36 +280,5 @@ export class LimitOrderProtocolFacade
         }
 
         return null;
-    }
-
-    parseSimulateTransferError(
-        error: ErrorResponse | Error | string,
-    ): { success: boolean, rawResult: string } | null {
-        const simulationResultsAbi = getABIFor(LIMIT_ORDER_PROTOCOL_ABI, 'SimulationResults');
-        const revertionData = extractWeb3OriginalErrorData(error);
-
-        if (simulationResultsAbi && revertionData) {
-            const parsed = this.providerConnector.decodeABICallParameters(
-                simulationResultsAbi.inputs as [],
-                revertionData,
-            );
-            const parsedResult = parsed.res as string | null;
-
-            const success = parsed.success as boolean
-                && this.isSimulationResultResponseSuccessfull(parsedResult);
-            
-            return {
-                success,
-                rawResult: parsed.res as string,
-            };
-        }
-
-        return null;
-    }
-
-    private isSimulationResultResponseSuccessfull(res: string | null) {
-        if (!res || !res.length) return true;
-
-        return this.providerConnector.decodeABIParameter<boolean>('bool', res)
     }
 }

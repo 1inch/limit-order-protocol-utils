@@ -11,7 +11,7 @@ import { LimitOrderDecoder } from './limit-order.decoder';
 
 class TestErrorResponse extends Error implements ErrorResponse {
     data: string;
-    
+
     constructor(message: string, result: string) {
         super(message);
         this.data = result;
@@ -40,7 +40,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
     beforeEach(() => {
         const chainId = ChainId.etherumMainnet;
-        
+
         const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
         facade = mocks.facade;
         limitOrderBuilder = mocks.limitOrderBuilder;
@@ -150,7 +150,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
         });
     });
 
-    describe('cancelLimitOrder()', () => {
+    describe('cancelLimitOrderV3()', () => {
         it('Must create a call data for order canceling', async () => {
             const timestamp = 1621040104;
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(
@@ -160,7 +160,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
 
             order.salt = '1';
 
-            const callData = facade.cancelLimitOrder(order);
+            const callData = facade.cancelLimitOrderV3(order);
 
             expect(callData).toMatchSnapshot();
         });
@@ -206,7 +206,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const chainId = ChainId.auroraMainnet;
             const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
             facade = mocks.facade;
-        
+
             const nonce = await facade.nonce(walletAddress);
 
             expect(nonce).toBe(0n);
@@ -216,7 +216,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
             const chainId = ChainId.auroraMainnet;
             const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
             facade = mocks.facade;
-        
+
             const walletAddress = '0x401394CD75D731e07658203fFF34722A68316FCa';
             const nonce = await facade.nonce(walletAddress); // real nonce
 

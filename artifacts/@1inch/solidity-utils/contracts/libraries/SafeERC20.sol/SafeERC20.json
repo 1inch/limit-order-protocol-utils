@@ -1,0 +1,46 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "SafeERC20",
+  "sourceName": "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "ForceApproveFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Permit2TransferAmountTooHigh",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafeDecreaseAllowanceFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafeIncreaseAllowanceFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafePermitBadLength",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafeTransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SafeTransferFromFailed",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea26469706673582212204bd87dbe43d1bb480a76a00d27231452f384f7bc008b61d1915c3dbd3895327764736f6c63430008130033",
+  "deployedBytecode": "0x600080fdfea26469706673582212204bd87dbe43d1bb480a76a00d27231452f384f7bc008b61d1915c3dbd3895327764736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

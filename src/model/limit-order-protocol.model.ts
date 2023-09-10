@@ -1,4 +1,3 @@
-import {LimitOrderPredicateCallData} from '../limit-order-predicate.builder';
 
 export enum ChainId {
     etherumMainnet = 1,
@@ -23,16 +22,16 @@ export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
     maker: Address,
-    receiver: Address,
+    receiver?: Address,
     makerAsset: Address,
     takerAsset: Address,
     makingAmount: string,
     takingAmount: string,
-    makerTraits: bigint | string,
+    makerTraits?: bigint | string,
 }
 
-export type ExtensionParamsWithCustomData = ExtensionParams & {
-    customData: string;
+export type ExtensionParamsWithCustomData = Partial<ExtensionParams> & {
+    customData?: string;
 }
 
 export interface ExtensionParams {
@@ -133,14 +132,22 @@ export interface RFQOrder {
     takingAmount: string;
 }
 
+export enum LimitOrderProtocolMethodsV3 {
+    cancelOrder = 'cancelOrder',
+}
+
 export enum LimitOrderProtocolMethods {
     getMakingAmount = 'getMakingAmount',
     getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
     fillOrder = 'fillOrder',
+    fillOrderExt = 'fillOrderExt',
     fillOrderToWithPermit = 'fillOrderToWithPermit',
     fillOrderRFQ = 'fillOrderRFQ',
     cancelOrder = 'cancelOrder',
+    increaseEpoch = 'increaseEpoch',
+    remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',
+    epoch = 'epoch',
     cancelOrderRFQ = 'cancelOrderRFQ',
     nonce = 'nonce',
     advanceNonce = 'advanceNonce',

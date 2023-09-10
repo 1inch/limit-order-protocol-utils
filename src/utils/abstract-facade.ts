@@ -17,6 +17,7 @@ export abstract class AbstractSmartcontractFacade<ABI_METHODS extends string> {
         methodName: ABI_METHODS,
         methodParams: unknown[] = []
     ): string {
+        console.log('TEST ', this.contractAddress, ' ', methodName, ' params ', methodParams)
         return this.providerConnector.contractEncodeABI(
             this.ABI,
             this.contractAddress,

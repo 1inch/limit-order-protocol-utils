@@ -34,6 +34,7 @@ export class PrivateKeyProviderConnector implements ProviderConnector {
     ): Promise<string> {
         const result = signTypedData({
             privateKey: Buffer.from(this.privateKey, 'hex'),
+            // @ts-ignore
             data: typedData,
             version: SignTypedDataVersion.V4,
         });

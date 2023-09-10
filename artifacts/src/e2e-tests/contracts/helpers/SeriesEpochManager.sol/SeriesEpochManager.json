@@ -1,0 +1,125 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "SeriesEpochManager",
+  "sourceName": "src/e2e-tests/contracts/helpers/SeriesEpochManager.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "AdvanceEpochFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "maker",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "series",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newNonce",
+          "type": "uint256"
+        }
+      ],
+      "name": "EpochIncreased",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint96",
+          "name": "series",
+          "type": "uint96"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "advanceEpoch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "maker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint96",
+          "name": "series",
+          "type": "uint96"
+        }
+      ],
+      "name": "epoch",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "maker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "series",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "makerNonce",
+          "type": "uint256"
+        }
+      ],
+      "name": "epochEquals",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint96",
+          "name": "series",
+          "type": "uint96"
+        }
+      ],
+      "name": "increaseEpoch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080806040523461001657610279908161001c8239f35b600080fdfe60806040818152600436101561001457600080fd5b600091823560e01c9081630d2c7c161461016c57508063c3cf8043146100f3578063ce3d710a146100b05763fcea9e4e1461004e57600080fd5b346100ac57806003193601126100ac5761006661022d565b6024356001600160601b03811681036100a8576001600160a01b0390911660a09190911b6001600160a01b031916178252602082815291819020549051908152f35b8380fd5b5080fd5b50346100ac5760603660031901126100ac576020916100cd61022d565b6001600160a01b031660243560a01b178152808352819020549051604435919091148152f35b50346100ac5760203660031901126100ac577f099133aefc2c2d1e56f8ef3622ec8e80979a0713fc9c4e1497740efcf809939661012e610212565b3360a082901b6001600160a01b03191681178552602085815284862080546001019081905585516001600160601b039094168452908301529290a280f35b9190503461020e578060031936011261020e57610187610212565b916024359081158015610204575b6101f55750907f099133aefc2c2d1e56f8ef3622ec8e80979a0713fc9c4e1497740efcf80993969160018060a01b03198460a01b163317855284602052818520908154018091556001600160601b0382519416845260208401523392a280f35b63555fbbbf60e01b8152600490fd5b5060ff8211610195565b8280fd5b600435906001600160601b038216820361022857565b600080fd5b600435906001600160a01b03821682036102285756fea26469706673582212209807b479bac05d9fa71b0d71f8361ca689ba633a45942f3b3a9497009507fc9364736f6c63430008130033",
+  "deployedBytecode": "0x60806040818152600436101561001457600080fd5b600091823560e01c9081630d2c7c161461016c57508063c3cf8043146100f3578063ce3d710a146100b05763fcea9e4e1461004e57600080fd5b346100ac57806003193601126100ac5761006661022d565b6024356001600160601b03811681036100a8576001600160a01b0390911660a09190911b6001600160a01b031916178252602082815291819020549051908152f35b8380fd5b5080fd5b50346100ac5760603660031901126100ac576020916100cd61022d565b6001600160a01b031660243560a01b178152808352819020549051604435919091148152f35b50346100ac5760203660031901126100ac577f099133aefc2c2d1e56f8ef3622ec8e80979a0713fc9c4e1497740efcf809939661012e610212565b3360a082901b6001600160a01b03191681178552602085815284862080546001019081905585516001600160601b039094168452908301529290a280f35b9190503461020e578060031936011261020e57610187610212565b916024359081158015610204575b6101f55750907f099133aefc2c2d1e56f8ef3622ec8e80979a0713fc9c4e1497740efcf80993969160018060a01b03198460a01b163317855284602052818520908154018091556001600160601b0382519416845260208401523392a280f35b63555fbbbf60e01b8152600490fd5b5060ff8211610195565b8280fd5b600435906001600160601b038216820361022857565b600080fd5b600435906001600160a01b03821682036102285756fea26469706673582212209807b479bac05d9fa71b0d71f8361ca689ba633a45942f3b3a9497009507fc9364736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

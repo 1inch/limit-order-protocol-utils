@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "AmountCalculator",
+  "sourceName": "src/e2e-tests/contracts/helpers/AmountCalculator.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea2646970667358221220e6f59f6b8dde7ca1cda97094d91da7135f2498ece4055373c0f09332a96a7a8d64736f6c63430008130033",
+  "deployedBytecode": "0x600080fdfea2646970667358221220e6f59f6b8dde7ca1cda97094d91da7135f2498ece4055373c0f09332a96a7a8d64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

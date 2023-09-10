@@ -1,0 +1,20 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OnlyWethReceiver",
+  "sourceName": "@1inch/solidity-utils/contracts/OnlyWethReceiver.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "EthDepositRejected",
+      "type": "error"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,117 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OrderIdInvalidator",
+  "sourceName": "src/e2e-tests/contracts/helpers/OrderIdInvalidator.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "limitOrderProtocol_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AccessDenied",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidOrderHash",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "salt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "maker",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "receiver",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "makerAsset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "takerAsset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "makingAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "takingAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "MakerTraits",
+              "name": "makerTraits",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IOrderMixin.Order",
+          "name": "order",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "orderHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "extraData",
+          "type": "bytes"
+        }
+      ],
+      "name": "preInteraction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60a03461006957601f61022738819003918201601f19168301916001600160401b0383118484101761006e5780849260209460405283398101031261006957516001600160a01b0381168103610069576080526040516101a29081610085823960805181609c0152f35b600080fd5b634e487b7160e01b600052604160045260246000fdfe608060408181526004908136101561001657600080fd5b600092833560e01c6358a45aa81461002d57600080fd5b346101645736600319016101c0811261016857610100136101645761010435926001600160a01b03916101243583811603610160576101a43567ffffffffffffffff9182821161015c573660238301121561015c578184013592831161015c57366024848401011161015c57847f000000000000000000000000000000000000000000000000000000000000000016330361014e5750602401359063ffffffff60e01b918281169184811061013a575b5050905060e01c9160243516908186528560205283862083875260205283862054801560001461011e57505084528360205281842090845260205282205580f35b91509391500361012d57505080f35b5163561a411d60e11b8152fd5b83919250840360031b1b16168038806100dd565b634ca8886760e01b81528390fd5b8780fd5b8580fd5b8380fd5b8480fdfea264697066735822122072b4571de437cd13bbcb5f0b568340ab74f5847e75f129230cab3a68a2d9f67b64736f6c63430008130033",
+  "deployedBytecode": "0x608060408181526004908136101561001657600080fd5b600092833560e01c6358a45aa81461002d57600080fd5b346101645736600319016101c0811261016857610100136101645761010435926001600160a01b03916101243583811603610160576101a43567ffffffffffffffff9182821161015c573660238301121561015c578184013592831161015c57366024848401011161015c57847f000000000000000000000000000000000000000000000000000000000000000016330361014e5750602401359063ffffffff60e01b918281169184811061013a575b5050905060e01c9160243516908186528560205283862083875260205283862054801560001461011e57505084528360205281842090845260205282205580f35b91509391500361012d57505080f35b5163561a411d60e11b8152fd5b83919250840360031b1b16168038806100dd565b634ca8886760e01b81528390fd5b8780fd5b8580fd5b8380fd5b8480fdfea264697066735822122072b4571de437cd13bbcb5f0b568340ab74f5847e75f129230cab3a68a2d9f67b64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

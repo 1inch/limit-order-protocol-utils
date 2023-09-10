@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MakerTraitsLib",
+  "sourceName": "src/e2e-tests/contracts/libraries/MakerTraitsLib.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea26469706673582212203271d277994197ff6dccef7435481ecaf7b0c3179ef9ba1ffb530ef2075fbd8d64736f6c63430008130033",
+  "deployedBytecode": "0x600080fdfea26469706673582212203271d277994197ff6dccef7435481ecaf7b0c3179ef9ba1ffb530ef2075fbd8d64736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

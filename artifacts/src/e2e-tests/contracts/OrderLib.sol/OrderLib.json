@@ -1,0 +1,36 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "OrderLib",
+  "sourceName": "src/e2e-tests/contracts/OrderLib.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "ExtensionInvalid",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "GetAmountCallFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MissingOrderExtension",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnexpectedOrderExtension",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongGetter",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea2646970667358221220f043c247754857baaa13da029c07a9aa9d885e27895a8b7d1010c3281ee9045664736f6c63430008130033",
+  "deployedBytecode": "0x600080fdfea2646970667358221220f043c247754857baaa13da029c07a9aa9d885e27895a8b7d1010c3281ee9045664736f6c63430008130033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
