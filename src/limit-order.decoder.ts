@@ -1,52 +1,80 @@
 import {
-    InteractionName,
+    InteractionV3Name,
+    InteractionsV3,
+    InteractionsFieldsV3,
+    UnpackedExtension,
+    AllInteractions,
     Interactions,
-    InteractionsFields,
+    InteractionsFields, LimitOrderLegacy,
 } from "./model/limit-order-protocol.model";
 import {
     parseInteractionForField,
     trim0x,
     UINT32_BITMASK,
     UINT32_BITS,
+    getOffsetForInteraction,
 } from "./utils/limit-order.utils";
+import {ZX} from "./limit-order-protocol.const";
 
 
 export class LimitOrderDecoder {
-    static unpackInteractions(offsets: string | bigint, interactions: string): Interactions {
-        const offsetsBN = BigInt(offsets);
+    static unpackExtension(extension: string): UnpackedExtension {
+        // if (extension === ZX || extension === '') {
+        //     return {
+        //         interactions: ZX,
+        //         customData: ZX,
+        //     }
+        // }
 
-        const parsedInteractions = {} as Interactions;
+        extension = trim0x(extension);
+        const offsetsInHex = ZX + extension.slice(0, 64);
+        const offsets = BigInt(offsetsInHex);
+        const { toByte } = getOffsetForInteraction(offsets, InteractionsFields.postInteraction)
+        const lastInteractionIndex = toByte * 2;
+        const interactions = LimitOrderDecoder.unpackInteractions(
+            offsets,
+            extension.slice(64, lastInteractionIndex)
+        );
 
-        Object.entries(InteractionsFields).forEach(([name, position]) => {
-            parsedInteractions[name as InteractionName] = parseInteractionForField(
-                offsetsBN,
-                interactions,
-                position as number,
-            );
-        });
+        const customData = extension.slice(lastInteractionIndex, extension.length);
 
-        return parsedInteractions
+        return {
+            interactions: interactions ?? ZX,
+            customData: customData ?? ZX,
+        }
     }
 
-    // static unpackInteraction<T extends InteractionName>(
-    //     order: LimitOrder,
-    //     name: T,
-    // ): Interactions[T] {
-    //     return parseInteractionForField(
-    //         BigInt(order.offsets),
-    //         order.interactions,
-    //         InteractionsFields[name],
-    //     )
+    // static unpackMakerTraits(makerTraits: MakerTraits) {
+    //
     // }
+
+    static unpackInteractionsV3(offsets: string | bigint, interactions: string): InteractionsV3 {
+        return LimitOrderDecoder.unpackAllInteractions(offsets, interactions, InteractionsFieldsV3) as InteractionsV3;
+    }
+
+    static unpackInteractions(offsets: string | bigint, interactions: string): Interactions {
+        return LimitOrderDecoder.unpackAllInteractions(offsets, interactions, InteractionsFields) as Interactions;
+    }
+
+    static unpackInteraction<T extends InteractionV3Name>(
+        order: LimitOrderLegacy,
+        name: T,
+    ): InteractionsV3[T] {
+        return parseInteractionForField(
+            BigInt(order.offsets),
+            order.interactions,
+            InteractionsFieldsV3[name],
+        )
+    }
 
     /**
      * @returns `true` if interaction value is empty of 0x
      */
-    // static hasInteraction(order: LimitOrder, name: InteractionName): boolean {
-    //     const interaction = this.unpackInteraction(order, name);
-    //
-    //     return trim0x(interaction) !== '';
-    // }
+    static hasInteraction(order: LimitOrderLegacy, name: InteractionV3Name): boolean {
+        const interaction = this.unpackInteraction(order, name);
+
+        return trim0x(interaction) !== '';
+    }
 
     static unpackStaticCalls(offsets: string | bigint, interactions: string): string[] {
         const offsetsBI = BigInt(offsets);
@@ -67,5 +95,25 @@ export class LimitOrderDecoder {
         }
 
         return result;
+    }
+
+    private static unpackAllInteractions(
+        offsets: string | bigint,
+        interactions: string,
+        interactionsFields: AllInteractions,
+    ): InteractionsV3 | Interactions {
+        const offsetsBN = BigInt(offsets);
+
+        const parsedInteractions = {} as Partial<Interactions | InteractionsV3>;
+
+        Object.entries(interactionsFields).forEach(([name, position]) => {
+            parsedInteractions[name as keyof AllInteractions] = parseInteractionForField(
+                offsetsBN,
+                interactions,
+                position as number,
+            );
+        });
+
+        return parsedInteractions as Interactions | InteractionsV3;
     }
 }

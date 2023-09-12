@@ -1,16 +1,30 @@
 import { ZX } from './limit-order-protocol.const';
 import { LimitOrderBuilder } from './limit-order.builder';
 import {LimitOrderDecoder} from './limit-order.decoder';
-import {largeInteractions, largeResult} from './test/mocks';
+import {
+    extensionWithPermit,
+    extensionWithPredicates,
+    largeInteractions,
+    largeResult
+} from './test/mocks';
 
 describe('LimitOrderDecoder', () => {
+
+    describe('unpackInteractionsV3', () => {
+        describe("unpackInteractionsV3", () => {
+            it("should unpack", () => {
+                const interactions = LimitOrderDecoder.unpackInteractionsV3(largeResult.offsets, largeResult.interactions);
+
+                expect(interactions).toMatchObject(largeInteractions);
+            })
+        })
+    });
 
     describe('unpackInteractions', () => {
         describe("unpackInteractions", () => {
             it("should unpack", () => {
-                const interactions = LimitOrderDecoder.unpackInteractions(largeResult.offsets, largeResult.interactions);
-    
-                expect(interactions).toMatchObject(largeInteractions);
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermit.extension);
+                expect(interactions).toMatchObject(extensionWithPermit.result);
             })
         })
     });
@@ -56,6 +70,6 @@ describe('LimitOrderDecoder', () => {
             expect(calls[3].length).toBe(MAX_STRING_SIZE - REST_STRINGS_LENGTH);
             expect(calls[4]).toBe('44444444');
         })
-    
+
     });
 });

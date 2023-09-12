@@ -87,6 +87,22 @@ export type LimitOrderWithExtension = {
 }
 
 /**
+ * Compatible with EIP712Object
+ */
+export type LimitOrderLegacy = {
+    salt: string;
+    makerAsset: string; // maker asset address
+    takerAsset: string; // taker asset address
+    maker: string; // maker address
+    receiver: string;
+    allowedSender: string;
+    makingAmount: string;
+    takingAmount: string;
+    offsets: string;
+    interactions: string;
+} & LimitOrderInteractions
+
+/**
  * Partial from LimitOrder
  */
 export type LimitOrderInteractions = {
@@ -104,7 +120,7 @@ export type Nonce = number | bigint;
  */
 export type PredicateTimestamp = number | bigint;
 
-export const InteractionsFields = {
+export const InteractionsFieldsV3 = {
     makerAssetData: 0,
     takerAssetData: 1,
     getMakingAmount: 2,
@@ -116,11 +132,35 @@ export const InteractionsFields = {
 // cuz enum has numeric keys also
 } as const;
 
+export const InteractionsFields = {
+    makerAssetSuffix: 0,
+    takerAssetSuffix: 1,
+    makingAmountGetter: 2,
+    takingAmountGetter: 3,
+    predicate: 4,
+    permit: 5,
+    preInteraction: 6,
+    postInteraction: 7
+} as const;
+
 export type InteractionName = keyof typeof InteractionsFields;
 
 export type Interactions = {
     [key in InteractionName]: string;
 };
+
+export interface UnpackedExtension {
+    interactions: Interactions;
+    customData: string;
+}
+
+export type InteractionV3Name = keyof typeof InteractionsFieldsV3;
+
+export type InteractionsV3 = {
+    [key in InteractionV3Name]: string;
+};
+
+export type AllInteractions = typeof InteractionsFields | typeof InteractionsFieldsV3;
 
 export interface RFQOrder {
     info: RFQOrderInfo;

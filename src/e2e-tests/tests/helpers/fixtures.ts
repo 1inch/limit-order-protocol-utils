@@ -26,10 +26,3 @@ export async function deployArbitraryPredicate () {
     return { arbitraryPredicate };
 };
 
-
-// export async function deploySeriesEpochManager () {
-//     const SeriesEpochManager = await ethers.getContractFactory('SeriesEpochManager');
-//     const seriesNonceManager = await SeriesEpochManager.deploy();
-//     await seriesNonceManager.deployed();
-//     return { seriesNonceManager };
-// };

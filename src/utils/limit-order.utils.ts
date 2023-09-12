@@ -47,7 +47,7 @@ export function parseInteractionForField(
     return '0x' + trim0x(interactions).slice(fromByte * 2, toByte * 2)
 }
 
-function getOffsetForInteraction(offsets: bigint, field: number) {
+export function getOffsetForInteraction(offsets: bigint, field: number) {
     const fromByteBN = field === 0
         ? '0'
         : offsets >> BigInt((field - 1) * 32) & UINT32_BITMASK;

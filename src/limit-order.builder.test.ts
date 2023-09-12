@@ -123,7 +123,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             });
 
             expect(
-                LimitOrderDecoder.unpackInteractions(order.offsets, order.interactions)
+                LimitOrderDecoder.unpackInteractionsV3(order.offsets, order.interactions)
             ).toMatchSnapshot();
 
             expect(+order.salt).toBeGreaterThan(1);

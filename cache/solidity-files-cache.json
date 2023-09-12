@@ -1,6 +1,285 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
+      "lastModificationDate": 1694159923236,
+      "contentHash": "fb7fa5ae1762ad9a1dd91a8bbd510cb1",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IERC20Permit.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": []
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol": {
+      "lastModificationDate": 1694159923236,
+      "contentHash": "0ebe4a60af340ba617d3fb68db43c990",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./ERC20Permit.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": []
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol": {
+      "lastModificationDate": 1694422490909,
+      "contentHash": "39033003154fd4ce1b066b591363ac92",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol"
+      ],
+      "versionPragmas": [
+        ">0.0.0"
+      ],
+      "artifacts": []
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenMock.sol": {
+      "lastModificationDate": 1694422490909,
+      "contentHash": "e8a5e95f9d1f1ae556f5c6fcbfc48a4f",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@1inch/solidity-utils/contracts/mocks/TokenMock.sol"
+      ],
+      "versionPragmas": [
+        ">0.0.0"
+      ],
+      "artifacts": []
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/LimitOrderProtocol.sol": {
+      "lastModificationDate": 1694382585171,
+      "contentHash": "987e3d97fea152e073e3ba1407d8cc72",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/LimitOrderProtocol.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/cryptography/EIP712.sol",
+        "./OrderMixin.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "LimitOrderProtocol"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/OrderMixin.sol": {
+      "lastModificationDate": 1694382585171,
+      "contentHash": "dc74509820ee6bb63e2c7f5122e9df75",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/OrderMixin.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/math/Math.sol",
+        "@openzeppelin/contracts/utils/cryptography/EIP712.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@1inch/solidity-utils/contracts/interfaces/IWETH.sol",
+        "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol",
+        "@1inch/solidity-utils/contracts/OnlyWethReceiver.sol",
+        "./helpers/PredicateHelper.sol",
+        "./helpers/SeriesEpochManager.sol",
+        "./interfaces/ITakerInteraction.sol",
+        "./interfaces/IPreInteraction.sol",
+        "./interfaces/IPostInteraction.sol",
+        "./interfaces/IOrderMixin.sol",
+        "./libraries/Errors.sol",
+        "./libraries/TakerTraitsLib.sol",
+        "./libraries/BitInvalidatorLib.sol",
+        "./libraries/RemainingInvalidatorLib.sol",
+        "./OrderLib.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "OrderMixin"
+      ]
+    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/cryptography/EIP712.sol": {
       "lastModificationDate": 1694159923175,
       "contentHash": "459aeb9cc3fc3c6d67d30ffefb724aba",
@@ -48,6 +327,496 @@
         "EIP712"
       ]
     },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/SeriesEpochManager.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "54e956869040afc47ccdc270c7d2cbef",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/SeriesEpochManager.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "SeriesEpochManager"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/ITakerInteraction.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "e582727841d59230ffe5f316ef111e27",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/ITakerInteraction.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IOrderMixin.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ITakerInteraction"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/PredicateHelper.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "2228f67123bfacfab86d133ce6087f89",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/PredicateHelper.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "PredicateHelper"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IPostInteraction.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "175f187d08788d65d93e959d44db4c20",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IPostInteraction.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IOrderMixin.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPostInteraction"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IOrderMixin.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "b4451b43f24f693fe32adb46074fe95c",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IOrderMixin.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@1inch/solidity-utils/contracts/libraries/AddressLib.sol",
+        "../libraries/MakerTraitsLib.sol",
+        "../libraries/TakerTraitsLib.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IOrderMixin"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IPreInteraction.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "d126a1f7b40625e3941148cbeebe84fc",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IPreInteraction.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./IOrderMixin.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPreInteraction"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/BitInvalidatorLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "e2aaecd2fac75344ae0842dad93bf75d",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/BitInvalidatorLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BitInvalidatorLib"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/TakerTraitsLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "124d2dd97078e250d6bb570159cb2543",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/TakerTraitsLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TakerTraitsLib"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/Errors.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "e32ff15f0c40e5c15259487cf25006c2",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/Errors.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Errors"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/OrderLib.sol": {
+      "lastModificationDate": 1694382585171,
+      "contentHash": "7d0353e8418e4e30551cf99becc4a91d",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/OrderLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@1inch/solidity-utils/contracts/libraries/ECDSA.sol",
+        "@1inch/solidity-utils/contracts/libraries/AddressLib.sol",
+        "./interfaces/IOrderMixin.sol",
+        "./libraries/MakerTraitsLib.sol",
+        "./libraries/ExtensionLib.sol",
+        "./helpers/AmountCalculator.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "OrderLib"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/RemainingInvalidatorLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "059a95afd41dd5ff922ae45024d5202c",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/RemainingInvalidatorLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RemainingInvalidatorLib"
+      ]
+    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/OnlyWethReceiver.sol": {
       "lastModificationDate": 1694159922769,
       "contentHash": "c21d3a4d6c80033a591696a52b259628",
@@ -91,6 +860,49 @@
       ],
       "artifacts": [
         "OnlyWethReceiver"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1694159923175,
+      "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Math"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/interfaces/IWETH.sol": {
@@ -188,49 +1000,6 @@
         "SafeERC20"
       ]
     },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1694159923175,
-      "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
-      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Math"
-      ]
-    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
       "lastModificationDate": 1694159923170,
       "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
@@ -272,6 +1041,49 @@
       ],
       "artifacts": [
         "IERC20"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/MakerTraitsLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "21f8bb4f00a0aedfa7bde290cd035729",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/MakerTraitsLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MakerTraitsLib"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/libraries/AddressLib.sol": {
@@ -317,6 +1129,95 @@
         "AddressLib"
       ]
     },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/AmountCalculator.sol": {
+      "lastModificationDate": 1694382585171,
+      "contentHash": "fd3624583dec414e54e2230369a957ee",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/AmountCalculator.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "AmountCalculator"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/ExtensionLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "5dd1697daeca48570837092724264e3d",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/ExtensionLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IOrderMixin.sol",
+        "./OffsetsLib.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ExtensionLib"
+      ]
+    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/libraries/ECDSA.sol": {
       "lastModificationDate": 1694159923007,
       "contentHash": "eb9c746ca122e15bcb19b4c3252a3c75",
@@ -360,6 +1261,49 @@
       ],
       "artifacts": [
         "ECDSA"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/OffsetsLib.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "1ce57e5d8c750427d440b6f2390eb951",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/OffsetsLib.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "OffsetsLib"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/interfaces/IERC1271.sol": {
@@ -713,6 +1657,49 @@
         "StorageSlot"
       ]
     },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/interfaces/IPermit2.sol": {
+      "lastModificationDate": 1694159923006,
+      "contentHash": "0268ecff8b04ed0774c78bb9f798092a",
+      "sourceName": "@1inch/solidity-utils/contracts/interfaces/IPermit2.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPermit2"
+      ]
+    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/interfaces/IDaiLikePermit.sol": {
       "lastModificationDate": 1694159923006,
       "contentHash": "0b6b2bcb1d551c39449e883583743e9f",
@@ -799,92 +1786,6 @@
         "RevertReasonForwarder"
       ]
     },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
-      "lastModificationDate": 1694159923236,
-      "contentHash": "fb7fa5ae1762ad9a1dd91a8bbd510cb1",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./IERC20Permit.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/interfaces/IPermit2.sol": {
-      "lastModificationDate": 1694159923006,
-      "contentHash": "0268ecff8b04ed0774c78bb9f798092a",
-      "sourceName": "@1inch/solidity-utils/contracts/interfaces/IPermit2.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IPermit2"
-      ]
-    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol": {
       "lastModificationDate": 1694159923236,
       "contentHash": "aa849939a4ae83a4dcb2dca9b3e9e707",
@@ -926,6 +1827,100 @@
       ],
       "artifacts": [
         "IERC20Permit"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/MakerContract.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "211e705cdf1de0943d861cde790d32b2",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/MakerContract.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/interfaces/IERC1271.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "../LimitOrderProtocol.sol",
+        "../OrderLib.sol",
+        "./EIP712Alien.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MakerContract"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/EIP712Alien.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "7b4091ba0cb8d98f3caa69b452a528cd",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/EIP712Alien.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/cryptography/ECDSA.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "EIP712Alien"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
@@ -1155,1360 +2150,6 @@
         "Counters"
       ]
     },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1694159922840,
-      "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Ownable"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol": {
-      "lastModificationDate": 1694159923236,
-      "contentHash": "0ebe4a60af340ba617d3fb68db43c990",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./ERC20Permit.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1694159923174,
-      "contentHash": "48de4c9a3a4ae5ef66a2aa620843413f",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC721"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1694159923175,
-      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC165"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
-      "lastModificationDate": 1694159923169,
-      "contentHash": "93aa9af4f5d2d2095a71ccde917038bb",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC1155"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol": {
-      "lastModificationDate": 1694159923176,
-      "contentHash": "67cf2dfe1d1c22b4ea7f242e8a17f431",
-      "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "SafeCast"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
-      "lastModificationDate": 1694159923214,
-      "contentHash": "d9654a0fc044a31d4106ee6bca772add",
-      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "AggregatorV3Interface"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol": {
-      "lastModificationDate": 1694159923214,
-      "contentHash": "8634be6a1c8b65b4c0bfd6d1fa765e72",
-      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./AggregatorInterface.sol",
-        "./AggregatorV3Interface.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "AggregatorV2V3Interface"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorInterface.sol": {
-      "lastModificationDate": 1694159923214,
-      "contentHash": "f00f7f6071813249ee968d1114635a81",
-      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorInterface.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "AggregatorInterface"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol": {
-      "lastModificationDate": 1694159923007,
-      "contentHash": "e61a2a0496ab965b6488f18951811b52",
-      "sourceName": "@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "TokenCustomDecimalsMock"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/mocks/TokenMock.sol": {
-      "lastModificationDate": 1694159923007,
-      "contentHash": "06a7bce5e61f126063f950a28839e840",
-      "sourceName": "@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "TokenMock"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/LimitOrderProtocol.sol": {
-      "lastModificationDate": 1694382585171,
-      "contentHash": "987e3d97fea152e073e3ba1407d8cc72",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/LimitOrderProtocol.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/cryptography/EIP712.sol",
-        "./OrderMixin.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "LimitOrderProtocol"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/OrderMixin.sol": {
-      "lastModificationDate": 1694382585171,
-      "contentHash": "dc74509820ee6bb63e2c7f5122e9df75",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/OrderMixin.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/math/Math.sol",
-        "@openzeppelin/contracts/utils/cryptography/EIP712.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@1inch/solidity-utils/contracts/interfaces/IWETH.sol",
-        "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol",
-        "@1inch/solidity-utils/contracts/OnlyWethReceiver.sol",
-        "./helpers/PredicateHelper.sol",
-        "./helpers/SeriesEpochManager.sol",
-        "./interfaces/ITakerInteraction.sol",
-        "./interfaces/IPreInteraction.sol",
-        "./interfaces/IPostInteraction.sol",
-        "./interfaces/IOrderMixin.sol",
-        "./libraries/Errors.sol",
-        "./libraries/TakerTraitsLib.sol",
-        "./libraries/BitInvalidatorLib.sol",
-        "./libraries/RemainingInvalidatorLib.sol",
-        "./OrderLib.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "OrderMixin"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/SeriesEpochManager.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "54e956869040afc47ccdc270c7d2cbef",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/SeriesEpochManager.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "SeriesEpochManager"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/ITakerInteraction.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "e582727841d59230ffe5f316ef111e27",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/ITakerInteraction.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./IOrderMixin.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ITakerInteraction"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IPreInteraction.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "d126a1f7b40625e3941148cbeebe84fc",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IPreInteraction.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./IOrderMixin.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IPreInteraction"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IOrderMixin.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "b4451b43f24f693fe32adb46074fe95c",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IOrderMixin.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@1inch/solidity-utils/contracts/libraries/AddressLib.sol",
-        "../libraries/MakerTraitsLib.sol",
-        "../libraries/TakerTraitsLib.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IOrderMixin"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/Errors.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "e32ff15f0c40e5c15259487cf25006c2",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/Errors.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Errors"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/PredicateHelper.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "2228f67123bfacfab86d133ce6087f89",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/PredicateHelper.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "PredicateHelper"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/RemainingInvalidatorLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "059a95afd41dd5ff922ae45024d5202c",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/RemainingInvalidatorLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "RemainingInvalidatorLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/BitInvalidatorLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "e2aaecd2fac75344ae0842dad93bf75d",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/BitInvalidatorLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "BitInvalidatorLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/TakerTraitsLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "124d2dd97078e250d6bb570159cb2543",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/TakerTraitsLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "TakerTraitsLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/interfaces/IPostInteraction.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "175f187d08788d65d93e959d44db4c20",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/interfaces/IPostInteraction.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./IOrderMixin.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IPostInteraction"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/OrderLib.sol": {
-      "lastModificationDate": 1694382585171,
-      "contentHash": "7d0353e8418e4e30551cf99becc4a91d",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/OrderLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@1inch/solidity-utils/contracts/libraries/ECDSA.sol",
-        "@1inch/solidity-utils/contracts/libraries/AddressLib.sol",
-        "./interfaces/IOrderMixin.sol",
-        "./libraries/MakerTraitsLib.sol",
-        "./libraries/ExtensionLib.sol",
-        "./helpers/AmountCalculator.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "OrderLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/MakerTraitsLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "21f8bb4f00a0aedfa7bde290cd035729",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/MakerTraitsLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "MakerTraitsLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/ExtensionLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "5dd1697daeca48570837092724264e3d",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/ExtensionLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IOrderMixin.sol",
-        "./OffsetsLib.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ExtensionLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/AmountCalculator.sol": {
-      "lastModificationDate": 1694382585171,
-      "contentHash": "fd3624583dec414e54e2230369a957ee",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/AmountCalculator.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "AmountCalculator"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/libraries/OffsetsLib.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "1ce57e5d8c750427d440b6f2390eb951",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/libraries/OffsetsLib.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "OffsetsLib"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/MakerContract.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "211e705cdf1de0943d861cde790d32b2",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/MakerContract.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/interfaces/IERC1271.sol",
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "../LimitOrderProtocol.sol",
-        "../OrderLib.sol",
-        "./EIP712Alien.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "MakerContract"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/EIP712Alien.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "7b4091ba0cb8d98f3caa69b452a528cd",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/EIP712Alien.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/cryptography/ECDSA.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "EIP712Alien"
-      ]
-    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/TakerIncreaser.sol": {
       "lastModificationDate": 1694382585174,
       "contentHash": "fb8a18ae5fc517afcbf0e95e71075683",
@@ -2605,276 +2246,6 @@
         "RecursiveMatcher"
       ]
     },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/ExtensionMock.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "cd634c91fc25e5dc2f8dff87f5f67081",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/ExtensionMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../libraries/ExtensionLib.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "ExtensionMock"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/HashChecker.sol": {
-      "lastModificationDate": 1694382585173,
-      "contentHash": "32658ce4188dcf40111d68e02935e0cb",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/HashChecker.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "../interfaces/IPreInteraction.sol",
-        "../OrderLib.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "HashChecker"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/WrappedTokenMock.sol": {
-      "lastModificationDate": 1694382585174,
-      "contentHash": "6ba408ebc6951ef6840953c920d2c846",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/WrappedTokenMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol",
-        "@1inch/solidity-utils/contracts/interfaces/IWETH.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "WrappedTokenMock"
-      ]
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol": {
-      "lastModificationDate": 1694382678884,
-      "contentHash": "39033003154fd4ce1b066b591363ac92",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol"
-      ],
-      "versionPragmas": [
-        ">0.0.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenMock.sol": {
-      "lastModificationDate": 1694382678884,
-      "contentHash": "e8a5e95f9d1f1ae556f5c6fcbfc48a4f",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/hardhat-dependency-compiler/@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@1inch/solidity-utils/contracts/mocks/TokenMock.sol"
-      ],
-      "versionPragmas": [
-        ">0.0.0"
-      ],
-      "artifacts": []
-    },
-    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/OrderIdInvalidator.sol": {
-      "lastModificationDate": 1694382585172,
-      "contentHash": "432c774a34c6e527134d9108c43312be",
-      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/OrderIdInvalidator.sol",
-      "solcConfig": {
-        "version": "0.8.19",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "viaIR": true,
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IPreInteraction.sol"
-      ],
-      "versionPragmas": [
-        "0.8.19"
-      ],
-      "artifacts": [
-        "OrderIdInvalidator"
-      ]
-    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/ETHOrders.sol": {
       "lastModificationDate": 1694382585172,
       "contentHash": "f0d802101751a8a9dbf29f6121507f9f",
@@ -2969,6 +2340,327 @@
       ],
       "artifacts": [
         "WethUnwrapper"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/HashChecker.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "32658ce4188dcf40111d68e02935e0cb",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/HashChecker.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "../interfaces/IPreInteraction.sol",
+        "../OrderLib.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "HashChecker"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1694159922840,
+      "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/mocks/TokenMock.sol": {
+      "lastModificationDate": 1694159923007,
+      "contentHash": "06a7bce5e61f126063f950a28839e840",
+      "sourceName": "@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenMock"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol": {
+      "lastModificationDate": 1694159923007,
+      "contentHash": "e61a2a0496ab965b6488f18951811b52",
+      "sourceName": "@1inch/solidity-utils/contracts/mocks/TokenCustomDecimalsMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenCustomDecimalsMock"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/WrappedTokenMock.sol": {
+      "lastModificationDate": 1694382585174,
+      "contentHash": "6ba408ebc6951ef6840953c920d2c846",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/WrappedTokenMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol",
+        "@1inch/solidity-utils/contracts/interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "WrappedTokenMock"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/OrderIdInvalidator.sol": {
+      "lastModificationDate": 1694382585172,
+      "contentHash": "432c774a34c6e527134d9108c43312be",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/helpers/OrderIdInvalidator.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IPreInteraction.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "OrderIdInvalidator"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/ExtensionMock.sol": {
+      "lastModificationDate": 1694382585173,
+      "contentHash": "cd634c91fc25e5dc2f8dff87f5f67081",
+      "sourceName": "src/e2e-tests/smart-contracts/contracts/mocks/ExtensionMock.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../libraries/ExtensionLib.sol"
+      ],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "ExtensionMock"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/RangeAmountCalculator.sol": {
@@ -3151,6 +2843,139 @@
         "ImmutableOwner"
       ]
     },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1694159923174,
+      "contentHash": "48de4c9a3a4ae5ef66a2aa620843413f",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC721"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1694159923175,
+      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
+      "lastModificationDate": 1694159923169,
+      "contentHash": "93aa9af4f5d2d2095a71ccde917038bb",
+      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1155"
+      ]
+    },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/helpers/ERC1155Proxy.sol": {
       "lastModificationDate": 1694382585171,
       "contentHash": "6529d41e591105435e55643697488a24",
@@ -3289,6 +3114,181 @@
       ],
       "artifacts": [
         "ChainlinkCalculator"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol": {
+      "lastModificationDate": 1694159923176,
+      "contentHash": "67cf2dfe1d1c22b4ea7f242e8a17f431",
+      "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeCast"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
+      "lastModificationDate": 1694159923214,
+      "contentHash": "d9654a0fc044a31d4106ee6bca772add",
+      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AggregatorV3Interface"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol": {
+      "lastModificationDate": 1694159923214,
+      "contentHash": "8634be6a1c8b65b4c0bfd6d1fa765e72",
+      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./AggregatorInterface.sol",
+        "./AggregatorV3Interface.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AggregatorV2V3Interface"
+      ]
+    },
+    "/Users/denismakarov/1inch/limit-order-protocol-utils/node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorInterface.sol": {
+      "lastModificationDate": 1694159923214,
+      "contentHash": "f00f7f6071813249ee968d1114635a81",
+      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorInterface.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "viaIR": true,
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AggregatorInterface"
       ]
     },
     "/Users/denismakarov/1inch/limit-order-protocol-utils/src/e2e-tests/smart-contracts/contracts/mocks/AggregatorMock.sol": {

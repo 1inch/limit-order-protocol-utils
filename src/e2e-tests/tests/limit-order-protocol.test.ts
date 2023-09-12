@@ -1,4 +1,5 @@
 import {
+    compactSignature,
     fillWithMakingAmount,
     getOrderBuilder,
     getOrderFacade,
@@ -9,6 +10,8 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { deployArbitraryPredicate, deploySwapTokens } from './helpers/fixtures';
 import { ethers } from 'hardhat'
 import { expect } from 'chai';
+import {getPermit} from "./helpers/eip712";
+import {permit2Contract, withTarget} from "@1inch/solidity-utils";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
@@ -365,7 +368,7 @@ describe('LimitOrderProtocol',  () => {
             const predicate = predicateBuilder.gt(
                 '10',
                 arbitraryCalldata,
-            )
+            );
 
             const builder = getOrderBuilder(swap.address, addr1);
 
@@ -381,6 +384,8 @@ describe('LimitOrderProtocol',  () => {
                     predicate,
                 },
             );
+
+            console.log('Test extension --', predicate, ' --Test');
 
             const signature = await builder.buildTypedDataAndSign(
                 order.order,
@@ -537,5 +542,143 @@ describe('LimitOrderProtocol',  () => {
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
         });
+    });
+
+    describe('Permit', function () {
+        describe('fillOrderToWithPermit', function () {
+            const deployContractsAndInitPermit = async function () {
+                const { dai, weth, swap, chainId } = await deploySwapTokens();
+                await initContracts(dai, weth, swap);
+
+                const builder = getOrderBuilder(swap.address, addr1);
+
+
+                const order = builder.buildLimitOrder({
+                    makerAsset: dai.address,
+                    takerAsset: weth.address,
+                    makingAmount: '1',
+                    takingAmount: '1',
+                    maker: addr1.address,
+                });
+                const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);
+
+                return { dai, weth, swap, chainId, order, signature };
+            };
+
+            it('DAI => WETH', async function () {
+                const { dai, weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
+
+                const permit = await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1');
+                const { r, vs } = compactSignature(signature);
+
+                // use facade for that
+                const filltx = swap.fillOrderToWithPermit(order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), addr.address, permit, '0x');
+                await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+                await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+            });
+
+            // it('DAI => WETH, permit2 maker', async function () {
+            //     const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInitPermit);
+            //
+            //     const permit2 = await permit2Contract();
+            //     await dai.connect(addr1).approve(permit2.address, 1);
+            //     const permit = await getPermit2(addr1, dai.address, chainId, swap.address, 1);
+            //
+            //     const order = buildOrder({
+            //         makerAsset: dai.address,
+            //         takerAsset: weth.address,
+            //         makingAmount: 1,
+            //         takingAmount: 1,
+            //         maker: addr1.address,
+            //         makerTraits: buildMakerTraits({ usePermit2: true }),
+            //     });
+            //
+            //     const { r, vs } = compactSignature(await signOrder(order, chainId, swap.address, addr1));
+            //     const filltx = swap.fillOrderToWithPermit(order, r, vs, 1, fillWithMakingAmount(1), addr.address, permit, '0x');
+            //     await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+            //     await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+            // });
+
+            // it('rejects reused permit', async function () {
+            //     const { weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
+            //
+            //     const permit = await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1');
+            //
+            //     const { r, vs } = compactSignature(signature);
+            //     await swap.fillOrderToWithPermit(order, r, vs, 1, 1, addr.address, permit, '0x');
+            //     await expect(swap.fillOrderToWithPermit(order, r, vs, 1, 1, addr.address, permit, '0x'))
+            //         .to.be.revertedWith('ERC20Permit: invalid signature');
+            // });
+            //
+            // it('rejects wrong signature', async function () {
+            //     const { weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
+            //
+            //     const permit = await getPermit(addr.address, addr2, weth, '1', chainId, swap.address, '1');
+            //
+            //     const { r, vs } = compactSignature(signature);
+            //     await expect(swap.fillOrderToWithPermit(order, r, vs, 1, 1, addr.address, permit, '0x'))
+            //         .to.be.revertedWith('ERC20Permit: invalid signature');
+            // });
+            //
+            // it('rejects expired permit', async function () {
+            //     const { weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
+            //
+            //     const deadline = (await time.latest()) - time.duration.weeks(1);
+            //     const permit = await getPermit(addr.address, addr1, weth, '1', chainId, swap.address, '1', deadline);
+            //
+            //     const { r, vs } = compactSignature(signature);
+            //     await expect(swap.fillOrderToWithPermit(order, r, vs, 1, 1, addr.address, permit, '0x'))
+            //         .to.be.revertedWith('ERC20Permit: expired deadline');
+            // });
+        });
+
+        // describe('maker permit', function () {
+        //     const deployContractsAndInitPermit = async function () {
+        //         const { dai, weth, swap, chainId } = await deploySwapTokens();
+        //         await initContracts(dai, weth, swap);
+        //
+        //         const permit = withTarget(
+        //             weth.address,
+        //             await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
+        //         );
+        //
+        //         const builder = getOrderBuilder(swap.address, addr)
+        //
+        //         const order = builder.buildLimitOrder(
+        //             {
+        //                 makerAsset: weth.address,
+        //                 takerAsset: dai.address,
+        //                 makingAmount: '1',
+        //                 takingAmount: '1',
+        //                 maker: addr.address,
+        //             },
+        //             {
+        //                 permit,
+        //             },
+        //         );
+        //
+        //         const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr.address)
+        //         return { dai, weth, swap, order, signature, permit, chainId };
+        //     };
+        //
+        //     it('maker permit works', async function () {
+        //         const { dai, weth, swap, order, signature, chainId } = await loadFixture(deployContractsAndInitPermit);
+        //
+        //         // const facade = getOrderFacade(swap.address, chainId, addr1)
+        //         const { r, vs } = compactSignature(signature);
+        //         const filltx = swap.connect(addr1).fillOrderExt(order, r, vs, 1, fillWithMakingAmount(BigInt(1)), order.extension);
+        //         await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+        //         await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+        //     });
+        //
+        //     // it('skips order permit flag', async function () {
+        //     //     const { dai, weth, swap, order, r, vs, permit } = await loadFixture(deployContractsAndInitPermit);
+        //     //
+        //     //     await addr1.sendTransaction({ to: weth.address, data: '0xd505accf' + permit.substring(42) });
+        //     //     const filltx = swap.connect(addr1).fillOrderExt(order, r, vs, 1, skipMakerPermit(0), order.extension);
+        //     //     await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+        //     //     await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+        //     // });
+        // });
     });
 });

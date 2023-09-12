@@ -16,7 +16,12 @@ export async function signOrder(typedData: EIP712TypedData, wallet): Promise<str
     );
 }
 
-export function ether (num) {
+export function cutSelector(data: string): string {
+    const hexPrefix = '0x';
+    return hexPrefix + data.substring(hexPrefix.length + 8);
+}
+
+export function ether(num) {
     return utils.parseUnits(num);
 }
 

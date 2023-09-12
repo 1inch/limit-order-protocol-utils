@@ -11,8 +11,6 @@ import {
     LimitOrderInteractions,
     LimitOrderProtocolMethods,
     LimitOrderSignature, LimitOrderWithExtension,
-    RFQOrder,
-    RFQOrderData,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes, ORDER_STRUCTURE} from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
@@ -237,7 +235,6 @@ export class LimitOrderBuilder {
         if (trim0x(extension).length > 0) {
             salt = BigInt(Web3.utils.keccak256(extension))
                 & ((BigInt(1) << BigInt(160)) - BigInt(1));
-            // wtf?
             makerTraits = BigInt(makerTraits) | (BigInt(1) << _HAS_EXTENSION_FLAG);
         }
 
