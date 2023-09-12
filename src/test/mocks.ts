@@ -1,6 +1,6 @@
 
 /* eslint-disable max-len */
-import { ZERO_ADDRESS } from "../limit-order-protocol.const";
+import {ZERO_ADDRESS, ZX} from "../limit-order-protocol.const";
 
 export const largeInteractions = {
     getMakingAmount: '0x20b83f2d000000000000000000000000000000000000000000000000000000000098968000000000000000000000000000000000000000000000001b1ae4d6e2ef500000',
@@ -73,7 +73,7 @@ export const extensionWithPermitAndPredicate = {
 export const commonMakerTraits = {
     hex: '0x4000000000000000000000000000000000000000000000000000000000000000',
     result: {
-        allowedSender: ZERO_ADDRESS,
+        allowedSender: ZX + ZERO_ADDRESS.slice(-20),
         shouldCheckEpoch: false,
         allowPartialFill: true,
         allowPriceImprovement: true,
@@ -83,6 +83,22 @@ export const commonMakerTraits = {
         expiry: 0,
         nonce: 0,
         series: 0,
+    }
+}
+
+export const difficultMakerTraits = {
+    hex: '0x4580000000000000000000020000000003006500c7429e03e53415d37aa96045',
+    result: {
+        allowedSender: ZX + '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'.slice(-20),
+        shouldCheckEpoch: true,
+        allowPartialFill: true,
+        allowPriceImprovement: true,
+        allowMultipleFills: true,
+        usePermit2: true,
+        unwrapWeth: true,
+        expiry: 1694549826,
+        nonce: 3,
+        series: 2,
     }
 }
 

@@ -3,6 +3,7 @@ import { LimitOrderBuilder } from './limit-order.builder';
 import {LimitOrderDecoder} from './limit-order.decoder';
 import {
     commonMakerTraits,
+    difficultMakerTraits,
     extensionWithPermit,
     extensionWithPermitAndPredicate,
     extensionWithPredicate,
@@ -16,7 +17,6 @@ describe('LimitOrderDecoder', () => {
         describe("unpackInteractionsV3", () => {
             it("should unpack", () => {
                 const interactions = LimitOrderDecoder.unpackInteractionsV3(largeResult.offsets, largeResult.interactions);
-
                 expect(interactions).toMatchObject(largeInteractions);
             })
         })
@@ -49,6 +49,10 @@ describe('LimitOrderDecoder', () => {
     describe('unpackMakerTraits', () => {
         it('should unpack default maker traits', () => {
             expect(LimitOrderDecoder.unpackMakerTraits(commonMakerTraits.hex)).toMatchObject(commonMakerTraits.result)
+        });
+
+        it('should unpack with allowedSender and expiry, nonce, series', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(difficultMakerTraits.hex)).toMatchObject(difficultMakerTraits.result)
         });
     });
 

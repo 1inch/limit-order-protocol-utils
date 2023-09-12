@@ -12,6 +12,7 @@ import { ethers } from 'hardhat'
 import { expect } from 'chai';
 import {getPermit} from "./helpers/eip712";
 import {getPermit2, permit2Contract, withTarget} from "@1inch/solidity-utils";
+import {LimitOrderBuilder} from "../../limit-order.builder";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
@@ -99,7 +100,7 @@ describe('LimitOrderProtocol',  () => {
                 makingAmount: '1',
                 takingAmount: '1',
                 maker: addr1.address,
-                makerTraits: builder.buildMakerTraits({
+                makerTraits: LimitOrderBuilder.buildMakerTraits({
                     expiry: getCurrentTime() + 3600
                 }),
             });
@@ -145,7 +146,7 @@ describe('LimitOrderProtocol',  () => {
                 makingAmount: '1',
                 takingAmount: '1',
                 maker: addr1.address,
-                makerTraits: builder.buildMakerTraits({ expiry: 0xff0000 }),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ expiry: 0xff0000 }),
             });
 
             const typedData = builder.buildLimitOrderTypedData(order.order, chainId, swap.address);
@@ -165,6 +166,46 @@ describe('LimitOrderProtocol',  () => {
                 data: calldata
             })).to.be.revertedWithCustomError(swap, 'OrderExpired');
         });
+    })
+
+    describe('Private Orders', function () {
+        const deployContractsAndInit = async function () {
+            const { dai, weth, swap, chainId } = await deploySwapTokens();
+            await initContracts(dai, weth, swap);
+            return { dai, weth, swap, chainId };
+        };
+
+        it('should fill with correct taker', async function () {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+
+            const builder = getOrderBuilder(swap.address, addr1);
+            const order = builder.buildLimitOrder({
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '1',
+                takingAmount: '1',
+                maker: addr1.address,
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: addr.address }),
+            });
+
+            const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);
+
+            const facade = getOrderFacade(swap.address, chainId, addr);
+            const calldata = facade.fillLimitOrder({
+                order: order.order,
+                signature,
+                amount: '1',
+                takerTraits: fillWithMakingAmount(BigInt(1))
+            })
+
+            const fillTx = await addr.sendTransaction({
+                to: swap.address,
+                data: calldata
+            })
+
+            await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+            await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+        });
     });
 
     describe('Order Cancelation', function () {
@@ -183,7 +224,7 @@ describe('LimitOrderProtocol',  () => {
                 makingAmount: '1',
                 takingAmount: '1',
                 maker: addr1.address,
-                makerTraits: builder.buildMakerTraits({ allowMultipleFills: true }),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: true }),
             });
             return { dai, weth, swap, chainId, order, builder };
         };
@@ -197,7 +238,7 @@ describe('LimitOrderProtocol',  () => {
                 makingAmount: '2',
                 takingAmount: '2',
                 maker: addr1.address,
-                makerTraits: builder.buildMakerTraits({ allowMultipleFills: true, shouldCheckEpoch: true, nonce: 0, series: 1 }),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: true, shouldCheckEpoch: true, nonce: 0, series: 1 }),
             });
             return { dai, weth, swap, chainId, order, builder };
         };
@@ -664,7 +705,7 @@ describe('LimitOrderProtocol',  () => {
                     makingAmount: '1',
                     takingAmount: '1',
                     maker: addr1.address,
-                    makerTraits: builder.buildMakerTraits({ usePermit2: true }),
+                    makerTraits: LimitOrderBuilder.buildMakerTraits({ usePermit2: true }),
                 });
 
                 const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);

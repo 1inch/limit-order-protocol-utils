@@ -91,6 +91,36 @@ export class LimitOrderBuilder {
         return { offsets, interactions };
     }
 
+    static buildMakerTraits (
+        {
+         allowedSender = ZERO_ADDRESS,
+         shouldCheckEpoch = false,
+         allowPartialFill = true,
+         allowPriceImprovement = true,
+         allowMultipleFills = true,
+         usePermit2 = false,
+         unwrapWeth = false,
+         expiry = 0,
+         nonce = 0,
+         series = 0,
+        } = {}
+    ): string {
+        return '0x' + (
+            (BigInt(series) << BigInt(SERIES_SHIFT)) |
+            (BigInt(nonce) << BigInt(NONCE_SHIFT)) |
+            (BigInt(expiry) << BigInt(EXPIRY_SHIFT)) |
+            (BigInt(allowedSender) & ((BigInt(1) << BigInt(80)) - BigInt(1))) |
+            // 247 - 255
+            setN(BigInt(0), _UNWRAP_WETH_FLAG, unwrapWeth) |
+            setN(BigInt(0), _ALLOW_MULTIPLE_FILLS_FLAG, allowMultipleFills) |
+            setN(BigInt(0), _NO_PARTIAL_FILLS_FLAG, !allowPartialFill) |
+            setN(BigInt(0), _NO_PRICE_IMPROVEMENT_FLAG, !allowPriceImprovement) |
+            setN(BigInt(0), _NEED_EPOCH_CHECK_FLAG, shouldCheckEpoch) |
+            setN(BigInt(0), _USE_PERMIT2_FLAG, usePermit2)
+            // 256 bit value
+        ).toString(16).padStart(64, '0');
+    }
+
     static joinStaticCalls(data: string[]): { offsets: bigint, data: string } {
         const trimmed = data.map(trim0x);
 
@@ -156,34 +186,6 @@ export class LimitOrderBuilder {
         );
     }
 
-    buildMakerTraits ({
-       allowedSender = ZERO_ADDRESS,
-       shouldCheckEpoch = false,
-       allowPartialFill = true,
-       allowPriceImprovement = true,
-       allowMultipleFills = true,
-       usePermit2 = false,
-       unwrapWeth = false,
-       expiry = 0,
-       nonce = 0,
-       series = 0,
-   } = {}) {
-        return '0x' + (
-            (BigInt(series) << BigInt(SERIES_SHIFT)) |
-            (BigInt(nonce) << BigInt(NONCE_SHIFT)) |
-            (BigInt(expiry) << BigInt(EXPIRY_SHIFT)) |
-            (BigInt(allowedSender) & ((BigInt(1) << BigInt(80)) - BigInt(1))) |
-            // 247 - 255
-            setN(BigInt(0), _UNWRAP_WETH_FLAG, unwrapWeth) |
-            setN(BigInt(0), _ALLOW_MULTIPLE_FILLS_FLAG, allowMultipleFills) |
-            setN(BigInt(0), _NO_PARTIAL_FILLS_FLAG, !allowPartialFill) |
-            setN(BigInt(0), _NO_PRICE_IMPROVEMENT_FLAG, !allowPriceImprovement) |
-            setN(BigInt(0), _NEED_EPOCH_CHECK_FLAG, shouldCheckEpoch) |
-            setN(BigInt(0), _USE_PERMIT2_FLAG, usePermit2)
-            // 256 bit value
-        ).toString(16).padStart(64, '0');
-    }
-
     buildLimitOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
         const message = orderTypedData as TypedMessage<MessageTypes>;
         const hash = bufferToHex(TypedDataUtils.eip712Hash(message, SignTypedDataVersion.V4));
@@ -203,7 +205,7 @@ export class LimitOrderBuilder {
             takerAsset,
             makingAmount,
             takingAmount,
-            makerTraits = this.buildMakerTraits()
+            makerTraits = LimitOrderBuilder.buildMakerTraits()
         }: LimitOrderData,
         {
             makerAssetSuffix = '0x',

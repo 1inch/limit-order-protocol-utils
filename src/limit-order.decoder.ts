@@ -84,7 +84,7 @@ export class LimitOrderDecoder {
             series: Number(series),
             expiry: Number(expiry),
             nonce: Number(nonce),
-            allowedSender: ZX + allowedSender.toString(16).padEnd(40, '0'),
+            allowedSender: ZX + allowedSender.toString(16).padEnd(20, '0'),
             unwrapWeth,
             allowMultipleFills,
             allowPartialFill,
