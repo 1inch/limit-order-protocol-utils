@@ -544,6 +544,88 @@ describe('LimitOrderProtocol',  () => {
         });
     });
 
+    describe('Predicate with permit', function () {
+        const deployContractsAndInit = async function () {
+            const { dai, weth, swap, chainId } = await deploySwapTokens();
+            const { arbitraryPredicate } = await deployArbitraryPredicate();
+            await initContracts(dai, weth, swap);
+            return { dai, weth, swap, chainId, arbitraryPredicate };
+        };
+
+        it('arbitrary call predicate with maker permit should pass', async function () {
+            const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
+
+            const predicateBuilder = getPredicateBuilder(
+                swap.address, chainId, addr
+            )
+
+            const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
+                arbitraryPredicate.address,
+                arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
+            );
+
+            const predicate = predicateBuilder.lt(
+                '10',
+                arbitraryCalldata,
+            )
+
+            const permit = withTarget(
+                weth.address,
+                await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
+            );
+
+            const builder = getOrderBuilder(swap.address, addr);
+
+            const order = builder.buildLimitOrder(
+                {
+                    makerAsset: weth.address,
+                    takerAsset: dai.address,
+                    makingAmount: '1',
+                    takingAmount: '1',
+                    maker: addr.address,
+                },
+                {
+                    predicate,
+                    permit
+                },
+            );
+
+
+            console.log(
+                'predicate ', predicate,
+                'permit ', permit,
+                'extension ', order.extension
+            )
+
+            const signature = await builder.buildTypedDataAndSign(
+                order.order,
+                chainId,
+                swap.address,
+                addr.address
+            );
+
+            const takerFacade = getOrderFacade(swap.address, chainId, addr1);
+
+            const calldata = takerFacade.fillLimitOrderExt({
+                order: order.order,
+                amount: '1',
+                signature,
+                takerTraits: fillWithMakingAmount(BigInt(1)),
+                extension: order.extension,
+            });
+
+            const filltx = await addr1.sendTransaction({
+                to: swap.address,
+                data: calldata
+            });
+
+            await filltx.wait();
+
+            await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+            await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+        });
+    })
+
     describe('Permit', function () {
         describe('fillOrderToWithPermit', function () {
             const deployContractsAndInitPermit = async function () {

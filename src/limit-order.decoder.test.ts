@@ -3,7 +3,8 @@ import { LimitOrderBuilder } from './limit-order.builder';
 import {LimitOrderDecoder} from './limit-order.decoder';
 import {
     extensionWithPermit,
-    extensionWithPredicates,
+    extensionWithPermitAndPredicate,
+    extensionWithPredicate,
     largeInteractions,
     largeResult
 } from './test/mocks';
@@ -22,10 +23,25 @@ describe('LimitOrderDecoder', () => {
 
     describe('unpackInteractions', () => {
         describe("unpackInteractions", () => {
-            it("should unpack", () => {
+            it("should unpack predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPredicate.result);
+            });
+
+            it("should unpack permit", () => {
                 const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermit.extension);
                 expect(interactions).toMatchObject(extensionWithPermit.result);
-            })
+            });
+
+            it("should unpack permit & predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitAndPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
+            });
+
+            it("should unpack permit & predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitAndPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
+            });
         })
     });
 

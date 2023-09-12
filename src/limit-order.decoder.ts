@@ -19,24 +19,22 @@ import {ZX} from "./limit-order-protocol.const";
 
 export class LimitOrderDecoder {
     static unpackExtension(extension: string): UnpackedExtension {
-        // if (extension === ZX || extension === '') {
-        //     return {
-        //         interactions: ZX,
-        //         customData: ZX,
-        //     }
-        // }
-
         extension = trim0x(extension);
         const offsetsInHex = ZX + extension.slice(0, 64);
         const offsets = BigInt(offsetsInHex);
-        const { toByte } = getOffsetForInteraction(offsets, InteractionsFields.postInteraction)
-        const lastInteractionIndex = toByte * 2;
+
         const interactions = LimitOrderDecoder.unpackInteractions(
             offsets,
-            extension.slice(64, lastInteractionIndex)
+            extension.slice(64, extension.length)
         );
 
-        const customData = extension.slice(lastInteractionIndex, extension.length);
+        const extensionBigInt = BigInt(ZX + extension);
+        const offset = (extensionBigInt >> BigInt(224)) + BigInt(0x20);
+
+        const customData = ZX + extension.slice(
+            Number(offset),
+            extension.length
+        );
 
         return {
             interactions: interactions ?? ZX,
