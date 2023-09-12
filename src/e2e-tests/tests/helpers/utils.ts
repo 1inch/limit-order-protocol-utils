@@ -28,7 +28,10 @@ export function ether(num) {
 export function fillWithMakingAmount(amount: bigint): string {
     return setN(amount, 255, true).toString();
 }
-//
+
+export function skipMakerPermit (amount: bigint): string {
+    return setN(amount, 253, true).toString();
+}
 
 export function compactSignature (signature: string) {
     const sig = utils.splitSignature(signature);
