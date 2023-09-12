@@ -69,6 +69,10 @@ export function setN(value: bigint, bitNumber: number | bigint, flag: boolean): 
     return value | (BigInt(bit) << BigInt(bitNumber));
 }
 
+export function getN(value: bigint, n: bigint): bigint {
+    return (value >> BigInt(n)) & BigInt(1);
+}
+
 export const TIMESTAMP_AND_NOUNCE_SELECTOR = '2cc2878d'; // timestampBelowAndNonceEquals(uint256)
 export const ARBITRARY_STATIC_CALL_SELECTOR = '7638f1fe'; // timestampBelowAndNonceEquals(uint256)
 const TIMESTAMP_AND_NOUNCE_ARGS_SIZE = 256 / 4;

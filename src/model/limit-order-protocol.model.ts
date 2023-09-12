@@ -1,3 +1,4 @@
+import {ZERO_ADDRESS} from "../limit-order-protocol.const";
 
 export enum ChainId {
     etherumMainnet = 1,
@@ -142,6 +143,19 @@ export const InteractionsFields = {
     preInteraction: 6,
     postInteraction: 7
 } as const;
+
+export interface ParsedMakerTraits {
+    allowedSender: Address;
+    shouldCheckEpoch: boolean;
+    allowPartialFill: boolean;
+    allowPriceImprovement: boolean;
+    allowMultipleFills: boolean;
+    usePermit2: boolean;
+    unwrapWeth: boolean;
+    expiry: number;
+    nonce: number;
+    series: number;
+}
 
 export type InteractionName = keyof typeof InteractionsFields;
 

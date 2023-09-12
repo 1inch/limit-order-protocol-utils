@@ -5,16 +5,34 @@ import {
     UnpackedExtension,
     AllInteractions,
     Interactions,
-    InteractionsFields, LimitOrderLegacy,
+    InteractionsFields,
+    LimitOrderLegacy,
+    MakerTraits,
+    ParsedMakerTraits,
 } from "./model/limit-order-protocol.model";
 import {
     parseInteractionForField,
     trim0x,
     UINT32_BITMASK,
     UINT32_BITS,
-    getOffsetForInteraction,
+    getN,
 } from "./utils/limit-order.utils";
-import {ZX} from "./limit-order-protocol.const";
+import { ZX } from "./limit-order-protocol.const";
+
+import {
+    _ALLOW_MULTIPLE_FILLS_FLAG,
+    _NEED_EPOCH_CHECK_FLAG,
+    _NO_PARTIAL_FILLS_FLAG,
+    _NO_PRICE_IMPROVEMENT_FLAG,
+    _UNWRAP_WETH_FLAG,
+    _USE_PERMIT2_FLAG, ALLOWED_SENDER_MASK,
+    EXPIRY_MASK,
+    EXPIRY_SHIFT,
+    NONCE_MASK,
+    NONCE_SHIFT,
+    SERIES_MASK,
+    SERIES_SHIFT
+} from "./utils/maker-traits.const";
 
 
 export class LimitOrderDecoder {
@@ -42,9 +60,39 @@ export class LimitOrderDecoder {
         }
     }
 
-    // static unpackMakerTraits(makerTraits: MakerTraits) {
-    //
-    // }
+    static unpackMakerTraits(makerTraits: MakerTraits): ParsedMakerTraits {
+        const makerTraitsAsBigInt = BigInt(makerTraits);
+        const series =
+            (makerTraitsAsBigInt >> BigInt(SERIES_SHIFT)) & SERIES_MASK;
+
+        const nonce =
+            (makerTraitsAsBigInt >> BigInt(NONCE_SHIFT)) & NONCE_MASK;
+
+        const expiry =
+            (makerTraitsAsBigInt >> BigInt(EXPIRY_SHIFT)) & EXPIRY_MASK;
+
+        const allowedSender = makerTraitsAsBigInt & ALLOWED_SENDER_MASK;
+
+        const unwrapWeth = !!getN(makerTraitsAsBigInt, _UNWRAP_WETH_FLAG);
+        const allowMultipleFills = !!getN(makerTraitsAsBigInt, _ALLOW_MULTIPLE_FILLS_FLAG);
+        const allowPartialFill = !getN(makerTraitsAsBigInt, _NO_PARTIAL_FILLS_FLAG);
+        const allowPriceImprovement = !getN(makerTraitsAsBigInt, _NO_PRICE_IMPROVEMENT_FLAG);
+        const shouldCheckEpoch = !!getN(makerTraitsAsBigInt, _NEED_EPOCH_CHECK_FLAG);
+        const usePermit2 = !!getN(makerTraitsAsBigInt, _USE_PERMIT2_FLAG);
+
+        return {
+            series: Number(series),
+            expiry: Number(expiry),
+            nonce: Number(nonce),
+            allowedSender: ZX + allowedSender.toString(16).padEnd(40, '0'),
+            unwrapWeth,
+            allowMultipleFills,
+            allowPartialFill,
+            allowPriceImprovement,
+            shouldCheckEpoch,
+            usePermit2,
+        }
+    }
 
     static unpackInteractionsV3(offsets: string | bigint, interactions: string): InteractionsV3 {
         return LimitOrderDecoder.unpackAllInteractions(offsets, interactions, InteractionsFieldsV3) as InteractionsV3;

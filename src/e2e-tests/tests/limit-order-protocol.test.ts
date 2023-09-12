@@ -385,8 +385,6 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            console.log('Test extension --', predicate, ' --Test');
-
             const signature = await builder.buildTypedDataAndSign(
                 order.order,
                 chainId,
@@ -589,13 +587,6 @@ describe('LimitOrderProtocol',  () => {
                     permit
                 },
             );
-
-
-            console.log(
-                'predicate ', predicate,
-                'permit ', permit,
-                'extension ', order.extension
-            )
 
             const signature = await builder.buildTypedDataAndSign(
                 order.order,

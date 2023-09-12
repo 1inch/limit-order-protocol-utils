@@ -1,5 +1,7 @@
 
 /* eslint-disable max-len */
+import { ZERO_ADDRESS } from "../limit-order-protocol.const";
+
 export const largeInteractions = {
     getMakingAmount: '0x20b83f2d000000000000000000000000000000000000000000000000000000000098968000000000000000000000000000000000000000000000001b1ae4d6e2ef500000',
     getTakingAmount: '0x7e2d2183000000000000000000000000000000000000000000000000000000000098968000000000000000000000000000000000000000000000001b1ae4d6e2ef500000',
@@ -65,6 +67,22 @@ export const extensionWithPermitAndPredicate = {
             "takingAmountGetter": "0x",
         },
         customData: '0x'
+    }
+}
+
+export const commonMakerTraits = {
+    hex: '0x4000000000000000000000000000000000000000000000000000000000000000',
+    result: {
+        allowedSender: ZERO_ADDRESS,
+        shouldCheckEpoch: false,
+        allowPartialFill: true,
+        allowPriceImprovement: true,
+        allowMultipleFills: true,
+        usePermit2: false,
+        unwrapWeth: false,
+        expiry: 0,
+        nonce: 0,
+        series: 0,
     }
 }
 

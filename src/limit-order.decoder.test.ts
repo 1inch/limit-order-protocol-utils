@@ -2,6 +2,7 @@ import { ZX } from './limit-order-protocol.const';
 import { LimitOrderBuilder } from './limit-order.builder';
 import {LimitOrderDecoder} from './limit-order.decoder';
 import {
+    commonMakerTraits,
     extensionWithPermit,
     extensionWithPermitAndPredicate,
     extensionWithPredicate,
@@ -43,6 +44,12 @@ describe('LimitOrderDecoder', () => {
                 expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
             });
         })
+    });
+
+    describe('unpackMakerTraits', () => {
+        it('should unpack default maker traits', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(commonMakerTraits.hex)).toMatchObject(commonMakerTraits.result)
+        });
     });
 
     describe("unpackStaticCalls", () => {

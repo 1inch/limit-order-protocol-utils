@@ -5,12 +5,15 @@ import {
     ZX,
 } from './limit-order-protocol.const';
 import {
-    ExtensionParams, ExtensionParamsWithCustomData,
+    ExtensionParams,
+    ExtensionParamsWithCustomData,
     LimitOrder,
-    LimitOrderData, LimitOrderHash,
+    LimitOrderData,
+    LimitOrderHash,
     LimitOrderInteractions,
     LimitOrderProtocolMethods,
-    LimitOrderSignature, LimitOrderWithExtension,
+    LimitOrderSignature,
+    LimitOrderWithExtension,
 } from './model/limit-order-protocol.model';
 import {EIP712TypedData, MessageTypes, ORDER_STRUCTURE} from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
@@ -19,16 +22,20 @@ import Web3 from 'web3';
 import {Address} from './model/eth.model';
 import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from "@metamask/eth-sig-util";
 import {bufferToHex} from 'ethereumjs-util';
-
-const _NO_PARTIAL_FILLS_FLAG = BigInt(255);
-const _ALLOW_MULTIPLE_FILLS_FLAG = BigInt(254);
-const _NO_PRICE_IMPROVEMENT_FLAG = BigInt(253);
-const _NEED_PREINTERACTION_FLAG = BigInt(252);
-const _NEED_POSTINTERACTION_FLAG = BigInt(251);
-const _NEED_EPOCH_CHECK_FLAG = BigInt(250);
-const _HAS_EXTENSION_FLAG = BigInt(249);
-const _USE_PERMIT2_FLAG = BigInt(248);
-const _UNWRAP_WETH_FLAG = BigInt(247);
+import {
+    _ALLOW_MULTIPLE_FILLS_FLAG,
+    _HAS_EXTENSION_FLAG,
+    _NEED_EPOCH_CHECK_FLAG,
+    _NEED_POSTINTERACTION_FLAG,
+    _NEED_PREINTERACTION_FLAG,
+    _NO_PARTIAL_FILLS_FLAG,
+    _NO_PRICE_IMPROVEMENT_FLAG,
+    _UNWRAP_WETH_FLAG,
+    _USE_PERMIT2_FLAG,
+    EXPIRY_SHIFT,
+    NONCE_SHIFT,
+    SERIES_SHIFT
+} from "./utils/maker-traits.const";
 
 
 export function generateRFQOrderInfo(
@@ -162,9 +169,9 @@ export class LimitOrderBuilder {
        series = 0,
    } = {}) {
         return '0x' + (
-            (BigInt(series) << BigInt(160)) |
-            (BigInt(nonce) << BigInt(120)) |
-            (BigInt(expiry) << BigInt(80)) |
+            (BigInt(series) << BigInt(SERIES_SHIFT)) |
+            (BigInt(nonce) << BigInt(NONCE_SHIFT)) |
+            (BigInt(expiry) << BigInt(EXPIRY_SHIFT)) |
             (BigInt(allowedSender) & ((BigInt(1) << BigInt(80)) - BigInt(1))) |
             // 247 - 255
             setN(BigInt(0), _UNWRAP_WETH_FLAG, unwrapWeth) |
