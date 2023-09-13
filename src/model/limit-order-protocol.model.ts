@@ -177,6 +177,8 @@ export type AllInteractions = typeof InteractionsFields | typeof InteractionsFie
 
 export enum LimitOrderProtocolMethodsV3 {
     cancelOrder = 'cancelOrder',
+    timestampBelow = 'timestampBelow',
+    timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
 }
 
 export enum LimitOrderProtocolMethods {
@@ -198,8 +200,6 @@ export enum LimitOrderProtocolMethods {
     eq = 'eq',
     lt = 'lt',
     gt = 'gt',
-    timestampBelow = 'timestampBelow',
-    timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
     nonceEquals = 'nonceEquals',
     remaining = 'remaining',
     transferFrom = 'transferFrom',

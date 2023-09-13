@@ -1,5 +1,5 @@
 import { utils } from 'ethers'
-import {EIP712TypedData} from "../../../model/eip712.model";
+import {EIP712TypedData, ORDER_STRUCTURE} from "../../../model/eip712.model";
 import {setN} from "../../../utils/limit-order.utils";
 import {LimitOrderProtocolFacade} from "../../../limit-order-protocol.facade";
 import {ProviderConnector} from "../../../connector/provider.connector";
@@ -7,7 +7,11 @@ import {AbiItem} from "../../../model/abi.model";
 import {LimitOrderBuilder} from "../../../limit-order.builder";
 import {LimitOrderPredicateBuilder} from "../../../limit-order-predicate.builder";
 
-const testDomainSettings = { domainName: '1inch Limit Order Protocol', version: '4' };
+const testDomainSettings = {
+    domainName: '1inch Limit Order Protocol',
+    version: '4',
+    orderStructure: ORDER_STRUCTURE,
+};
 export async function signOrder(typedData: EIP712TypedData, wallet): Promise<string> {
     return await wallet._signTypedData(
         typedData.domain,

@@ -16,7 +16,12 @@ import {
     LimitOrderSignature,
     LimitOrderWithExtension,
 } from './model/limit-order-protocol.model';
-import {EIP712TypedData, MessageTypes, ORDER_STRUCTURE} from './model/eip712.model';
+import {
+    EIP712Parameter,
+    EIP712TypedData,
+    MessageTypes,
+    ORDER_STRUCTURE
+} from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {getOffsets, setN, trim0x} from './utils/limit-order.utils';
 import Web3 from 'web3';
@@ -37,6 +42,7 @@ import {
     NONCE_SHIFT,
     SERIES_SHIFT
 } from "./utils/maker-traits.const";
+import * as assert from "assert";
 
 
 export function generateOrderSalt(): string {
@@ -46,12 +52,12 @@ export function generateOrderSalt(): string {
 export interface EIP712Params {
     domainName: string;
     version: string;
+    orderStructure: EIP712Parameter[];
 }
 
 export class LimitOrderBuilder {
     constructor(
         private readonly contractAddress: string,
-        // private readonly chainId: ChainId | number,
         private readonly providerConnector: ProviderConnector,
         private readonly eip712Params: EIP712Params,
     ) {}
@@ -150,17 +156,17 @@ export class LimitOrderBuilder {
         order: LimitOrder,
         chainId: number,
         verifyingContract: Address,
-        domainName = this.eip712Params.domainName
+        eip712Params: EIP712Params = this.eip712Params,
     ): EIP712TypedData {
         return {
             primaryType: 'Order',
             types: {
                 EIP712Domain: EIP712_DOMAIN,
-                Order: ORDER_STRUCTURE,
+                Order: eip712Params.orderStructure,
             },
             domain: {
-                name: domainName,
-                version: this.eip712Params.version,
+                name: eip712Params.domainName,
+                version: eip712Params.version,
                 chainId: chainId,
                 verifyingContract: verifyingContract,
             },
@@ -173,13 +179,13 @@ export class LimitOrderBuilder {
         chainId: number,
         verifyingContract: Address,
         wallet: Address,
-        domainName = this.eip712Params.domainName
+        domainSettings = this.eip712Params
     ): Promise<LimitOrderSignature> {
         const typedData = this.buildLimitOrderTypedData(
             order,
             chainId,
             verifyingContract,
-            domainName
+            domainSettings
         );
         return this.buildOrderSignature(wallet, typedData);
     }
