@@ -2,15 +2,12 @@ import Web3 from 'web3';
 import {instance, mock, verify, when} from 'ts-mockito';
 import {
     EIP712_DOMAIN,
-    LIMIT_ORDER_PROTOCOL_ABI,
-    ORDER_STRUCTURE,
-    PROTOCOL_NAME,
-    PROTOCOL_VERSION,
+    LIMIT_ORDER_PROTOCOL_V3_ABI,
 } from '../limit-order-protocol.const';
 import {Eth} from 'web3-eth';
 import {PrivateKeyProviderConnector} from './private-key-provider.connector';
-import {LimitOrder} from '../model/limit-order-protocol.model';
-import {EIP712TypedData} from '../model/eip712.model';
+import {LimitOrderLegacy} from '../model/limit-order-protocol.model';
+import {EIP712TypedData, ORDER_STRUCTURE_LEGACY} from '../model/eip712.model';
 
 describe('PrivateKeyProviderConnector', () => {
     let web3Provider: Web3;
@@ -18,7 +15,7 @@ describe('PrivateKeyProviderConnector', () => {
 
     const testPrivateKey =
         'd8d1f95deb28949ea0ecc4e9a0decf89e98422c2d76ab6e5f736792a388c56c7';
-    const limitOrder: LimitOrder = {
+    const limitOrder: LimitOrderLegacy = {
         salt: "618054093254",
         makerAsset: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
         takerAsset: "0x111111111117dc0aa78b770fa6a738034120c302",
@@ -35,11 +32,11 @@ describe('PrivateKeyProviderConnector', () => {
         primaryType: 'Order',
         types: {
             EIP712Domain: EIP712_DOMAIN,
-            Order: ORDER_STRUCTURE,
+            Order: ORDER_STRUCTURE_LEGACY,
         },
         domain: {
-            name: PROTOCOL_NAME,
-            version: PROTOCOL_VERSION,
+            name: 'Limit Order Protocol',
+            version: '4',
             chainId: 1,
             verifyingContract: '',
         },
@@ -78,7 +75,7 @@ describe('PrivateKeyProviderConnector', () => {
         when(web3Provider.eth).thenReturn(instance(eth));
 
         privateKeyProviderConnector.contractEncodeABI(
-            LIMIT_ORDER_PROTOCOL_ABI,
+            LIMIT_ORDER_PROTOCOL_V3_ABI,
             null,
             'foo',
             []

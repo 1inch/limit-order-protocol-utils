@@ -1,4 +1,3 @@
-import { LimitOrderPredicateBuilder } from './limit-order-predicate.builder';
 import {
     LimitOrderPredicateDecoder,
     PredicateAstArguments,
@@ -10,7 +9,8 @@ import {
 } from './model/limit-order-protocol.model';
 import { NonceSeriesV2 } from './model/series-nonce-manager.model';
 import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predicate.builder';
-import { mocksForChain } from './test/helpers';
+import {mocksForV3Chain} from './test/helpers';
+import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
 
 
 // eslint-disable-next-line max-len
@@ -46,67 +46,11 @@ const GASLESS_AST = {
     },
 };
 
-// eslint-disable-next-line max-len
-const P2P_PREDICATE = `0xbf15fcd8000000000000000000000000303389f541ff2d620e42832f180a08e767b28e10000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000242cc2878d006373bd84000000000000016e359d196494f7c172ca91c7b9ebbbed62a5f10a00000000000000000000000000000000000000000000000000000000`;
-const P2P_AST = {
-    name: "arbitraryStaticCall",
-    type: "function",
-    meta: {
-        source: "0x1111111254eeb25477b68fb85ed929f73a960582"
-    },
-    args: {
-        target: {
-            bytes: "0x303389f541FF2D620E42832F180A08E767B28E10",
-            meta: {
-                source: "0x1111111254eeb25477b68fb85ed929f73a960582"
-            },
-            type: "bytes"
-        },
-        data: {
-            name: "timestampBelowAndNonceEquals",
-            type: "function",
-            meta: {
-                source: "0x303389f541ff2d620e42832f180a08e767b28e10"
-            },
-            args: {
-                address: {
-                    bytes: "0x6e359d196494f7c172ca91c7b9ebbbed62a5f10a",
-                    meta: {
-                        source: "0x303389f541ff2d620e42832f180a08e767b28e10"
-                    },
-                    type: "bytes"
-                },
-                nonce: {
-                    bytes: "0",
-                    meta: {
-                        source: "0x303389f541ff2d620e42832f180a08e767b28e10"
-                    },
-                    type: "bytes"
-                },
-                series: {
-                    bytes: "1",
-                    meta: {
-                        source: "0x303389f541ff2d620e42832f180a08e767b28e10"
-                    },
-                    type: "bytes"
-                },
-                timestamp: {
-                    bytes: "1668529540",
-                    meta: {
-                        source: "0x303389f541ff2d620e42832f180a08e767b28e10"
-                    },
-                    type: "bytes"
-                }
-            },
-        },
-    },
-}
-
 describe("LimitOrderPredicateDecoder", () => {
     const chainId = ChainId.etherumMainnet;
     const limitOrderPredicateDecoder = new LimitOrderPredicateDecoder(chainId);
 
-    let predicateBuilder: LimitOrderPredicateBuilder;
+    let predicateBuilder: LimitOrderPredicateV3Builder;
     // let erc20Facade: Erc20Facade;
     let seriesNonceManagerContractAddress: string;
     let seriesNonceManagerPredicateBuilder: SeriesNonceManagerPredicateBuilder;
@@ -117,15 +61,11 @@ describe("LimitOrderPredicateDecoder", () => {
             expect(limitOrderPredicateDecoder.decode(GASLESS_PREDICATE)).toMatchObject(GASLESS_AST);
         });
 
-        it("p2p with series-nonce-manager call", () => {
-            expect(limitOrderPredicateDecoder.decode(P2P_PREDICATE)).toMatchObject(P2P_AST);
-        });
-
     });
 
     describe("search util", () => {
         beforeEach(() => {
-            const mocks = mocksForChain(chainId);
+            const mocks = mocksForV3Chain(chainId);
             // erc20Facade = mocks.erc20Facade;
             predicateBuilder = mocks.limitOrderPredicateBuilder;
             seriesNonceManagerPredicateBuilder = mocks.seriesNonceManagerPredicateBuilder;

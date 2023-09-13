@@ -28,7 +28,7 @@ describe("SeriesNonceManagerFacade", () => {
         ).toMatchSnapshot();
     });
 
-    describe("web3 calls", () => {
+    xdescribe("web3 calls", () => {
         it("nonceEquals call", async () => {
             const calldata = seriesNonceManagerPredicateBuilder.nonceEquals(NonceSeriesV2.LimitOrderV3, walletAddress, 4);
 

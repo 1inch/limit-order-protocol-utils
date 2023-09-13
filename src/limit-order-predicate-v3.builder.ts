@@ -6,9 +6,80 @@ import {
 import {ZX} from "./limit-order-protocol.const";
 import {LimitOrderPredicateCallData} from "./limit-order-predicate.builder";
 import {LimitOrderProtocolFacade} from "./limit-order-protocol.facade";
+import {LimitOrderBuilder} from "./limit-order.builder";
+import {AbstractSmartcontractFacade} from "./utils/abstract-facade";
 
 export class LimitOrderPredicateV3Builder {
     constructor(private readonly facade: LimitOrderProtocolFacade) {}
+
+    and = (
+        ...predicates: LimitOrderPredicateCallData[]
+    ): LimitOrderPredicateCallData => {
+        const { offsets, data } = LimitOrderBuilder.joinStaticCalls(predicates);
+
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.and, [
+            offsets,
+            data,
+        ]);
+    };
+
+    or = (
+        ...predicates: LimitOrderPredicateCallData[]
+    ): LimitOrderPredicateCallData => {
+        const { offsets, data } = LimitOrderBuilder.joinStaticCalls(predicates);
+
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.or, [
+            offsets,
+            data,
+        ]);
+    };
+
+    eq = (
+        value: string,
+        callData: string
+    ): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.eq, [
+            value,
+            callData,
+        ]);
+    };
+
+    lt = (
+        value: string,
+        callData: string
+    ): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.lt, [
+            value,
+            callData,
+        ]);
+    };
+
+    gt = (
+        value: string,
+        callData: string
+    ): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.gt, [
+            value,
+            callData,
+        ]);
+    };
+
+    nonce = (makerAddress: string): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(
+            LimitOrderProtocolMethodsV3.nonce,
+            [makerAddress]
+        );
+    }
+
+    nonceEquals = (
+        makerAddress: string,
+        makerNonce: Nonce,
+    ): LimitOrderPredicateCallData => {
+        return this.facade.getContractCallData(
+            LimitOrderProtocolMethodsV3.nonceEquals,
+            [makerAddress, makerNonce]
+        );
+    };
 
     /**
      * @param timestamp seconds unit
@@ -39,4 +110,27 @@ export class LimitOrderPredicateV3Builder {
             [ZX + predicateValue.toString(16)]
         );
     }
+
+    arbitraryStaticCall = (
+        target: string | AbstractSmartcontractFacade<string>,
+        callData: string
+    ): LimitOrderPredicateCallData => {
+        const address = target instanceof AbstractSmartcontractFacade
+            ? target.contractAddress
+            : target;
+
+        if (address.toLowerCase() === this.facade.contractAddress.toLowerCase()) {
+            console.warn(
+                'Unnecessary arbitraryStaticCall(). '
+                + 'Omit it when interacting with limit-order-protocol methods.'
+            );
+
+            return callData;
+        }
+
+        return this.facade.getContractCallData(LimitOrderProtocolMethodsV3.arbitraryStaticCall, [
+            address,
+            callData,
+        ]);
+    };
 }

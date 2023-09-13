@@ -1,23 +1,23 @@
-import { LimitOrderPredicateBuilder } from "../limit-order-predicate.builder";
 import { ZX } from "../limit-order-protocol.const";
 import { ChainId } from "../model/limit-order-protocol.model";
-import { mocksForChain } from "../test/helpers";
+import {mocksForV3Chain} from "../test/helpers";
 import {
     packSkipPermitAndThresholdAmount,
     UINT48_BITMASK,
     unpackTimestampAndNoncePredicate,
 } from "./limit-order.utils";
+import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";
 
 describe("limit-order.utils", () => {
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
 
-    let limitOrderPredicateBuilder: LimitOrderPredicateBuilder;
+    let limitOrderPredicateBuilder: LimitOrderPredicateV3Builder;
 
 
     beforeAll(() => {
         const chainId = ChainId.etherumMainnet;
-        
-        const mocks = mocksForChain(chainId);
+
+        const mocks = mocksForV3Chain(chainId);
         limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
 
         jest.spyOn(console, 'error').mockImplementation();
@@ -124,7 +124,7 @@ describe("limit-order.utils", () => {
                 ZX + (thresholdAmount + skipPermit).toString(16),
             );
         });
-    
+
         it("without skip", () => {
             expect(
                 packSkipPermitAndThresholdAmount(ZX + thresholdAmount.toString(16), false)

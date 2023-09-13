@@ -183,6 +183,13 @@ export enum LimitOrderProtocolMethodsV3 {
     increaseNonce = 'increaseNonce',
     nonce = 'nonce',
     advanceNonce = 'advanceNonce',
+    and = 'and',
+    or = 'or',
+    eq = 'eq',
+    lt = 'lt',
+    gt = 'gt',
+    nonceEquals = 'nonceEquals',
+    arbitraryStaticCall = 'arbitraryStaticCall',
 }
 
 export enum LimitOrderProtocolMethods {

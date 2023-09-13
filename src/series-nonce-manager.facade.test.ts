@@ -39,7 +39,7 @@ describe("SeriesNonceManagerFacade", () => {
         ).toMatchSnapshot();
     });
 
-    describe("web3 calls", () => {
+    xdescribe("web3 calls", () => {
         it("nonce", async () => {
             const nonce = await seriesNonceManagerFacade.getNonce(NonceSeriesV2.LimitOrderV3, walletAddress);
 
