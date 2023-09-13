@@ -179,6 +179,10 @@ export enum LimitOrderProtocolMethodsV3 {
     cancelOrder = 'cancelOrder',
     timestampBelow = 'timestampBelow',
     timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
+    checkPredicate = 'checkPredicate',
+    increaseNonce = 'increaseNonce',
+    nonce = 'nonce',
+    advanceNonce = 'advanceNonce',
 }
 
 export enum LimitOrderProtocolMethods {

@@ -24,17 +24,21 @@ export function mocksForV3Chain(
     seriesNonceManagerContractAddressOverride?: string,
     domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4', orderStructure: ORDER_STRUCTURE_LEGACY }
 ) {
+    const web3Provider = new Web3.providers.HttpProvider(
+        rpcUrls[chainId],
+        { headers: [{ name: 'auth-key', value: process.env.AUTHKEY || '' }] }
+    );
+    const web3 = new Web3(web3Provider);
+    const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
+
     const contractAddress = contractAddressOverride || limitOrderProtocolAddresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
-    const web3 = new Web3(rpcUrls[chainId]);
-    const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
 
     const providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
     const facade = new LimitOrderProtocolV3Facade(
         contractAddress,
         chainId,
         providerConnector,
-        LIMIT_ORDER_PROTOCOL_V3_ABI,
     );
     const limitOrderPredicateBuilder = new LimitOrderPredicateV3Builder(facade);
 

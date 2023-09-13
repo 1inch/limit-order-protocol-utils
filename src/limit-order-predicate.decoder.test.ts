@@ -124,8 +124,6 @@ describe("LimitOrderPredicateDecoder", () => {
     });
 
     describe("search util", () => {
-
-
         beforeEach(() => {
             const mocks = mocksForChain(chainId);
             // erc20Facade = mocks.erc20Facade;

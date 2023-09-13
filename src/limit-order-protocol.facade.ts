@@ -145,30 +145,6 @@ export class LimitOrderProtocolFacade
         );
     }
 
-    checkPredicate(order: LimitOrder): Promise<boolean> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.checkPredicate,
-            [order]
-        );
-
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .catch((error) => {
-                console.error(error);
-
-                return false;
-            })
-            .then((result) => {
-                try {
-                    return BigNumber.from(result).toNumber() === 1;
-                } catch (e) {
-                    console.error(e);
-
-                    return false;
-                }
-            });
-    }
-
     remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.remaining,
