@@ -1,5 +1,6 @@
 import {AbiItem} from './model/abi.model';
 import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
+import LimitOrderProtocolV3ABISource from './abi/LimitOrderProtocolV3.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
 import { SignTypedDataVersion } from '@metamask/eth-sig-util';
 import { ChainId } from './model/limit-order-protocol.model';
@@ -17,6 +18,8 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const CALL_RESULTS_PREFIX = 'CALL_RESULTS_';
 
 export const LIMIT_ORDER_PROTOCOL_ABI: AbiItem[] = LimitOrderProtocolABISource;
+
+export const LIMIT_ORDER_PROTOCOL_V3_ABI: AbiItem[] = LimitOrderProtocolV3ABISource;
 
 export const ERC20_ABI: AbiItem[] = ERC20ABISource;
 

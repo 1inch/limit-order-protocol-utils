@@ -9,14 +9,20 @@ import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
 import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
-import { limitOrderProtocolAddresses } from "../limit-order-protocol.const";
+import {
+    LIMIT_ORDER_PROTOCOL_V3_ABI,
+    limitOrderProtocolAddresses
+} from "../limit-order-protocol.const";
+import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";
+import {LimitOrderProtocolV3Facade} from "../limit-order-protocol-v3.facade";
+import {ORDER_STRUCTURE_LEGACY} from "../model/eip712.model";
 
 
-export function mocksForChain(
+export function mocksForV3Chain(
     chainId: ChainId,
     contractAddressOverride?: string,
     seriesNonceManagerContractAddressOverride?: string,
-    domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4' }
+    domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4', orderStructure: ORDER_STRUCTURE_LEGACY }
 ) {
     const contractAddress = contractAddressOverride || limitOrderProtocolAddresses[chainId];
     const seriesNonceManagerContractAddress = seriesNonceManagerContractAddressOverride || seriesNonceManagerContractAddresses[chainId];
@@ -24,12 +30,13 @@ export function mocksForChain(
     const privateKey = '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
 
     const providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
-    const facade = new LimitOrderProtocolFacade(
+    const facade = new LimitOrderProtocolV3Facade(
         contractAddress,
         chainId,
         providerConnector,
+        LIMIT_ORDER_PROTOCOL_V3_ABI,
     );
-    const limitOrderPredicateBuilder = new LimitOrderPredicateBuilder(facade);
+    const limitOrderPredicateBuilder = new LimitOrderPredicateV3Builder(facade);
 
     const limitOrderBuilder = new LimitOrderBuilder(
         contractAddress,

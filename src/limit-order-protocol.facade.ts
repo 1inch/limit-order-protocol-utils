@@ -12,7 +12,7 @@ import {
     LimitOrderSignature,
     MakerTraits,
     LimitOrderProtocolMethodsV3,
-    Address, ChainId,
+    Address,
 } from './model/limit-order-protocol.model';
 import {BigNumber} from '@ethersproject/bignumber';
 import {
@@ -21,8 +21,6 @@ import {
 } from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
-import {ProviderConnector} from "./connector/provider.connector";
-import {AbiItem} from "./model/abi.model";
 
 
 export type TakerTraits = string;
@@ -55,23 +53,6 @@ export class LimitOrderProtocolFacade
     extends AbstractSmartcontractFacade<LimitOrderProtocolMethods | LimitOrderProtocolMethodsV3>
 {
     ABI = LIMIT_ORDER_PROTOCOL_ABI;
-
-    constructor(
-        public readonly contractAddress: string,
-        public readonly chainId: ChainId | number,
-        public readonly providerConnector: ProviderConnector,
-        public readonly abi?: AbiItem[]
-    ) {
-        super(
-            contractAddress,
-            chainId,
-            providerConnector,
-        );
-
-        if (abi) {
-            this.abi = abi;
-        }
-    }
 
     fillLimitOrder(params: FillOrderParams): string {
         const {
@@ -110,13 +91,6 @@ export class LimitOrderProtocolFacade
             amount,
             takerTraits,
             extension,
-        ]);
-    }
-
-    cancelLimitOrderV3(order: LimitOrder): string {
-        // use old ABI
-        return this.getContractCallData(LimitOrderProtocolMethodsV3.cancelOrder, [
-            order,
         ]);
     }
 

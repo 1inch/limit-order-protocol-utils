@@ -19,7 +19,7 @@ class TestErrorResponse extends Error implements ErrorResponse {
 }
 
 // eslint-disable-next-line max-lines-per-function
-describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', () => {
+describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract', () => {
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';
 
     let facade: LimitOrderProtocolFacade;

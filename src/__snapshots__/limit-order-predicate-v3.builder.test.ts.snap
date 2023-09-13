@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PredicateBuilderV3 - for build limit order v3 predicate Simple predicate must includes all values and match the snapshot 1`] = `"0x63592c2b00000000000000000000000000000000000000000000000000000000608d1a46"`;
+
+exports[`PredicateBuilderV3 - for build limit order v3 predicate Simplyfied predicate must includes all values and match the snapshot 1`] = `"0x2cc2878d0000608d1a4600000000000efb3c7eb936caa12b5a884d612393969a557d4307"`;
