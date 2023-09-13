@@ -7,10 +7,11 @@ import {
 import {
     ExtensionParams,
     ExtensionParamsWithCustomData,
+    InteractionsV3,
     LimitOrder,
-    LimitOrderData,
+    LimitOrderData, LimitOrderDataLegacy,
     LimitOrderHash,
-    LimitOrderInteractions,
+    LimitOrderInteractions, LimitOrderLegacy,
     LimitOrderProtocolMethods,
     LimitOrderSignature,
     LimitOrderWithExtension,
@@ -38,18 +39,8 @@ import {
 } from "./utils/maker-traits.const";
 
 
-export function generateRFQOrderInfo(
-    id: number,
-    expiresInTimestamp: number,
-    wrapEth: boolean
-): string {
-    const info = (BigInt(expiresInTimestamp) << BigInt(64)) | BigInt(id);
-
-    if (wrapEth) {
-        return (info | (BigInt(1) << BigInt(255))).toString(10);
-    }
-
-    return info.toString(10);
+export function generateOrderSalt(): string {
+    return Math.round(Math.random() * Date.now()) + '';
 }
 
 export interface EIP712Params {
@@ -88,7 +79,32 @@ export class LimitOrderBuilder {
         ];
 
         const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
-        return { offsets, interactions };
+        return { offsets: ZX + offsets.toString(16), interactions };
+    }
+
+    static packInteractionsLegacy({
+                                makerAssetData = ZX,
+                                takerAssetData = ZX,
+                                getMakingAmount = ZX,
+                                getTakingAmount = ZX,
+                                predicate = ZX,
+                                permit = ZX,
+                                preInteraction = ZX,
+                                postInteraction = ZX,
+                            }: Partial<InteractionsV3>): LimitOrderInteractions {
+        const allInteractions = [
+            makerAssetData,
+            takerAssetData,
+            getMakingAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        ];
+
+        const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
+        return { offsets: ZX + offsets.toString(16), interactions };
     }
 
     static buildMakerTraits (
@@ -236,7 +252,7 @@ export class LimitOrderBuilder {
         let extension = '0x';
         if (allInteractionsConcat.length > 0) {
             // increase offsets to 256 uint + interactions + customData
-            extension += offsets.toString(16).padStart(64, '0') + allInteractionsConcat;
+            extension += BigInt(offsets).toString(16).padStart(64, '0') + allInteractionsConcat;
         }
 
         let salt = BigInt(1);
@@ -268,6 +284,52 @@ export class LimitOrderBuilder {
                 makerTraits: `0x${makerTraits.toString(16)}`,
             },
             extension
+        };
+    }
+
+    buildLegacyLimitOrder({
+                        makerAssetAddress,
+                        takerAssetAddress,
+                        makerAddress,
+                        receiver = ZERO_ADDRESS,
+                        allowedSender = ZERO_ADDRESS,
+                        makingAmount,
+                        takingAmount,
+                        predicate = ZX,
+                        permit = ZX,
+                        getMakingAmount = ZX,
+                        getTakingAmount = ZX,
+                        preInteraction = ZX,
+                        postInteraction = ZX,
+                        salt = generateOrderSalt(),
+                    }: LimitOrderDataLegacy
+    ): LimitOrderLegacy {
+
+        const makerAssetData = ZX;
+        const takerAssetData = ZX;
+
+        const { offsets, interactions } = LimitOrderBuilder.packInteractionsLegacy({
+            makerAssetData,
+            takerAssetData,
+            getMakingAmount,
+            getTakingAmount,
+            predicate,
+            permit,
+            preInteraction,
+            postInteraction,
+        })
+
+        return {
+            salt,
+            makerAsset: makerAssetAddress,
+            takerAsset: takerAssetAddress,
+            maker: makerAddress,
+            receiver,
+            allowedSender,
+            makingAmount,
+            takingAmount,
+            offsets,
+            interactions,
         };
     }
 

@@ -1,4 +1,4 @@
-import {ZERO_ADDRESS} from "../limit-order-protocol.const";
+import {LimitOrderPredicateCallData} from "../limit-order-predicate.builder";
 
 export enum ChainId {
     etherumMainnet = 1,
@@ -19,7 +19,6 @@ export type LimitOrderSignature = string;
 export type LimitOrderHash = string;
 
 // RFQOrderData.expiresInTimestamp | RFQOrderData.id
-export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
     maker: Address,
@@ -30,6 +29,23 @@ export interface LimitOrderData {
     takingAmount: string,
     makerTraits?: bigint | string,
 }
+
+export type LimitOrderDataLegacy = {
+    makerAddress: string;
+    receiver?: string; // Optional, by default = ZERO_ADDRESS
+    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
+    makerAssetAddress: string;
+    takerAssetAddress: string;
+    makingAmount: string;
+    takingAmount: string;
+    predicate?: LimitOrderPredicateCallData;
+    permit?: string;
+    getMakingAmount?: string;
+    getTakingAmount?: string;
+    preInteraction?: string;
+    postInteraction?: string;
+    salt?: string;
+};
 
 export type ExtensionParamsWithCustomData = Partial<ExtensionParams> & {
     customData?: string;
@@ -44,24 +60,6 @@ export interface ExtensionParams {
     permit: string;
     preInteraction: string;
     postInteraction: string;
-}
-
-
-export interface RFQOrderData {
-    // Index number of RFQ limit order. Example: 1
-    id: number;
-    wrapEth?: boolean;
-    // Timestamp when the RFQ limit order will expire (seconds). Example: 1623166102
-    expiresInTimestamp: number;
-    makerAssetAddress: string;
-    takerAssetAddress: string;
-    makingAmount: string;
-    takingAmount: string;
-    makerAddress: string;
-    /**
-     * Formerly takerAddress
-     */
-    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
 }
 
 export type Address = string;
@@ -107,7 +105,7 @@ export type LimitOrderLegacy = {
  * Partial from LimitOrder
  */
 export type LimitOrderInteractions = {
-    offsets: bigint;
+    offsets: string;
     interactions: string;
 }
 
@@ -176,15 +174,6 @@ export type InteractionsV3 = {
 
 export type AllInteractions = typeof InteractionsFields | typeof InteractionsFieldsV3;
 
-export interface RFQOrder {
-    info: RFQOrderInfo;
-    makerAsset: string;
-    takerAsset: string;
-    maker: string;
-    allowedSender: string;
-    makingAmount: string;
-    takingAmount: string;
-}
 
 export enum LimitOrderProtocolMethodsV3 {
     cancelOrder = 'cancelOrder',
@@ -197,12 +186,10 @@ export enum LimitOrderProtocolMethods {
     fillOrder = 'fillOrder',
     fillOrderExt = 'fillOrderExt',
     fillOrderToWithPermit = 'fillOrderToWithPermit',
-    fillOrderRFQ = 'fillOrderRFQ',
     cancelOrder = 'cancelOrder',
     increaseEpoch = 'increaseEpoch',
     remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',
     epoch = 'epoch',
-    cancelOrderRFQ = 'cancelOrderRFQ',
     nonce = 'nonce',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',

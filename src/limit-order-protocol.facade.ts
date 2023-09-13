@@ -10,13 +10,14 @@ import {
     LimitOrderProtocolMethods,
     LimitOrderHash,
     LimitOrderSignature,
-    RFQOrderInfo,
-    RFQOrder, MakerTraits, LimitOrderProtocolMethodsV3, Address,
+    MakerTraits,
+    LimitOrderProtocolMethodsV3,
+    Address,
 } from './model/limit-order-protocol.model';
 import {BigNumber} from '@ethersproject/bignumber';
 import {
     compactSignature,
-    getMakingAmountForRFQ, setN,
+    setN,
 } from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
@@ -93,61 +94,6 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    /**
-     * @param params.interaction pre-interaction in fact.
-     * @param params.skipPermit skip maker's permit evaluation if it was evaluated before.
-     * Useful if multiple orders was created with same nonce.
-     *
-     * Tip: you can just check if allowance exsists and then set it to `true`.
-     */
-    // fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
-    //     const {
-    //         order,
-    //         signature,
-    //         makingAmount,
-    //         takingAmount,
-    //         interaction = ZX,
-    //         thresholdAmount,
-    //         skipPermit = false,
-    //         targetAddress,
-    //         permit,
-    //     } = params;
-    //
-    //     return this.getContractCallData(
-    //         LimitOrderProtocolMethods.fillOrderToWithPermit,
-    //         [
-    //             order,
-    //             signature,
-    //             interaction,
-    //             makingAmount,
-    //             takingAmount,
-    //             // skipPermitAndThresholdAmount
-    //             packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
-    //             targetAddress,
-    //             permit
-    //         ],
-    //     );
-    // }
-
-    fillRFQOrder(
-        order: RFQOrder,
-        signature: LimitOrderSignature,
-        makingAmount?: string,
-        takingAmount?: string
-    ): string {
-        let flagsAndAmount = '0';
-        if (makingAmount) {
-            flagsAndAmount = getMakingAmountForRFQ(makingAmount);
-        } else if (takingAmount) {
-            flagsAndAmount = takingAmount;
-        }
-
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.fillOrderRFQ,
-            [order, signature, flagsAndAmount]
-        );
-    }
-
     cancelLimitOrderV3(order: LimitOrder): string {
         // use old ABI
         return this.getContractCallData(LimitOrderProtocolMethodsV3.cancelOrder, [
@@ -180,14 +126,6 @@ export class LimitOrderProtocolFacade
             maker,
             orderHash,
         ]);
-    }
-
-
-    cancelRFQOrder(orderInfo: RFQOrderInfo): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.cancelOrderRFQ,
-            [orderInfo]
-        );
     }
 
     nonce(makerAddress: string): Promise<bigint> {
