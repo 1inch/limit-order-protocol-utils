@@ -35,8 +35,8 @@ describe('PrivateKeyProviderConnector', () => {
             Order: ORDER_STRUCTURE_LEGACY,
         },
         domain: {
-            name: 'Limit Order Protocol',
-            version: '4',
+            name: '1inch Aggregation Router',
+            version: '5',
             chainId: 1,
             verifyingContract: '',
         },
