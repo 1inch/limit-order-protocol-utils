@@ -4,11 +4,9 @@ import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-dependency-compiler";
 import "hardhat-deploy";
 import "hardhat-gas-reporter";
-
 import { HardhatUserConfig } from "hardhat/types";
 
-
-const config: HardhatUserConfig =  {
+const config: HardhatUserConfig = {
     solidity: {
         version: '0.8.19',
         settings: {

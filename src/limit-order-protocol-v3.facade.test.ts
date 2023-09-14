@@ -57,7 +57,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
         });
     });
 
-    xdescribe('nonce()', () => {
+    describe('nonce()', () => {
         it('Return the nonce number of address (for real wallet address)', async () => {
             const nonce = await facade.nonce(
                 '0x401394cd75d731e07658203fff34722a68316fca'
@@ -94,7 +94,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
         });
     });
 
-    xdescribe('advanceNonce()', () => {
+    describe('advanceNonce()', () => {
         it('Must create a call data for advance nonce', async () => {
             const callData = await facade.advanceNonce(2);
 
@@ -104,7 +104,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
         });
     });
 
-    xdescribe('increaseNonce()', () => {
+    describe('increaseNonce()', () => {
         it('Must create a call data for increase nonce', async () => {
             const callData = await facade.increaseNonce();
 
@@ -112,7 +112,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
         });
     });
 
-    xdescribe('checkPredicate()', () => {
+    describe('checkPredicate()', () => {
         it('When the order predicates are valid then return true', async () => {
             const timestamp = Math.floor(Date.now() / 1000) + 600;
             const timestampBelow = limitOrderPredicateBuilder.timestampBelow(

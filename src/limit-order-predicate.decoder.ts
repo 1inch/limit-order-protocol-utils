@@ -1,11 +1,8 @@
-
-import { LIMIT_ORDER_PROTOCOL_ABI, ZX } from "./limit-order-protocol.const";
+import { ZX } from "./limit-order-protocol.const";
 import {
-    SERIES_NONCE_MANAGER_ABI,
-    seriesNonceManagerContractAddresses,
+    seriesNonceManagerContractAddresses
 } from "./series-nonce-manager.const";
-import { FunctionFragment, Interface, Result } from '@ethersproject/abi'
-
+import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
 
 import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
@@ -279,7 +276,6 @@ export class LimitOrderPredicateDecoder<
         }
 
         return result
-
     }
 
     private parseDecodableCall = (call: DecodableCall): PredicateAstNode => {
