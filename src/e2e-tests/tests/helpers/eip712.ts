@@ -1,14 +1,6 @@
-import { TypedDataVersion } from '@1inch/solidity-utils';
-import { TypedDataUtils } from '@metamask/eth-sig-util';
 import { cutSelector } from './utils';
 import { ethers } from 'hardhat'
-
-const EIP712Domain = [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' },
-];
+import {Address} from "../../../model/limit-order-protocol.model";
 
 const Permit = [
     { name: 'owner', type: 'address' },
@@ -18,7 +10,18 @@ const Permit = [
     { name: 'deadline', type: 'uint256' },
 ];
 
-function buildData(owner, name, version, chainId, verifyingContract, spender, nonce, value, deadline) {
+// eslint-disable-next-line max-params
+function buildData(
+    owner: Address,
+    name: string,
+    version: string,
+    chainId: number,
+    verifyingContract: Address,
+    spender: Address,
+    nonce: number,
+    value: string,
+    deadline: string
+) {
     return {
         domain: { name, version, chainId, verifyingContract },
         types: { Permit },
@@ -30,7 +33,14 @@ const defaultDeadline = '18446744073709551615';
 
 // eslint-disable-next-line max-params
 export async function getPermit(
-    owner, wallet, token, tokenVersion, chainId, spender, value, deadline = defaultDeadline
+    owner: Address,
+    wallet,
+    token,
+    tokenVersion: string,
+    chainId: number,
+    spender: Address,
+    value: string,
+    deadline = defaultDeadline
 ): Promise<string> {
     const nonce = await token.nonces(owner);
     const name = await token.name();

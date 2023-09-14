@@ -14,7 +14,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'max-len': ['error', {code: 100}],
         'max-depth': ['error', 3],
-        'max-lines-per-function': ['error', 35],
+        'max-lines-per-function': ['error', 50],
         'max-params': ['error', 5],
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
@@ -27,6 +27,14 @@ module.exports = {
             rules: {
                 'max-lines-per-function': ['error', 400],
                 'max-len': ['error', {code: 130}],
+            },
+        },
+        {
+            files: ['src/e2e-tests/**/*.test.ts'],
+            rules: {
+                'max-lines-per-function': ['error', 2000],
+                'max-len': ['error', {code: 130}],
+                '@typescript-eslint/no-explicit-any': 'warn',
             },
         },
     ],

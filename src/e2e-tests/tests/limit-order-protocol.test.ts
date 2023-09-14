@@ -11,7 +11,7 @@ import { deployArbitraryPredicate, deploySwapTokens } from './helpers/fixtures';
 import { ethers } from 'hardhat'
 import { expect } from 'chai';
 import {getPermit} from "./helpers/eip712";
-import {getPermit2, permit2Contract, withTarget} from "@1inch/solidity-utils";
+import {getPermit2, permit2Contract, withTarget, } from "@1inch/solidity-utils";
 import {LimitOrderBuilder} from "../../limit-order.builder";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
@@ -238,7 +238,9 @@ describe('LimitOrderProtocol',  () => {
                 makingAmount: '2',
                 takingAmount: '2',
                 maker: addr1.address,
-                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: true, shouldCheckEpoch: true, nonce: 0, series: 1 }),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({
+                    allowMultipleFills: true, shouldCheckEpoch: true, nonce: 0, series: 1
+                }),
             });
             return { dai, weth, swap, chainId, order, builder };
         };
@@ -685,7 +687,16 @@ describe('LimitOrderProtocol',  () => {
                 const { r, vs } = compactSignature(signature);
 
                 // use facade for that
-                const filltx = swap.fillOrderToWithPermit(order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), addr.address, permit, '0x');
+                const filltx = swap.fillOrderToWithPermit(
+                    order.order,
+                    r,
+                    vs,
+                    1,
+                    fillWithMakingAmount(BigInt(1)),
+                    addr.address,
+                    permit,
+                    '0x'
+                );
                 await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
@@ -711,7 +722,16 @@ describe('LimitOrderProtocol',  () => {
                 const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);
 
                 const { r, vs } = compactSignature(signature);
-                const filltx = swap.fillOrderToWithPermit(order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), addr.address, permit, '0x');
+                const filltx = swap.fillOrderToWithPermit(
+                    order.order,
+                    r,
+                    vs,
+                    1,
+                    fillWithMakingAmount(BigInt(1)),
+                    addr.address,
+                    permit,
+                    '0x'
+                );
                 await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
@@ -742,7 +762,9 @@ describe('LimitOrderProtocol',  () => {
                     },
                 );
 
-                const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr.address)
+                const signature = await builder.buildTypedDataAndSign(
+                    order.order, chainId, swap.address, addr.address
+                );
                 return { dai, weth, swap, order, signature, permit, chainId };
             };
 
@@ -752,7 +774,10 @@ describe('LimitOrderProtocol',  () => {
                 // const facade = getOrderFacade(swap.address, chainId, addr1)
                 const { r, vs } = compactSignature(signature);
                 // todo facade
-                const filltx = swap.connect(addr1).fillOrderExt(order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), order.extension);
+                const filltx = swap.connect(addr1)
+                    .fillOrderExt(
+                        order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), order.extension
+                    );
                 await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
@@ -763,7 +788,10 @@ describe('LimitOrderProtocol',  () => {
                 const { r, vs } = compactSignature(signature);
                 await addr1.sendTransaction({ to: weth.address, data: '0xd505accf' + permit.substring(42) });
                 // todo facade
-                const filltx = swap.connect(addr1).fillOrderExt(order.order, r, vs, 1, skipMakerPermit(BigInt(0)), order.extension);
+                const filltx = swap.connect(addr1)
+                    .fillOrderExt(
+                        order.order, r, vs, 1, skipMakerPermit(BigInt(0)), order.extension
+                    );
                 await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });

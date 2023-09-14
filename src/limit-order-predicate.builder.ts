@@ -1,10 +1,9 @@
 import {
-    LimitOrderProtocolMethods, LimitOrderProtocolMethodsV3, Nonce, PredicateTimestamp,
+    LimitOrderProtocolMethods,
 } from './model/limit-order-protocol.model';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
 import { LimitOrderBuilder } from './limit-order.builder';
-import {ZX} from "./limit-order-protocol.const";
 
 export type LimitOrderPredicateCallData = string;
 

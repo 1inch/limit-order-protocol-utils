@@ -6,6 +6,7 @@ import {ProviderConnector} from "../../../connector/provider.connector";
 import {AbiItem} from "../../../model/abi.model";
 import {LimitOrderBuilder} from "../../../limit-order.builder";
 import {LimitOrderPredicateBuilder} from "../../../limit-order-predicate.builder";
+import {BigNumber} from "@ethersproject/bignumber";
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
@@ -25,7 +26,7 @@ export function cutSelector(data: string): string {
     return hexPrefix + data.substring(hexPrefix.length + 8);
 }
 
-export function ether(num) {
+export function ether(num: string): BigNumber {
     return utils.parseUnits(num);
 }
 
@@ -37,7 +38,7 @@ export function skipMakerPermit (amount: bigint): string {
     return setN(amount, 253, true).toString();
 }
 
-export function compactSignature (signature: string) {
+export function compactSignature (signature: string): { r: string, vs: string } {
     const sig = utils.splitSignature(signature);
     return {
         r: sig.r,
@@ -50,6 +51,7 @@ export function getProviderConnector(signer): ProviderConnector {
         signTypedData(
             _: string,
             typedData: EIP712TypedData,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             typedDataHash: string
         ): Promise<string> {
             return signOrder(typedData, signer)

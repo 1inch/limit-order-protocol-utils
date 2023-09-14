@@ -95,11 +95,19 @@ export class LimitOrderDecoder {
     }
 
     static unpackInteractionsV3(offsets: string | bigint, interactions: string): InteractionsV3 {
-        return LimitOrderDecoder.unpackAllInteractions(offsets, interactions, InteractionsFieldsV3) as InteractionsV3;
+        return LimitOrderDecoder.unpackAllInteractions(
+            offsets,
+            interactions,
+            InteractionsFieldsV3
+        ) as InteractionsV3;
     }
 
     static unpackInteractions(offsets: string | bigint, interactions: string): Interactions {
-        return LimitOrderDecoder.unpackAllInteractions(offsets, interactions, InteractionsFields) as Interactions;
+        return LimitOrderDecoder.unpackAllInteractions(
+            offsets,
+            interactions,
+            InteractionsFields
+        ) as Interactions;
     }
 
     static unpackInteraction<T extends InteractionV3Name>(

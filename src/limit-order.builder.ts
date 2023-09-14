@@ -20,7 +20,6 @@ import {
     EIP712Parameter,
     EIP712TypedData,
     MessageTypes,
-    ORDER_STRUCTURE
 } from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
 import {getOffsets, setN, trim0x} from './utils/limit-order.utils';
@@ -42,8 +41,6 @@ import {
     NONCE_SHIFT,
     SERIES_SHIFT
 } from "./utils/maker-traits.const";
-import * as assert from "assert";
-
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
