@@ -11,6 +11,8 @@ import { NonceSeriesV2 } from './model/series-nonce-manager.model';
 import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predicate.builder';
 import {mocksForV3Chain} from './test/helpers';
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
+import {LIMIT_ORDER_PROTOCOL_V3_ABI} from "./limit-order-protocol.const";
+import {SERIES_NONCE_MANAGER_ABI} from "./series-nonce-manager.const";
 
 
 // eslint-disable-next-line max-len
@@ -48,7 +50,11 @@ const GASLESS_AST = {
 
 describe("LimitOrderPredicateDecoder", () => {
     const chainId = ChainId.etherumMainnet;
-    const limitOrderPredicateDecoder = new LimitOrderPredicateDecoder(chainId);
+    const limitOrderPredicateDecoder = new LimitOrderPredicateDecoder(
+        chainId,
+        LIMIT_ORDER_PROTOCOL_V3_ABI,
+        SERIES_NONCE_MANAGER_ABI,
+    );
 
     let predicateBuilder: LimitOrderPredicateV3Builder;
     // let erc20Facade: Erc20Facade;
@@ -66,7 +72,6 @@ describe("LimitOrderPredicateDecoder", () => {
     describe("search util", () => {
         beforeEach(() => {
             const mocks = mocksForV3Chain(chainId);
-            // erc20Facade = mocks.erc20Facade;
             predicateBuilder = mocks.limitOrderPredicateBuilder;
             seriesNonceManagerPredicateBuilder = mocks.seriesNonceManagerPredicateBuilder;
             seriesNonceManagerContractAddress = mocks.seriesNonceManagerContractAddress;

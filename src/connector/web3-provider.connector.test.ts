@@ -4,11 +4,9 @@ import {anything, instance, mock, verify, when} from 'ts-mockito';
 import {
     EIP712_DOMAIN,
     LIMIT_ORDER_PROTOCOL_ABI,
-    ORDER_STRUCTURE,
-    PROTOCOL_NAME,
-    PROTOCOL_VERSION,
 } from '../limit-order-protocol.const';
 import {Eth} from 'web3-eth';
+import {ORDER_STRUCTURE_LEGACY} from "../model/eip712.model";
 
 describe('Web3ProviderConnector', () => {
     let web3Provider: Web3;
@@ -18,11 +16,11 @@ describe('Web3ProviderConnector', () => {
         primaryType: 'Order',
         types: {
             EIP712Domain: EIP712_DOMAIN,
-            Order: ORDER_STRUCTURE,
+            Order: ORDER_STRUCTURE_LEGACY
         },
         domain: {
-            name: PROTOCOL_NAME,
-            version: PROTOCOL_VERSION,
+            name: '1inch Aggregation Router',
+            version: '5',
             chainId: 1,
             verifyingContract: '',
         },

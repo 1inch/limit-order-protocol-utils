@@ -1,6 +1,4 @@
 import { PrivateKeyProviderConnector } from "../connector/private-key-provider.connector";
-import { LimitOrderPredicateBuilder } from "../limit-order-predicate.builder";
-import { LimitOrderProtocolFacade } from "../limit-order-protocol.facade";
 import {EIP712Params, LimitOrderBuilder} from "../limit-order.builder";
 import { ChainId } from "../model/limit-order-protocol.model";
 import { rpcUrls } from "../utils/limit-order-rfq.const";
@@ -10,7 +8,6 @@ import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
 import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
 import {
-    LIMIT_ORDER_PROTOCOL_V3_ABI,
     limitOrderProtocolAddresses
 } from "../limit-order-protocol.const";
 import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";

@@ -159,19 +159,27 @@ export class LimitOrderPredicateDecoder<
 
     defaultAddress: string;
 
+    private readonly limitOrderABI: AbiItem[];
+
+    private readonly seriesNonceManagerABI: AbiItem[];
+
     constructor(
         private readonly chainId: T,
+        limitOrderABI: AbiItem[],
+        seriesNonceManagerABI: AbiItem[],
         decodableContracts: DecodableContracts<Decoders> = {},
     ) {
+        this.limitOrderABI = limitOrderABI;
+        this.seriesNonceManagerABI = seriesNonceManagerABI;
         this.defaultAddress = limitOrderProtocolAddresses[this.chainId].toLowerCase();
 
         this.decodableInterfaces = {
             [this.defaultAddress]: {
-                iface: new Interface(LIMIT_ORDER_PROTOCOL_ABI),
+                iface: new Interface(this.limitOrderABI),
                 decoders: new LimitOrderPredicateDecoders(),
             },
             [seriesNonceManagerContractAddresses[this.chainId].toLowerCase()]: {
-                iface: new Interface(SERIES_NONCE_MANAGER_ABI),
+                iface: new Interface(this.seriesNonceManagerABI),
                 decoders: new SeriesNonceManagerDecoders(),
             },
 

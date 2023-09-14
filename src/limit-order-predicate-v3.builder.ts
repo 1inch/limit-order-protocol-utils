@@ -5,12 +5,12 @@ import {
 } from "./model/limit-order-protocol.model";
 import {ZX} from "./limit-order-protocol.const";
 import {LimitOrderPredicateCallData} from "./limit-order-predicate.builder";
-import {LimitOrderProtocolFacade} from "./limit-order-protocol.facade";
 import {LimitOrderBuilder} from "./limit-order.builder";
 import {AbstractSmartcontractFacade} from "./utils/abstract-facade";
+import {LimitOrderProtocolV3Facade} from "./limit-order-protocol-v3.facade";
 
 export class LimitOrderPredicateV3Builder {
-    constructor(private readonly facade: LimitOrderProtocolFacade) {}
+    constructor(private readonly facade: LimitOrderProtocolV3Facade) {}
 
     and = (
         ...predicates: LimitOrderPredicateCallData[]
@@ -83,7 +83,6 @@ export class LimitOrderPredicateV3Builder {
 
     /**
      * @param timestamp seconds unit
-     * need to support legacy orders v3
      */
     timestampBelow = (timestamp: PredicateTimestamp): LimitOrderPredicateCallData => {
         return this.facade.getContractCallData(
@@ -94,7 +93,6 @@ export class LimitOrderPredicateV3Builder {
 
     /**
      * @param timestamp seconds unit
-     * need to support legacy orders v3
      */
     timestampBelowAndNonceEquals = (
         timestamp: PredicateTimestamp,
