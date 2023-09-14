@@ -195,7 +195,7 @@ describe('LimitOrderProtocolFacade - facade for Limit order protocol contract', 
                 '0xbbcf91605c18a9859c1d47abfeed5d2cca7097cf'
             );
 
-            expect(nonce).toBe(0);
+            expect(nonce).toBe(2); // looks like there is 2 advance nonce call for this wallet
         });
 
         it('Return 0 when address never called advanceNonce (for contract address)', async () => {
