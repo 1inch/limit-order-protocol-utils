@@ -12,6 +12,7 @@ export enum ChainId {
     auroraMainnet = 1313161554,
     klaytnMainnet = 8217,
     zkSyncEraMainnet = 324,
+    baseMainnet = 8453,
 }
 
 export type LimitOrderSignature = string;
