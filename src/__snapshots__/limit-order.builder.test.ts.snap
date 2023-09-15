@@ -31,19 +31,3 @@ Object {
 exports[`LimitOrderBuilder - for build new limit order Normal limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xb817fcd255f7253abdc56c0686d42eb49fe2fd91efa5148953d23dfa46f9fd81"`;
 
 exports[`LimitOrderBuilder - for build new limit order Normal limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x05712732e0cd9dfb4fdfcda3be3f62a734c1169474c5824816420d313cf6b33b35a91cf113ba11693793785914e408543b4c9418a8d10fc467b2709ed38c011a1b"`;
-
-exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrder() must create an RFQ limit order instance according to the given parameters 1`] = `
-Object {
-  "allowedSender": "0x0000000000000000000000000000000000000000",
-  "info": "29942129672714733576710520833",
-  "maker": "0xdddd91605c18a9999c1d47abfeed5daaaa800000",
-  "makerAsset": "0x111111111117dc0aa78b770fa6a738034120c302",
-  "makingAmount": "5",
-  "takerAsset": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
-  "takingAmount": "600",
-}
-`;
-
-exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildLimitOrderHash() must create a hash of order with 0x prefix 1`] = `"0xa49b52ff114d423c01f8e6a2a5ff765a0f659eae04df64d5eef98b76e546f202"`;
-
-exports[`LimitOrderBuilder - for build new limit order RFQ limit order buildOrderSignature() must call the provider signTypedData method 1`] = `"0x37923b8d96b67aea8825ad3da7e81f22278c3cf623476036e7805f344f6696ae11ea76911e63f8a9b0ed08daff5919727588df192155cf838a19657a96e753421b"`;
