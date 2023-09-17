@@ -11,10 +11,11 @@
         "directory": "@1inch/limit-order-protocol"
     },
     "scripts": {
-        "prebuild": "rm -rf dist && yarn run test:coverage && yarn run make-badges",
+        "prebuild": "rm -rf dist && yarn run test:coverage && yarn run test:ci && yarn run make-badges",
         "build": "tsc --module commonjs",
-        "test-build": "rm -rf dist && tsc --module commonjs && cp package.json dist  ",
-        "test:ci": "hardhat test",
+        "install-submodules": "git submodule update --init --recursive",
+        "test:e2e": "hardhat test",
+        "test:ci": "yarn install-submodules && yarn test:e2e",
         "test:stack-trace": "hardhat test --show-stack-traces",
         "postbuild": "cp package.json dist && cp README.md dist && chmod +x dist/utils/limit-order-rfq.utils.js",
         "lint": "eslint ./src --ext .js,.ts",

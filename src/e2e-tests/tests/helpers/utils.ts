@@ -1,19 +1,29 @@
 import { utils } from 'ethers'
 import {EIP712TypedData, ORDER_STRUCTURE} from "../../../model/eip712.model";
 import {setN} from "../../../utils/limit-order.utils";
-import {LimitOrderProtocolFacade} from "../../../limit-order-protocol.facade";
+import {
+    FillOrderParams,
+    FillOrderToExtParams, FillOrderToWithPermitParams,
+    LimitOrderProtocolFacade
+} from "../../../limit-order-protocol.facade";
 import {ProviderConnector} from "../../../connector/provider.connector";
 import {AbiItem} from "../../../model/abi.model";
 import {LimitOrderBuilder} from "../../../limit-order.builder";
 import {LimitOrderPredicateBuilder} from "../../../limit-order-predicate.builder";
 import {BigNumber} from "@ethersproject/bignumber";
+import {
+    SignerWithAddress,
+} from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
     version: '4',
     orderStructure: ORDER_STRUCTURE,
 };
-export async function signOrder(typedData: EIP712TypedData, wallet): Promise<string> {
+export async function signOrder(
+    typedData: EIP712TypedData,
+    wallet: SignerWithAddress
+): Promise<string> {
     return await wallet._signTypedData(
         typedData.domain,
         { Order: typedData.types.Order },
@@ -46,7 +56,7 @@ export function compactSignature (signature: string): { r: string, vs: string } 
     };
 }
 
-export function getProviderConnector(signer): ProviderConnector {
+export function getProviderConnector(signer: SignerWithAddress): ProviderConnector {
     return {
         signTypedData(
             _: string,
@@ -71,7 +81,7 @@ export function getProviderConnector(signer): ProviderConnector {
 export function getOrderFacade(
     contractAddress: string,
     chainId: number,
-    wallet
+    wallet: SignerWithAddress,
 ): LimitOrderProtocolFacade {
     const takerProviderConnector = getProviderConnector(wallet);
     return new LimitOrderProtocolFacade(
@@ -84,13 +94,16 @@ export function getOrderFacade(
 export function getPredicateBuilder(
     contractAddress: string,
     chainId: number,
-    wallet
+    wallet: SignerWithAddress,
 ): LimitOrderPredicateBuilder {
     const facade = getOrderFacade(contractAddress, chainId, wallet);
     return new LimitOrderPredicateBuilder(facade);
 }
 
-export function getOrderBuilder(contractAddress: string, wallet): LimitOrderBuilder {
+export function getOrderBuilder(
+    contractAddress: string,
+    wallet: SignerWithAddress
+): LimitOrderBuilder {
     const makerProviderConnector = getProviderConnector(wallet);
 
     return new LimitOrderBuilder(
@@ -98,4 +111,25 @@ export function getOrderBuilder(contractAddress: string, wallet): LimitOrderBuil
         makerProviderConnector,
         testDomainSettings
     );
+}
+
+type FacadeFillMethods = Pick<
+    LimitOrderProtocolFacade,
+    'fillLimitOrder' | 'fillLimitOrderExt' | 'fillOrderToWithPermit'
+>;
+type AllowedFillMethods = keyof FacadeFillMethods;
+
+export function getFillTx<M extends AllowedFillMethods>(
+    method: M,
+    txParams: Parameters<FacadeFillMethods[M]>[0],
+    filler: SignerWithAddress,
+    chainId: number,
+    swap,
+    ) {
+    const facade = getOrderFacade(swap.address, chainId, filler);
+    const callData = (facade as FacadeFillMethods)[method](txParams as never);
+    return filler.sendTransaction({
+        to: swap.address,
+        data: callData
+    });
 }

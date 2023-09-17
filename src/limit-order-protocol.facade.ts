@@ -32,13 +32,14 @@ export interface FillOrderParams {
     takerTraits: TakerTraits;
 }
 
-export type FillOrderParamsExt = FillOrderParams & {
+export type FillOrderToExtParams = FillOrderParams & {
     extension: string;
 }
 
-export type FillLimitOrderWithPermitParams = FillOrderParams & {
-    targetAddress: string;
+export type FillOrderToWithPermitParams = FillOrderParams & {
+    target: Address;
     permit: string;
+    interaction: string;
 }
 
 export interface ErrorResponse extends Error {
@@ -73,7 +74,7 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    fillLimitOrderExt(params: FillOrderParamsExt): string {
+    fillLimitOrderExt(params: FillOrderToExtParams): string {
         const {
             order,
             signature,
@@ -91,6 +92,30 @@ export class LimitOrderProtocolFacade
             amount,
             takerTraits,
             extension,
+        ]);
+    }
+
+    fillOrderToWithPermit(params: FillOrderToWithPermitParams): string {
+        const {
+            order,
+            amount,
+            takerTraits,
+            target,
+            permit,
+            interaction,
+        } = params;
+
+        const { r, vs } = this.getCompactSignature(params);
+
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderToWithPermit, [
+            order,
+            r,
+            vs,
+            amount,
+            takerTraits,
+            target,
+            permit,
+            interaction,
         ]);
     }
 
@@ -187,5 +212,9 @@ export class LimitOrderProtocolFacade
         }
 
         return null;
+    }
+
+    private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
+        return compactSignature(signature);
     }
 }

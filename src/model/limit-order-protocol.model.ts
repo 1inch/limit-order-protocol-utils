@@ -197,9 +197,9 @@ export enum LimitOrderProtocolMethods {
     getMakingAmount = 'getMakingAmount',
     getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
-    fillOrder = 'fillOrder',
-    fillOrderExt = 'fillOrderExt',
-    fillOrderToWithPermit = 'fillOrderToWithPermit',
+    fillOrder = 'fillOrder', // +
+    fillOrderExt = 'fillOrderExt', // +
+    fillOrderToWithPermit = 'fillOrderToWithPermit', // +
     cancelOrder = 'cancelOrder',
     increaseEpoch = 'increaseEpoch',
     remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',

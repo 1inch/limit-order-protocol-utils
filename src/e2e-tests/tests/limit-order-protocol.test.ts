@@ -1,6 +1,6 @@
 import {
     compactSignature,
-    fillWithMakingAmount,
+    fillWithMakingAmount, getFillTx,
     getOrderBuilder,
     getOrderFacade,
     getPredicateBuilder, skipMakerPermit,
@@ -13,11 +13,15 @@ import { expect } from 'chai';
 import {getPermit} from "./helpers/eip712";
 import {getPermit2, permit2Contract, withTarget, } from "@1inch/solidity-utils";
 import {LimitOrderBuilder} from "../../limit-order.builder";
+import {ZX} from "../../limit-order-protocol.const";
+import {
+    SignerWithAddress,
+} from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
 describe('LimitOrderProtocol',  () => {
-    let addr, addr1;
+    let addr: SignerWithAddress, addr1: SignerWithAddress;
 
     beforeEach(async function () {
         [addr, addr1] = await ethers.getSigners();
@@ -190,18 +194,12 @@ describe('LimitOrderProtocol',  () => {
 
             const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);
 
-            const facade = getOrderFacade(swap.address, chainId, addr);
-            const calldata = facade.fillLimitOrder({
+            const fillTx = getFillTx('fillLimitOrder', {
                 order: order.order,
                 signature,
                 amount: '1',
                 takerTraits: fillWithMakingAmount(BigInt(1))
-            })
-
-            const fillTx = await addr.sendTransaction({
-                to: swap.address,
-                data: calldata
-            })
+            }, addr, chainId, swap);
 
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -375,20 +373,13 @@ describe('LimitOrderProtocol',  () => {
                 addr1.address
             );
 
-            const takerFacade = getOrderFacade(swap.address, chainId, addr);
-
-            const calldata = takerFacade.fillLimitOrderExt({
+            const tx = await getFillTx('fillLimitOrderExt', {
                 order: order.order,
                 amount: '1',
                 signature,
                 takerTraits: '1',
                 extension: order.extension,
-            });
-
-            const tx = await addr.sendTransaction({
-                to: swap.address,
-                data: calldata
-            });
+            }, addr, chainId, swap);
 
             await tx.wait();
 
@@ -435,24 +426,15 @@ describe('LimitOrderProtocol',  () => {
                 addr1.address
             );
 
-            const facade = getOrderFacade(
-                swap.address,
-                chainId,
-                addr
-            );
-
-            const calldata = facade.fillLimitOrderExt({
+            const tx = getFillTx('fillLimitOrderExt', {
                 order: order.order,
                 amount: '1',
                 signature,
                 takerTraits: '1',
                 extension: order.extension,
-            });
+            }, addr, chainId, swap);
 
-            await expect(addr.sendTransaction({
-                to: swap.address,
-                data: calldata
-            })).to.be.revertedWithCustomError(swap, 'PredicateIsNotTrue');
+            await expect(tx).to.be.revertedWithCustomError(swap, 'PredicateIsNotTrue');
         });
 
         it('`or` should pass', async function () {
@@ -497,24 +479,13 @@ describe('LimitOrderProtocol',  () => {
                 addr1
             );
 
-            const facade = getOrderFacade(
-                swap.address,
-                chainId,
-                addr1,
-            );
-
-            const fillCalldata = facade.fillLimitOrderExt({
+            const fillTx = getFillTx('fillLimitOrderExt', {
                 order: order.order,
                 signature,
                 extension: order.extension,
                 amount: '1',
                 takerTraits: '1'
-            });
-
-            const fillTx = await addr.sendTransaction({
-                to: swap.address,
-                data: fillCalldata,
-            });
+            }, addr, chainId, swap);
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
         });
@@ -561,24 +532,13 @@ describe('LimitOrderProtocol',  () => {
                 addr1
             );
 
-            const facade = getOrderFacade(
-                swap.address,
-                chainId,
-                addr1,
-            );
-
-            const fillCalldata = facade.fillLimitOrderExt({
+            const fillTx = await getFillTx('fillLimitOrderExt', {
                 order: order.order,
                 signature,
                 extension: order.extension,
                 amount: '1',
                 takerTraits: '1'
-            });
-
-            const fillTx = await addr.sendTransaction({
-                to: swap.address,
-                data: fillCalldata,
-            });
+            }, addr, chainId, swap);
 
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -638,25 +598,16 @@ describe('LimitOrderProtocol',  () => {
                 addr.address
             );
 
-            const takerFacade = getOrderFacade(swap.address, chainId, addr1);
-
-            const calldata = takerFacade.fillLimitOrderExt({
+            const fillTx = await getFillTx('fillLimitOrderExt', {
                 order: order.order,
                 amount: '1',
                 signature,
                 takerTraits: fillWithMakingAmount(BigInt(1)),
                 extension: order.extension,
-            });
+            }, addr1, chainId, swap);
 
-            const filltx = await addr1.sendTransaction({
-                to: swap.address,
-                data: calldata
-            });
-
-            await filltx.wait();
-
-            await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
-            await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+            await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+            await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
         });
     })
 
@@ -684,21 +635,30 @@ describe('LimitOrderProtocol',  () => {
                 const { dai, weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
 
                 const permit = await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1');
-                const { r, vs } = compactSignature(signature);
 
-                // use facade for that
-                const filltx = swap.fillOrderToWithPermit(
-                    order.order,
-                    r,
-                    vs,
-                    1,
-                    fillWithMakingAmount(BigInt(1)),
-                    addr.address,
+                const facade = getOrderFacade(swap.address, chainId, addr);
+                const calldata = facade.fillOrderToWithPermit({
+                    order: order.order,
+                    signature,
+                    amount: '1',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
                     permit,
-                    '0x'
-                );
-                await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
-                await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+                    interaction: ZX,
+                    target: addr.address,
+                })
+
+                const fillTx = getFillTx('fillOrderToWithPermit', {
+                    order: order.order,
+                    signature,
+                    amount: '1',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    permit,
+                    interaction: ZX,
+                    target: addr.address,
+                }, addr, chainId, swap);
+
+                await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+                await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
 
             it('DAI => WETH, permit2 maker', async function () {
@@ -721,19 +681,18 @@ describe('LimitOrderProtocol',  () => {
 
                 const signature = await builder.buildTypedDataAndSign(order.order, chainId, swap.address, addr1.address);
 
-                const { r, vs } = compactSignature(signature);
-                const filltx = swap.fillOrderToWithPermit(
-                    order.order,
-                    r,
-                    vs,
-                    1,
-                    fillWithMakingAmount(BigInt(1)),
-                    addr.address,
+                const fillTx = getFillTx('fillOrderToWithPermit', {
+                    order: order.order,
+                    signature,
+                    amount: '1',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
                     permit,
-                    '0x'
-                );
-                await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
-                await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+                    interaction: ZX,
+                    target: addr.address,
+                }, addr, chainId, swap);
+
+                await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+                await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
         });
 
@@ -769,17 +728,18 @@ describe('LimitOrderProtocol',  () => {
             };
 
             it('maker permit works', async function () {
-                const { dai, weth, swap, order, signature } = await loadFixture(deployContractsAndInitPermit);
+                const { dai, weth, swap, order, signature, chainId } = await loadFixture(deployContractsAndInitPermit);
 
-                // const facade = getOrderFacade(swap.address, chainId, addr1)
-                const { r, vs } = compactSignature(signature);
-                // todo facade
-                const filltx = swap.connect(addr1)
-                    .fillOrderExt(
-                        order.order, r, vs, 1, fillWithMakingAmount(BigInt(1)), order.extension
-                    );
-                await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
-                await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+                const fillTx = getFillTx('fillLimitOrderExt', {
+                    order: order.order,
+                    extension: order.extension,
+                    amount: '1',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    signature,
+                }, addr1, chainId, swap);
+
+                await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+                await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
 
             it('skips order permit flag', async function () {
