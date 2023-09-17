@@ -2,8 +2,6 @@ import { utils } from 'ethers'
 import {EIP712TypedData, ORDER_STRUCTURE} from "../../../model/eip712.model";
 import {setN} from "../../../utils/limit-order.utils";
 import {
-    FillOrderParams,
-    FillOrderToExtParams, FillOrderToWithPermitParams,
     LimitOrderProtocolFacade
 } from "../../../limit-order-protocol.facade";
 import {ProviderConnector} from "../../../connector/provider.connector";
