@@ -3,7 +3,9 @@ export * from './erc20.facade';
 export * from './limit-order-protocol.const';
 export * from './limit-order.builder';
 export * from './limit-order-protocol.facade';
+export * from './limit-order-protocol-v3.facade';
 export * from './limit-order-predicate.builder';
+export * from './limit-order-predicate-v3.builder';
 
 export * from './limit-order.decoder';
 export * from './limit-order-predicate.decoder';

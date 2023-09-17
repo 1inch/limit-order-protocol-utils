@@ -13,7 +13,7 @@
     "scripts": {
         "prebuild": "rm -rf dist && yarn run test:coverage && yarn run test:ci && yarn run make-badges",
         "build": "tsc --module commonjs",
-        "test-build": "rm -rf dist && tsc --module commonjs",
+        "test-build": "rm -rf dist && tsc --module commonjs && yarn run postbuild",
         "install-submodules": "git submodule update --init --recursive",
         "test:e2e": "hardhat test",
         "test:e2e:ci": "yarn run install-submodules && yarn run test:e2e",
