@@ -15,7 +15,7 @@
         "build": "tsc --module commonjs",
         "install-submodules": "git submodule update --init --recursive",
         "test:e2e": "hardhat test",
-        "test:ci": "yarn install-submodules && yarn test:e2e",
+        "test:e2e:ci": "yarn install-submodules && yarn test:e2e",
         "test:stack-trace": "hardhat test --show-stack-traces",
         "postbuild": "cp package.json dist && cp README.md dist && chmod +x dist/utils/limit-order-rfq.utils.js",
         "lint": "eslint ./src --ext .js,.ts",
@@ -25,7 +25,7 @@
         "typecheck": "tsc --noEmit --skipLibCheck",
         "prettier": "prettier --write .",
         "make-badges": "istanbul-badges-readme",
-        "ci-pipeline": "yarn run lint && yarn run test && yarn run typecheck",
+        "ci-pipeline": "yarn run lint && yarn run test && yarn:e2e:ci && yarn run typecheck",
         "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
