@@ -54,7 +54,7 @@ describe('LimitOrderProtocol',  () => {
 
         it('should not swap with bad signature', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
-            const builder = getOrderBuilder(swap.address, addr);
+            const builder = getOrderBuilder(addr);
 
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
@@ -96,7 +96,7 @@ describe('LimitOrderProtocol',  () => {
 
         it('should fill when not expired', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
-            const builder = getOrderBuilder(swap.address, addr1)
+            const builder = getOrderBuilder(addr1)
 
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
@@ -142,7 +142,7 @@ describe('LimitOrderProtocol',  () => {
         it('should not fill when expired', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
-            const builder = getOrderBuilder(swap.address, addr1)
+            const builder = getOrderBuilder(addr1)
 
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
@@ -182,7 +182,7 @@ describe('LimitOrderProtocol',  () => {
         it('should fill with correct taker', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
-            const builder = getOrderBuilder(swap.address, addr1);
+            const builder = getOrderBuilder(addr1);
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
                 takerAsset: weth.address,
@@ -215,7 +215,7 @@ describe('LimitOrderProtocol',  () => {
 
         const orderCancelationInit = async function () {
             const { dai, weth, swap, chainId } = await deployContractsAndInit();
-            const builder = getOrderBuilder(swap.address, addr1);
+            const builder = getOrderBuilder(addr1);
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
                 takerAsset: weth.address,
@@ -229,7 +229,7 @@ describe('LimitOrderProtocol',  () => {
 
         const orderWithEpochInit = async function () {
             const { dai, weth, swap, chainId } = await deployContractsAndInit();
-            const builder = getOrderBuilder(swap.address, addr1);
+            const builder = getOrderBuilder(addr1);
             const order = builder.buildLimitOrder({
                 makerAsset: dai.address,
                 takerAsset: weth.address,
@@ -351,7 +351,7 @@ describe('LimitOrderProtocol',  () => {
                 arbitraryCalldata,
             )
 
-            const builder = getOrderBuilder(swap.address, addr1);
+            const builder = getOrderBuilder(addr1);
 
             const order = builder.buildLimitOrder(
                 {
@@ -404,7 +404,7 @@ describe('LimitOrderProtocol',  () => {
                 arbitraryCalldata,
             );
 
-            const builder = getOrderBuilder(swap.address, addr1);
+            const builder = getOrderBuilder(addr1);
 
             const order = builder.buildLimitOrder(
                 {
@@ -454,10 +454,7 @@ describe('LimitOrderProtocol',  () => {
 
             const predicate = predicateBuilder.or(comparelt, comparegt);
 
-            const builder = getOrderBuilder(
-                swap.address,
-                addr1
-            );
+            const builder = getOrderBuilder(addr1);
 
             const order = builder.buildLimitOrder(
                 {
@@ -507,10 +504,7 @@ describe('LimitOrderProtocol',  () => {
 
             const predicate = predicateBuilder.or(comparelt, comparegt);
 
-            const builder = getOrderBuilder(
-                swap.address,
-                addr1
-            );
+            const builder = getOrderBuilder(addr1);
 
             const order = builder.buildLimitOrder(
                 {
@@ -575,7 +569,7 @@ describe('LimitOrderProtocol',  () => {
                 await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
             );
 
-            const builder = getOrderBuilder(swap.address, addr);
+            const builder = getOrderBuilder(addr);
 
             const order = builder.buildLimitOrder(
                 {
@@ -617,7 +611,7 @@ describe('LimitOrderProtocol',  () => {
                 const { dai, weth, swap, chainId } = await deploySwapTokens();
                 await initContracts(dai, weth, swap);
 
-                const builder = getOrderBuilder(swap.address, addr1);
+                const builder = getOrderBuilder(addr1);
 
                 const order = builder.buildLimitOrder({
                     makerAsset: dai.address,
@@ -657,7 +651,7 @@ describe('LimitOrderProtocol',  () => {
                 await dai.connect(addr1).approve(permit2.address, 1);
                 const permit = await getPermit2(addr1, dai.address, chainId, swap.address, BigInt(1));
 
-                const builder = getOrderBuilder(swap.address, addr1)
+                const builder = getOrderBuilder(addr1)
 
                 const order = builder.buildLimitOrder({
                     makerAsset: dai.address,
@@ -695,7 +689,7 @@ describe('LimitOrderProtocol',  () => {
                     await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
                 );
 
-                const builder = getOrderBuilder(swap.address, addr)
+                const builder = getOrderBuilder(addr)
 
                 const order = builder.buildLimitOrder(
                     {

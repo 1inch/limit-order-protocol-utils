@@ -1,6 +1,4 @@
 import {
-    EIP712_DOMAIN,
-    LIMIT_ORDER_PROTOCOL_ABI,
     ZERO_ADDRESS,
     ZX,
 } from './limit-order-protocol.const';
@@ -9,24 +7,17 @@ import {
     ExtensionParamsWithCustomData,
     InteractionsV3,
     LimitOrder,
-    LimitOrderData, LimitOrderDataLegacy,
-    LimitOrderHash,
-    LimitOrderInteractions, LimitOrderLegacy,
-    LimitOrderProtocolMethods,
-    LimitOrderSignature,
+    LimitOrderData,
+    LimitOrderInteractions,
     LimitOrderWithExtension,
 } from './model/limit-order-protocol.model';
 import {
     EIP712Parameter,
-    EIP712TypedData,
-    MessageTypes,
+    ORDER_STRUCTURE,
 } from './model/eip712.model';
 import {ProviderConnector} from './connector/provider.connector';
-import {getOffsets, setN, trim0x} from './utils/limit-order.utils';
+import {setN, trim0x} from './utils/limit-order.utils';
 import Web3 from 'web3';
-import {Address} from './model/eth.model';
-import {SignTypedDataVersion, TypedDataUtils, TypedMessage} from "@metamask/eth-sig-util";
-import {bufferToHex} from 'ethereumjs-util';
 import {
     _ALLOW_MULTIPLE_FILLS_FLAG,
     _HAS_EXTENSION_FLAG,
@@ -41,6 +32,7 @@ import {
     NONCE_SHIFT,
     SERIES_SHIFT
 } from "./utils/maker-traits.const";
+import {BaseLimitOrderBuilder} from "./base-limit-order.builder";
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -49,15 +41,22 @@ export function generateOrderSalt(): string {
 export interface EIP712Params {
     domainName: string;
     version: string;
+}
+
+export interface EIP712ParamsExtended extends EIP712Params {
     orderStructure: EIP712Parameter[];
 }
 
-export class LimitOrderBuilder {
+export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
     constructor(
-        private readonly contractAddress: string,
-        private readonly providerConnector: ProviderConnector,
-        private readonly eip712Params: EIP712Params,
-    ) {}
+        protected readonly providerConnector: ProviderConnector,
+        protected readonly eip712Params: EIP712Params,
+    ) {
+        super(providerConnector, {
+            ...eip712Params,
+            orderStructure: ORDER_STRUCTURE,
+        });
+    }
 
     static packInteractions(
         {
@@ -140,77 +139,6 @@ export class LimitOrderBuilder {
         ).toString(16).padStart(64, '0');
     }
 
-    static joinStaticCalls(data: string[]): { offsets: bigint, data: string } {
-        const trimmed = data.map(trim0x);
-
-        return {
-            offsets: getOffsets(trimmed),
-            data: ZX + trimmed.join(''),
-        };
-    }
-
-    buildLimitOrderTypedData(
-        order: LimitOrder,
-        chainId: number,
-        verifyingContract: Address,
-        eip712Params: EIP712Params = this.eip712Params,
-    ): EIP712TypedData {
-        return {
-            primaryType: 'Order',
-            types: {
-                EIP712Domain: EIP712_DOMAIN,
-                Order: eip712Params.orderStructure,
-            },
-            domain: {
-                name: eip712Params.domainName,
-                version: eip712Params.version,
-                chainId: chainId,
-                verifyingContract: verifyingContract,
-            },
-            message: order,
-        };
-    }
-
-    buildTypedDataAndSign(
-        order: LimitOrder,
-        chainId: number,
-        verifyingContract: Address,
-        wallet: Address,
-        domainSettings = this.eip712Params
-    ): Promise<LimitOrderSignature> {
-        const typedData = this.buildLimitOrderTypedData(
-            order,
-            chainId,
-            verifyingContract,
-            domainSettings
-        );
-        return this.buildOrderSignature(wallet, typedData);
-    }
-
-    buildOrderSignature(
-        wallet: Address,
-        typedData: EIP712TypedData
-    ): Promise<LimitOrderSignature> {
-        const dataHash = TypedDataUtils.hashStruct(
-            typedData.primaryType,
-            typedData.message,
-            typedData.types,
-            SignTypedDataVersion.V4
-        ).toString('hex');
-
-        return this.providerConnector.signTypedData(
-            wallet,
-            typedData,
-            dataHash,
-        );
-    }
-
-    buildLimitOrderHash(orderTypedData: EIP712TypedData): LimitOrderHash {
-        const message = orderTypedData as TypedMessage<MessageTypes>;
-        const hash = bufferToHex(TypedDataUtils.eip712Hash(message, SignTypedDataVersion.V4));
-        return ZX + hash.substring(2);
-    }
-
     /**
      * @param allowedSender formerly `takerAddress`
      * @returns
@@ -288,79 +216,5 @@ export class LimitOrderBuilder {
             },
             extension
         };
-    }
-
-    buildLegacyLimitOrder({
-                        makerAssetAddress,
-                        takerAssetAddress,
-                        makerAddress,
-                        receiver = ZERO_ADDRESS,
-                        allowedSender = ZERO_ADDRESS,
-                        makingAmount,
-                        takingAmount,
-                        predicate = ZX,
-                        permit = ZX,
-                        getMakingAmount = ZX,
-                        getTakingAmount = ZX,
-                        preInteraction = ZX,
-                        postInteraction = ZX,
-                        salt = generateOrderSalt(),
-                    }: LimitOrderDataLegacy
-    ): LimitOrderLegacy {
-
-        const makerAssetData = ZX;
-        const takerAssetData = ZX;
-
-        const { offsets, interactions } = LimitOrderBuilder.packInteractionsLegacy({
-            makerAssetData,
-            takerAssetData,
-            getMakingAmount,
-            getTakingAmount,
-            predicate,
-            permit,
-            preInteraction,
-            postInteraction,
-        })
-
-        return {
-            salt,
-            makerAsset: makerAssetAddress,
-            takerAsset: takerAssetAddress,
-            maker: makerAddress,
-            receiver,
-            allowedSender,
-            makingAmount,
-            takingAmount,
-            offsets,
-            interactions,
-        };
-    }
-
-    getContractCallData(
-        methodName: LimitOrderProtocolMethods,
-        methodParams: unknown[] = []
-    ): string {
-        return this.providerConnector.contractEncodeABI(
-            LIMIT_ORDER_PROTOCOL_ABI,
-            this.contractAddress,
-            methodName,
-            methodParams
-        );
-    }
-
-    /**
-     * Get nonce from contract (nonce method) and put it to predicate on order creating
-     */
-    getCustomAmountData(
-        methodName: LimitOrderProtocolMethods,
-        makingAmount: string,
-        takingAmount: string,
-        swapTakerAmount = '0'
-    ): string {
-        return this.getContractCallData(methodName, [
-            makingAmount,
-            takingAmount,
-            swapTakerAmount,
-        ]).substr(0, 2 + 68 * 2);
     }
 }

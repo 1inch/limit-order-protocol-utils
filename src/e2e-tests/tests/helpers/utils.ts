@@ -16,7 +16,6 @@ import {
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
     version: '4',
-    orderStructure: ORDER_STRUCTURE,
 };
 export async function signOrder(
     typedData: EIP712TypedData,
@@ -99,13 +98,11 @@ export function getPredicateBuilder(
 }
 
 export function getOrderBuilder(
-    contractAddress: string,
     wallet: SignerWithAddress
 ): LimitOrderBuilder {
     const makerProviderConnector = getProviderConnector(wallet);
 
     return new LimitOrderBuilder(
-        contractAddress,
         makerProviderConnector,
         testDomainSettings
     );

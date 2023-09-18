@@ -1,13 +1,13 @@
 import {LimitOrderDecoder} from './limit-order.decoder';
 import {LimitOrderBuilder} from './limit-order.builder';
-import {LimitOrder} from './model/limit-order-protocol.model';
+import {LimitOrderLegacy} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
 import {limitOrderProtocolAddresses} from './limit-order-protocol.const';
 import {largeInteractions, largeResult} from './test/mocks';
-import {ORDER_STRUCTURE_LEGACY} from "./model/eip712.model";
+import {LimitOrderV3Builder} from "./limit-order-v3.builder";
 
-describe('LimitOrderBuilder - for build new limit order', () => {
+describe('LimitOrderV3Builder - for build new limit order', () => {
     const chainId = 56;
     const contractAddress = limitOrderProtocolAddresses[chainId];
 
@@ -16,14 +16,12 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         '552be66668d14242eeeb0e84600f0946ddddc77777777c3761ea5906e9ddcccc';
     const providerConnector = new PrivateKeyProviderConnector(privateKey, web3);
 
-    let limitOrderBuilder: LimitOrderBuilder;
+    let limitOrderBuilder: LimitOrderV3Builder;
 
     beforeEach(() => {
-        limitOrderBuilder = new LimitOrderBuilder(
-            contractAddress,
+        limitOrderBuilder = new LimitOrderV3Builder(
             providerConnector,
             {
-                orderStructure: ORDER_STRUCTURE_LEGACY,
                 domainName: '1inch Aggregation Router',
                 version: '5'
             }
@@ -36,7 +34,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
             const dataHash =
                 '7cb7e268d5a5f0d8da9a5904a0084b3c4f17a7826413e83d69784a50d4154878';
 
-            const { interactions, offsets } = LimitOrderBuilder.packInteractionsLegacy({
+            const { interactions, offsets } = limitOrderBuilder.packInteractions({
                 makerAssetData: '0xf0',
                 takerAssetData: '0xf1',
                 getMakingAmount: '0xf2',
@@ -47,7 +45,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 postInteraction: '0xf7',
             });
 
-            const order: LimitOrder = {
+            const order: LimitOrderLegacy = {
                 salt: '1',
                 makerAsset: 'makerAsset',
                 takerAsset: 'takerAsset',
@@ -97,7 +95,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
                 postInteraction: '0xf7',
             });
 
-            const order: LimitOrder = {
+            const order: LimitOrderLegacy = {
                 salt: '1',
                 makerAsset: 'makerAsset',
                 takerAsset: 'takerAsset',
@@ -124,7 +122,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
         it('buildLimitOrder() must create a limit order instance according to the given parameters', async () => {
             const makerAddress = '0xdddd91605c18a9999c1d47abfeed5daaaa700000';
 
-            const order = await limitOrderBuilder.buildLegacyLimitOrder({
+            const order = limitOrderBuilder.buildLimitOrder({
                 makerAssetAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
                 takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
                 makerAddress,
@@ -149,7 +147,7 @@ describe('LimitOrderBuilder - for build new limit order', () => {
 
     describe("packInteractions", () => {
             it("should pack", () => {
-                const { offsets, interactions } = LimitOrderBuilder.packInteractionsLegacy(largeInteractions);
+                const { offsets, interactions } = limitOrderBuilder.packInteractions(largeInteractions);
 
                 expect(offsets).toBe(largeResult.offsets);
                 expect(interactions).toBe(largeResult.interactions);
