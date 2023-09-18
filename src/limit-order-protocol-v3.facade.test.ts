@@ -3,10 +3,10 @@ import {
     LimitOrderLegacy,
     LimitOrderProtocolMethodsV3,
 } from './model/limit-order-protocol.model';
-import {LimitOrderBuilder} from './limit-order.builder';
 import {BETA_CONTRACT_ADDRESSES, mocksForV3Chain} from './test/helpers';
 import {LimitOrderProtocolV3Facade} from "./limit-order-protocol-v3.facade";
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
+import {LimitOrderV3Builder} from "./limit-order-v3.builder";
 
 
 // eslint-disable-next-line max-lines-per-function
@@ -16,10 +16,10 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
     let facade: LimitOrderProtocolV3Facade;
     let contractAddress: string;
     let limitOrderPredicateBuilder: LimitOrderPredicateV3Builder;
-    let limitOrderBuilder: LimitOrderBuilder;
+    let limitOrderBuilder: LimitOrderV3Builder;
 
     function createOrderWithPredicate(predicate: string): LimitOrderLegacy {
-        return limitOrderBuilder.buildLegacyLimitOrder({
+        return limitOrderBuilder.buildLimitOrder({
             makerAssetAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
             takerAssetAddress: '0x111111111117dc0aa78b770fa6a738034120c302',
             makerAddress: walletAddress,
