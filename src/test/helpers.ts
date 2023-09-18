@@ -12,7 +12,6 @@ import {
 } from "../limit-order-protocol.const";
 import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";
 import {LimitOrderProtocolV3Facade} from "../limit-order-protocol-v3.facade";
-import {ORDER_STRUCTURE_LEGACY} from "../model/eip712.model";
 import {LimitOrderV3Builder} from "../limit-order-v3.builder";
 
 
