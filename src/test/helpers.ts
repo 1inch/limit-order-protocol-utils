@@ -20,7 +20,7 @@ export function mocksForV3Chain(
     chainId: ChainId,
     contractAddressOverride?: string,
     seriesNonceManagerContractAddressOverride?: string,
-    domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4', orderStructure: ORDER_STRUCTURE_LEGACY }
+    domainSettings: EIP712Params = { domainName: 'Limit Order Protocol', version: '4' }
 ) {
     const web3Provider = new Web3.providers.HttpProvider(
         rpcUrls[chainId],
