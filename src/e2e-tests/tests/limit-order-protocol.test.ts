@@ -3,7 +3,9 @@ import {
     fillWithMakingAmount, getFillTx,
     getOrderBuilder,
     getOrderFacade,
-    getPredicateBuilder, skipMakerPermit,
+    getPredicateBuilder,
+    getSignedOrder,
+    skipMakerPermit,
 } from './helpers/utils';
 import { ether } from './helpers/utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
@@ -324,6 +326,101 @@ describe('LimitOrderProtocol',  () => {
             expect(result).to.equal(BigInt(1));
         });
 
+    });
+
+    describe('MakerTraits', function () {
+        const deployContractsAndInit = async function () {
+            const { dai, weth, swap, chainId } = await deploySwapTokens();
+            await initContracts(dai, weth, swap);
+            const TakerIncreaser = await ethers.getContractFactory('TakerIncreaser');
+            const takerIncreaser = await TakerIncreaser.deploy();
+            return { dai, weth, swap, chainId, takerIncreaser };
+        };
+
+        it('disallow multiple fills', async function () {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+            // Order: 10 DAI => 2 WETH
+            // Swap:  4 DAI => 1 WETH
+
+            const builder = getOrderBuilder(addr1);
+
+            const order = builder.buildLimitOrder({
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '10',
+                takingAmount: '2',
+                maker: addr1.address,
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: false }),
+            });
+
+            const signature = await builder.buildTypedDataAndSign(
+                order.order, chainId, swap.address, addr1.address
+            );
+
+            const fillTx = getFillTx(
+                'fillLimitOrder',
+                {
+                    order: order.order,
+                    amount: '4',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    signature,
+                },
+                addr,
+                chainId,
+                swap
+            )
+
+            await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [4, -4]);
+            await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+
+            const secondFillTx = getFillTx(
+                'fillLimitOrder',
+                {
+                    order: order.order,
+                    amount: '4',
+                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    signature,
+                },
+                addr,
+                chainId,
+                swap
+            )
+
+            await expect(secondFillTx)
+                .to.be.revertedWithCustomError(swap, 'BitInvalidatedOrder');
+        });
+
+        it('unwrap weth for maker', async function () {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+            // Order: 10 DAI => 2 WETH
+            // Swap:  10 DAI => 2 ETH
+
+            const { order, signature } = await getSignedOrder(addr1, {
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '10',
+                takingAmount: '2',
+                maker: addr1.address,
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ unwrapWeth: true }),
+            }, { chainId, verifyingContract: swap.address });
+
+            const fillTx = getFillTx(
+        'fillLimitOrder',
+                {
+                    order: order.order,
+                    amount: '10',
+                    signature,
+                    takerTraits: fillWithMakingAmount(BigInt(2))
+                },
+                addr,
+                chainId,
+                swap,
+            )
+
+            await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [10, -10]);
+            await expect(fillTx).to.changeTokenBalance(weth, addr, -2);
+            await expect(fillTx).to.changeEtherBalance(addr1, 2);
+        });
     });
 
     describe('Predicate', function () {

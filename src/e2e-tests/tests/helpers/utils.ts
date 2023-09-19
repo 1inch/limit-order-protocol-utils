@@ -12,6 +12,11 @@ import {BigNumber} from "@ethersproject/bignumber";
 import {
     SignerWithAddress,
 } from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
+import {
+    ExtensionParamsWithCustomData,
+    LimitOrderData,
+    LimitOrderWithExtension,
+} from "../../../model/limit-order-protocol.model";
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
@@ -127,4 +132,25 @@ export function getFillTx<M extends AllowedFillMethods>(
         to: swap.address,
         data: callData
     });
+}
+
+export async function getSignedOrder(
+    wallet: SignerWithAddress,
+    orderData: LimitOrderData,
+    {
+        chainId,
+        verifyingContract,
+    }: { chainId: number, verifyingContract: string },
+    extensionData?: ExtensionParamsWithCustomData,
+): Promise<{ order: LimitOrderWithExtension, signature: string }> {
+    const builder = getOrderBuilder(wallet);
+    const order = builder.buildLimitOrder(orderData, extensionData);
+    const signature = await builder.buildTypedDataAndSign(
+        order.order, chainId, verifyingContract, wallet.address
+    );
+
+    return {
+        order: order,
+        signature,
+    }
 }
