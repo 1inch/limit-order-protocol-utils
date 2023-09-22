@@ -151,6 +151,7 @@ export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
     swap,
 ) {
     const facade = getOrderFacade(swap.address, chainId, filler);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const callData = (facade as any)[method](...txParams);
     const provider = ethers.provider;
     return  provider.call({
