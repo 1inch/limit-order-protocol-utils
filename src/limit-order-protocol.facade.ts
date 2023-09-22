@@ -146,30 +146,6 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    nonce(makerAddress: string): Promise<bigint> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.nonce,
-            [makerAddress]
-        );
-
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .then((nonce) => BigInt(nonce));
-    }
-
-    advanceNonce(count: number): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.advanceNonce,
-            [count]
-        );
-    }
-
-    increaseNonce(): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.increaseNonce
-        );
-    }
-
     remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.remaining,

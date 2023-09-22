@@ -17,6 +17,7 @@ import {
     LimitOrderData,
     LimitOrderWithExtension,
 } from "../../../model/limit-order-protocol.model";
+import { ethers } from 'hardhat'
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
@@ -113,22 +114,46 @@ export function getOrderBuilder(
     );
 }
 
-type FacadeFillMethods = Pick<
+type FacadeTxMethods = Pick<
     LimitOrderProtocolFacade,
-    'fillLimitOrder' | 'fillLimitOrderExt' | 'fillOrderToWithPermit'
+    'fillLimitOrder' | 'fillLimitOrderExt' | 'fillOrderToWithPermit' | 'increaseEpoch'
 >;
-type AllowedFillMethods = keyof FacadeFillMethods;
+type AllowedFacadeTxMethods = keyof FacadeTxMethods;
 
-export function getFillTx<M extends AllowedFillMethods>(
+export function getFacadeTx<M extends AllowedFacadeTxMethods>(
     method: M,
-    txParams: Parameters<FacadeFillMethods[M]>[0],
+    txParams: Parameters<FacadeTxMethods[M]>[0],
     filler: SignerWithAddress,
     chainId: number,
     swap,
     ) {
     const facade = getOrderFacade(swap.address, chainId, filler);
-    const callData = (facade as FacadeFillMethods)[method](txParams as never);
+    const callData = (facade as FacadeTxMethods)[method](txParams as never);
     return filler.sendTransaction({
+        to: swap.address,
+        data: callData
+    });
+}
+
+// export function getFacadeViewCall<M extends Al
+
+type FacadeViewCallMethods = Pick<
+    LimitOrderProtocolFacade,
+    'epoch'
+>;
+type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
+
+export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
+    method: M,
+    txParams: Parameters<FacadeViewCallMethods[M]>,
+    filler: SignerWithAddress,
+    chainId: number,
+    swap,
+) {
+    const facade = getOrderFacade(swap.address, chainId, filler);
+    const callData = (facade as any)[method](...txParams);
+    const provider = ethers.provider;
+    return  provider.call({
         to: swap.address,
         data: callData
     });
