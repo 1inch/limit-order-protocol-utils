@@ -119,13 +119,13 @@ export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
          usePermit2 = false,
          unwrapWeth = false,
          expiry = 0,
-         nonce = 0,
-         series = 0,
+         nonce = BigInt(0),
+         series = BigInt(0),
         } = {}
     ): string {
         return '0x' + (
-            (BigInt(series) << BigInt(SERIES_SHIFT)) |
-            (BigInt(nonce) << BigInt(NONCE_SHIFT)) |
+            (series << BigInt(SERIES_SHIFT)) |
+            (nonce << BigInt(NONCE_SHIFT)) |
             (BigInt(expiry) << BigInt(EXPIRY_SHIFT)) |
             (BigInt(allowedSender) & ((BigInt(1) << BigInt(80)) - BigInt(1))) |
             // 247 - 255

@@ -241,7 +241,10 @@ describe('LimitOrderProtocol',  () => {
                 takingAmount: '2',
                 maker: addr1.address,
                 makerTraits: LimitOrderBuilder.buildMakerTraits({
-                    allowMultipleFills: true, shouldCheckEpoch: true, nonce: 0, series: 1
+                    allowMultipleFills: true,
+                    shouldCheckEpoch: true,
+                    nonce: BigInt(0),
+                    series: BigInt(1),
                 }),
             });
             return { dai, weth, swap, chainId, order, builder };
@@ -275,12 +278,12 @@ describe('LimitOrderProtocol',  () => {
             const { swap, chainId, order, builder } = await loadFixture(orderWithEpochInit);
 
             await getFacadeTx(
-                'increaseEpoch', '1', addr1, chainId, swap
+                'increaseEpoch', BigInt(1), addr1, chainId, swap
             );
 
             await getFacadeViewCall('epoch', [
                 addr1.address,
-                1,
+                BigInt(1),
             ], addr1, chainId, swap);
 
             const typedData = builder.buildLimitOrderTypedData(order.order, chainId, swap.address);
@@ -310,7 +313,7 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const epochViewCall = await getFacadeViewCall(
-                'epoch', [addr.address, 0], addr, chainId, swap,
+                'epoch', [addr.address, BigInt(0)], addr, chainId, swap,
             );
 
             expect(epochViewCall).to.equal(epochViewCall);

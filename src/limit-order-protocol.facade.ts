@@ -21,6 +21,7 @@ import {
 } from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
+import {Series} from "./model/series-nonce-manager.model";
 
 
 export type TakerTraits = string;
@@ -126,13 +127,13 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    increaseEpoch(series: number): string {
+    increaseEpoch(series: Series): string {
         return this.getContractCallData(LimitOrderProtocolMethods.increaseEpoch, [
             series
         ]);
     }
 
-    epoch(maker: Address, series: number): Promise<bigint> {
+    epoch(maker: Address, series: Series): Promise<bigint> {
         const calldata = this.getContractCallData(LimitOrderProtocolMethods.epoch, [
             maker,
             series,
