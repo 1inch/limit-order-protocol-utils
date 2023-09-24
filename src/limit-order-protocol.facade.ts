@@ -126,13 +126,13 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    increaseEpoch(series: string): string {
+    increaseEpoch(series: number): string {
         return this.getContractCallData(LimitOrderProtocolMethods.increaseEpoch, [
             series
         ]);
     }
 
-    epoch(maker: Address, series: string): string {
+    epoch(maker: Address, series: number): string {
         return this.getContractCallData(LimitOrderProtocolMethods.epoch, [
             maker,
             series,
