@@ -83,6 +83,7 @@ export const commonMakerTraits = {
         expiry: 0,
         nonce: BigInt(0),
         series: BigInt(0),
+        hasExtension: false,
     }
 }
 
@@ -99,6 +100,7 @@ export const difficultMakerTraits = {
         expiry: 1694549826,
         nonce: BigInt(3),
         series: BigInt(2),
+        hasExtension: false,
     }
 }
 

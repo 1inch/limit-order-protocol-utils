@@ -91,7 +91,6 @@ describe('LimitOrderProtocol',  () => {
             const takerDai = await dai.balanceOf(addr1.address);
             const makerWeth = await weth.balanceOf(addr.address);
             const takerWeth = await weth.balanceOf(addr1.address);
-            // expect(await dai.balanceOf(addr1.address)).to.equal(makerDai.sub(1));
             expect(makerDai.toString()).to.equal('999999999999999999999999')
             expect(takerDai.toString()).to.equal('1000000000000000000000001')
             expect(makerWeth.toString()).to.equal('100000000000000000001')
@@ -424,6 +423,31 @@ describe('LimitOrderProtocol',  () => {
             return { dai, weth, swap, chainId, arbitraryPredicate };
         };
 
+
+        it('checkPredicate should return true ', async function () {
+            const {  swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
+
+            const predicateBuilder = getPredicateBuilder(
+                swap.address, chainId, addr1
+            )
+
+            const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
+                arbitraryPredicate.address,
+                arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
+            );
+
+            const predicate = predicateBuilder.lt(
+                '10',
+                arbitraryCalldata,
+            )
+
+            const isPredicateValid = await getFacadeViewCall(
+                'checkPredicate', [predicate], addr, chainId, swap
+            );
+
+            expect(isPredicateValid).to.true;
+        });
+
         it('arbitrary call predicate should pass', async function () {
             const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
@@ -613,7 +637,7 @@ describe('LimitOrderProtocol',  () => {
                 order.order,
                 chainId,
                 swap.address,
-                addr1
+                addr1.address
             );
 
             const fillTx = await getFacadeTx('fillLimitOrderExt', {

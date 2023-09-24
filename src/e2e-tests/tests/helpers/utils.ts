@@ -147,7 +147,8 @@ export function getFacadeTx<M extends AllowedFacadeTxMethods>(
 type FacadeViewCallMethods = Pick<
     LimitOrderProtocolFacade,
     'epoch' |
-    'remainingInvalidatorForOrder'
+    'remainingInvalidatorForOrder' |
+    'checkPredicate'
 >;
 type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
 

@@ -154,6 +154,7 @@ export interface ParsedMakerTraits {
     expiry: number;
     nonce: bigint;
     series: bigint;
+    hasExtension: boolean;
 }
 
 export type InteractionName = keyof typeof InteractionsFields;
@@ -205,6 +206,7 @@ export enum LimitOrderProtocolMethods {
     remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',
     epoch = 'epoch',
     nonce = 'nonce',
+    checkPredicate = 'checkPredicate',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',
     and = 'and',
@@ -215,7 +217,6 @@ export enum LimitOrderProtocolMethods {
     nonceEquals = 'nonceEquals',
     remaining = 'remaining',
     transferFrom = 'transferFrom',
-    checkPredicate = 'checkPredicate',
     remainingsRaw = 'remainingsRaw',
     simulate = 'simulate',
 }

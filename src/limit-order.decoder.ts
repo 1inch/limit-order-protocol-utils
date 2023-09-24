@@ -21,6 +21,7 @@ import { ZX } from "./limit-order-protocol.const";
 
 import {
     _ALLOW_MULTIPLE_FILLS_FLAG,
+    _HAS_EXTENSION_FLAG,
     _NEED_EPOCH_CHECK_FLAG,
     _NO_PARTIAL_FILLS_FLAG,
     _NO_PRICE_IMPROVEMENT_FLAG,
@@ -79,6 +80,7 @@ export class LimitOrderDecoder {
         const allowPriceImprovement = !getN(makerTraitsAsBigInt, _NO_PRICE_IMPROVEMENT_FLAG);
         const shouldCheckEpoch = !!getN(makerTraitsAsBigInt, _NEED_EPOCH_CHECK_FLAG);
         const usePermit2 = !!getN(makerTraitsAsBigInt, _USE_PERMIT2_FLAG);
+        const hasExtension = !!getN(makerTraitsAsBigInt, _HAS_EXTENSION_FLAG)
 
         return {
             series,
@@ -91,6 +93,7 @@ export class LimitOrderDecoder {
             allowPriceImprovement,
             shouldCheckEpoch,
             usePermit2,
+            hasExtension,
         }
     }
 

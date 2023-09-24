@@ -142,6 +142,21 @@ export class LimitOrderProtocolFacade
         return this.makeViewCall(calldata, BigInt);
     }
 
+    async checkPredicate(predicate: string): Promise<boolean> {
+        const callData = this.getContractCallData(
+            LimitOrderProtocolMethods.checkPredicate,
+            [predicate]
+        );
+
+        const result = await this.makeViewCall(callData, BigInt);
+        try {
+            return result === BigInt(1);
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+
     remainingInvalidatorForOrder(maker: Address, orderHash: string): Promise<bigint> {
         const calldata = this.getContractCallData(
             LimitOrderProtocolMethods.remainingInvalidatorForOrder,
