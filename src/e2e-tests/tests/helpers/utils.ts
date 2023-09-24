@@ -77,6 +77,13 @@ export function getProviderConnector(signer: SignerWithAddress): ProviderConnect
         ): string {
             const iface = new utils.Interface(abi);
             return iface.encodeFunctionData(methodName, methodParams);
+        },
+        ethCall(contractAddress: string, callData: string): Promise<string> {
+            const provider = ethers.provider;
+            return provider.call({
+                to: contractAddress,
+                data: callData,
+            })
         }
     } as ProviderConnector;
 }
@@ -139,7 +146,8 @@ export function getFacadeTx<M extends AllowedFacadeTxMethods>(
 
 type FacadeViewCallMethods = Pick<
     LimitOrderProtocolFacade,
-    'epoch'
+    'epoch' |
+    'remainingInvalidatorForOrder'
 >;
 type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
 
@@ -149,15 +157,10 @@ export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
     filler: SignerWithAddress,
     chainId: number,
     swap,
-) {
+): ReturnType<FacadeViewCallMethods[M]> {
     const facade = getOrderFacade(swap.address, chainId, filler);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const callData = (facade as any)[method](...txParams);
-    const provider = ethers.provider;
-    return  provider.call({
-        to: swap.address,
-        data: callData
-    });
+    return (facade as any)[method](...txParams);
 }
 
 export async function getSignedOrder(

@@ -35,7 +35,6 @@ export class LimitOrderProtocolV3Facade
     }
 
     cancelLimitOrder(order: LimitOrderLegacy): string {
-        // use old ABI
         return this.getContractCallData(LimitOrderProtocolMethodsV3.cancelOrder, [
             order,
         ]);

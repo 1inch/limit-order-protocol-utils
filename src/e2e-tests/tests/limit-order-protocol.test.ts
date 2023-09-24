@@ -254,23 +254,20 @@ describe('LimitOrderProtocol',  () => {
             const orderFacade = getOrderFacade(swap.address, chainId, addr1);
 
             const calldata = orderFacade.cancelLimitOrder(order.order.makerTraits, orderHash);
-            const tx = await addr1.sendTransaction({
+            await addr1.sendTransaction({
                 to: swap.address,
                 data: calldata
             });
 
-            await tx.wait();
+            const result = await getFacadeViewCall(
+                'remainingInvalidatorForOrder',
+                [addr1.address, orderHash],
+                addr,
+                chainId,
+                swap,
+            );
 
-            const remainingInvalidatorForOrderCalldata =
-                orderFacade.remainingInvalidatorForOrder(addr1.address, orderHash);
-
-            const provider = ethers.provider;
-            const result = await provider.call({
-                to: swap.address,
-                data: remainingInvalidatorForOrderCalldata
-            });
-
-            expect(BigInt(result)).to.equal(BigInt(0))
+            expect(result).to.equal(BigInt(0))
         });
 
 
@@ -283,7 +280,7 @@ describe('LimitOrderProtocol',  () => {
 
             await getFacadeViewCall('epoch', [
                 addr1.address,
-                '1'
+                1,
             ], addr1, chainId, swap);
 
             const typedData = builder.buildLimitOrderTypedData(order.order, chainId, swap.address);
@@ -306,17 +303,17 @@ describe('LimitOrderProtocol',  () => {
 
             await getFacadeTx(
                 'increaseEpoch',
-                '0',
+                0,
                 addr,
                 chainId,
                 swap
             );
 
             const epochViewCall = await getFacadeViewCall(
-                'epoch', [addr.address, '0'], addr, chainId, swap,
+                'epoch', [addr.address, 0], addr, chainId, swap,
             );
 
-            expect(epochViewCall).to.equal(BigInt(epochViewCall));
+            expect(epochViewCall).to.equal(epochViewCall);
         });
 
     });

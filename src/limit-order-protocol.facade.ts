@@ -132,18 +132,24 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    epoch(maker: Address, series: number): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.epoch, [
+    epoch(maker: Address, series: number): Promise<bigint> {
+        const calldata = this.getContractCallData(LimitOrderProtocolMethods.epoch, [
             maker,
             series,
         ]);
+
+        return this.makeViewCall(calldata, BigInt);
     }
 
-    remainingInvalidatorForOrder(maker: Address, orderHash: string): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.remainingInvalidatorForOrder, [
+    remainingInvalidatorForOrder(maker: Address, orderHash: string): Promise<bigint> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.remainingInvalidatorForOrder,
+            [
             maker,
             orderHash,
         ]);
+
+        return this.makeViewCall(calldata, BigInt)
     }
 
     remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
@@ -192,5 +198,14 @@ export class LimitOrderProtocolFacade
 
     private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
         return compactSignature(signature);
+    }
+
+    private makeViewCall<T = string>(
+        calldata: string,
+        parser?: (result: string) => T
+    ): Promise<T> {
+        return this.providerConnector
+            .ethCall(this.contractAddress, calldata)
+            .then(parser ? parser : undefined);
     }
 }
