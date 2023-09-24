@@ -152,8 +152,8 @@ export interface ParsedMakerTraits {
     usePermit2: boolean;
     unwrapWeth: boolean;
     expiry: number;
-    nonce: number;
-    series: number;
+    nonce: bigint;
+    series: bigint;
 }
 
 export type InteractionName = keyof typeof InteractionsFields;

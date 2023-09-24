@@ -73,7 +73,7 @@ export const extensionWithPermitAndPredicate = {
 export const commonMakerTraits = {
     hex: '0x4000000000000000000000000000000000000000000000000000000000000000',
     result: {
-        allowedSender: ZX + ZERO_ADDRESS.slice(-20),
+        allowedSender: ZERO_ADDRESS.slice(-20),
         shouldCheckEpoch: false,
         allowPartialFill: true,
         allowPriceImprovement: true,
@@ -81,15 +81,15 @@ export const commonMakerTraits = {
         usePermit2: false,
         unwrapWeth: false,
         expiry: 0,
-        nonce: 0,
-        series: 0,
+        nonce: BigInt(0),
+        series: BigInt(0),
     }
 }
 
 export const difficultMakerTraits = {
     hex: '0x4580000000000000000000020000000003006500c7429e03e53415d37aa96045',
     result: {
-        allowedSender: ZX + '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'.slice(-20),
+        allowedSender: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'.slice(-20),
         shouldCheckEpoch: true,
         allowPartialFill: true,
         allowPriceImprovement: true,
@@ -97,8 +97,8 @@ export const difficultMakerTraits = {
         usePermit2: true,
         unwrapWeth: true,
         expiry: 1694549826,
-        nonce: 3,
-        series: 2,
+        nonce: BigInt(3),
+        series: BigInt(2),
     }
 }
 

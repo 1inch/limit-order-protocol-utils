@@ -81,10 +81,10 @@ export class LimitOrderDecoder {
         const usePermit2 = !!getN(makerTraitsAsBigInt, _USE_PERMIT2_FLAG);
 
         return {
-            series: Number(series),
+            series,
+            nonce,
             expiry: Number(expiry),
-            nonce: Number(nonce),
-            allowedSender: ZX + allowedSender.toString(16).padEnd(20, '0'),
+            allowedSender: allowedSender.toString(16).padEnd(20, '0'),
             unwrapWeth,
             allowMultipleFills,
             allowPartialFill,
