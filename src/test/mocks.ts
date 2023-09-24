@@ -1,6 +1,6 @@
 
 /* eslint-disable max-len */
-import {ZERO_ADDRESS, ZX} from "../limit-order-protocol.const";
+import {ZERO_ADDRESS} from "../limit-order-protocol.const";
 
 export const largeInteractions = {
     getMakingAmount: '0x20b83f2d000000000000000000000000000000000000000000000000000000000098968000000000000000000000000000000000000000000000001b1ae4d6e2ef500000',
