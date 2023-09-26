@@ -34,6 +34,7 @@ import {
     SERIES_MASK,
     SERIES_SHIFT
 } from "./utils/maker-traits.const";
+import Web3 from "web3";
 
 
 export class LimitOrderDecoder {
@@ -124,13 +125,11 @@ export class LimitOrderDecoder {
         )
     }
 
-    /**
-     * @returns `true` if interaction value is empty of 0x
-     */
-    static hasInteraction(order: LimitOrderLegacy, name: InteractionV3Name): boolean {
-        const interaction = this.unpackInteraction(order, name);
+    static isSaltCorrect(salt: string, extension: string): boolean {
+        const extensionHash = BigInt(Web3.utils.keccak256(extension))
+            & ((BigInt(1) << BigInt(160)) - BigInt(1));
 
-        return trim0x(interaction) !== '';
+        return BigInt(salt) === extensionHash;
     }
 
     static unpackStaticCalls(offsets: string | bigint, interactions: string): string[] {

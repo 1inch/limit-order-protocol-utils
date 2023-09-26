@@ -8,7 +8,8 @@ import {
     extensionWithPermitAndPredicate,
     extensionWithPredicate,
     largeInteractions,
-    largeResult
+    largeResult,
+    orderWithExtension,
 } from './test/mocks';
 
 describe('LimitOrderDecoder', () => {
@@ -49,6 +50,17 @@ describe('LimitOrderDecoder', () => {
     describe('unpackMakerTraits', () => {
         it('should unpack default maker traits', () => {
             expect(LimitOrderDecoder.unpackMakerTraits(commonMakerTraits.hex)).toMatchObject(commonMakerTraits.result)
+        });
+
+        it('should unpack with allowedSender and expiry, nonce, series', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(difficultMakerTraits.hex)).toMatchObject(difficultMakerTraits.result)
+        });
+    });
+
+    describe('isSaltCorrect', () => {
+        it('check that the salt contains 160 lowest bits of extension hash', () => {
+            expect(LimitOrderDecoder.isSaltCorrect(orderWithExtension.order.salt, orderWithExtension.extension))
+                .toBeTruthy()
         });
 
         it('should unpack with allowedSender and expiry, nonce, series', () => {
