@@ -13,7 +13,6 @@ import {
     LimitOrderProtocolMethodsV3,
     Address,
 } from './model/limit-order-protocol.model';
-import {BigNumber} from '@ethersproject/bignumber';
 import {
     compactSignature,
     setN,
