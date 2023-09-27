@@ -6,6 +6,7 @@ import {
     difficultMakerTraits,
     extensionWithPermit,
     extensionWithPermitAndPredicate,
+    extensionWithPermitOnly,
     extensionWithPredicate,
     largeInteractions,
     largeResult,
@@ -38,6 +39,11 @@ describe('LimitOrderDecoder', () => {
             it("should unpack permit & predicate", () => {
                 const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitAndPredicate.extension);
                 expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
+            });
+
+            it("should unpack permit", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitOnly.extension);
+                expect(interactions).toMatchObject(extensionWithPermitOnly.result);
             });
 
             it("should unpack permit & predicate", () => {
