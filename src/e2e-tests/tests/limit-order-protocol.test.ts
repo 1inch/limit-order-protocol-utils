@@ -142,6 +142,104 @@ describe('LimitOrderProtocol',  () => {
             expect(takerWeth.toString()).to.equal('99999999999999999999')
         });
 
+        it('remainingInvalidatorForOrder should return correct remaining', async () => {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+
+            const { signature, order, orderHash } = await getSignedOrder(addr1, {
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '3',
+                takingAmount: '3',
+                maker: addr1.address,
+
+            }, { chainId, verifyingContract: swap.address });
+
+            const beforeFillRemaining = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap)
+
+            // aa3eef95 - is a decoded RemainingInvalidatedOrder error
+            expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
+
+            await getFacadeTx('fillLimitOrder', {
+                order: order.order,
+                signature,
+                amount: '1',
+                takerTraits: fillWithMakingAmount(BigInt(1))
+            }, addr, chainId, swap);
+
+            const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap);
+
+            expect(remainingAmount).to.equal(BigInt(2));
+
+            await getFacadeTx('fillLimitOrder', {
+                order: order.order,
+                signature,
+                amount: '2',
+                takerTraits: fillWithMakingAmount(BigInt(2))
+            }, addr, chainId, swap);
+
+            const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap);
+
+            expect(remainingAfterFullFill).to.equal(BigInt(0));
+        });
+
+        it('remaining with makerAmount', async () => {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+
+            const { signature, order, orderHash } = await getSignedOrder(addr1, {
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '3',
+                takingAmount: '3',
+                maker: addr1.address,
+
+            }, { chainId, verifyingContract: swap.address });
+
+            const beforeFillRemaining = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap);
+
+            // aa3eef95 - is a decoded RemainingInvalidatedOrder error
+            expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
+
+            await getFacadeTx('fillLimitOrder', {
+                order: order.order,
+                signature,
+                amount: '1',
+                takerTraits: fillWithMakingAmount(BigInt(1))
+            }, addr, chainId, swap);
+
+            const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap);
+
+            expect(remainingAmount).to.equal(BigInt(2));
+
+            await getFacadeTx('fillLimitOrder', {
+                order: order.order,
+                signature,
+                amount: '2',
+                takerTraits: fillWithMakingAmount(BigInt(2))
+            }, addr, chainId, swap);
+
+            const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
+                addr1.address,
+                orderHash,
+            ], addr, chainId, swap);
+
+            expect(remainingAfterFullFill).to.equal(BigInt(0));
+        });
+
         it('should not fill when expired', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 

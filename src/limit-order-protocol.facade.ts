@@ -175,7 +175,29 @@ export class LimitOrderProtocolFacade
             orderHash,
         ]);
 
-        return this.makeViewCall(calldata, BigInt)
+        return this.makeViewCall(calldata, BigInt);
+    }
+
+    rawRemainingInvalidatorForOrder(maker: Address, orderHash: string): Promise<bigint> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.rawRemainingInvalidatorForOrder,
+            [
+            maker,
+            orderHash,
+        ]);
+
+        return this.makeViewCall(calldata, BigInt);
+    }
+
+    remaining(maker: Address, orderHash: string): Promise<bigint> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.remaining,
+            [
+            maker,
+            orderHash,
+        ]);
+
+        return this.makeViewCall(calldata, BigInt);
     }
 
     // https://github.com/1inch/limit-order-protocol/blob/v3-prerelease/test/helpers/eip712.js#L22
@@ -193,14 +215,6 @@ export class LimitOrderProtocolFacade
         ).toString('hex')
 
         return Promise.resolve(hex);
-    }
-
-    parseRemainingResponse(response: string): BigNumber | null {
-        if (response.length === 66) {
-            return BigNumber.from(response);
-        }
-
-        return null;
     }
 
     private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {

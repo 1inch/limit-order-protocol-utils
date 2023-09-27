@@ -83,7 +83,7 @@ export function getProviderConnector(signer: SignerWithAddress): ProviderConnect
             return provider.call({
                 to: contractAddress,
                 data: callData,
-            })
+            });
         }
     } as ProviderConnector;
 }
@@ -148,7 +148,8 @@ type FacadeViewCallMethods = Pick<
     LimitOrderProtocolFacade,
     'epoch' |
     'remainingInvalidatorForOrder' |
-    'checkPredicate'
+    'checkPredicate' |
+    'rawRemainingInvalidatorForOrder'
 >;
 type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
 
@@ -172,15 +173,20 @@ export async function getSignedOrder(
         verifyingContract,
     }: { chainId: number, verifyingContract: string },
     extensionData?: ExtensionParamsWithCustomData,
-): Promise<{ order: LimitOrderWithExtension, signature: string }> {
+): Promise<{ order: LimitOrderWithExtension, signature: string, orderHash: string }> {
     const builder = getOrderBuilder(wallet);
     const order = builder.buildLimitOrder(orderData, extensionData);
-    const signature = await builder.buildTypedDataAndSign(
-        order.order, chainId, verifyingContract, wallet.address
+
+    const typedData = builder.buildLimitOrderTypedData(
+        order.order, chainId, verifyingContract
     );
+
+    const signature = await builder.buildOrderSignature(wallet.address, typedData);
+    const orderHash = builder.buildLimitOrderHash(typedData);
 
     return {
         order: order,
         signature,
+        orderHash,
     }
 }
