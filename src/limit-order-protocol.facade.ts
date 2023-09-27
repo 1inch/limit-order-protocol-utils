@@ -8,7 +8,6 @@ import {
 import {
     LimitOrder,
     LimitOrderProtocolMethods,
-    LimitOrderHash,
     LimitOrderSignature,
     MakerTraits,
     LimitOrderProtocolMethodsV3,
@@ -26,18 +25,18 @@ import {Series} from "./model/series-nonce-manager.model";
 
 export type TakerTraits = string;
 // todo move into model
-export interface FillOrderParams {
+export interface FillOrderParamsWithTakerTraits {
     order: LimitOrder;
     signature: LimitOrderSignature;
     amount: string;
     takerTraits: TakerTraits;
 }
 
-export type FillOrderToExtParams = FillOrderParams & {
+export type FillOrderToExtParams = FillOrderParamsWithTakerTraits & {
     extension: string;
 }
 
-export type FillOrderToWithPermitParams = FillOrderParams & {
+export type FillOrderToWithPermitParams = FillOrderParamsWithTakerTraits & {
     target: Address;
     permit: string;
     interaction: string;
@@ -56,7 +55,18 @@ export class LimitOrderProtocolFacade
 {
     ABI = LIMIT_ORDER_PROTOCOL_ABI;
 
-    fillLimitOrder(params: FillOrderParams): string {
+    fillLimitOrderWithMakingAmount(
+        params: Omit<FillOrderParamsWithTakerTraits, 'takerTraits'>,
+        makingAmount: string | bigint,
+    ): string {
+        const takerTraits = fillWithMakingAmount(BigInt(makingAmount));
+        return this.fillLimitOrder({
+            ...params,
+            takerTraits,
+        })
+    }
+
+    fillLimitOrder(params: FillOrderParamsWithTakerTraits): string {
         const {
             order,
             signature,
