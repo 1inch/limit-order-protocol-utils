@@ -191,6 +191,7 @@ export enum LimitOrderProtocolMethodsV3 {
     gt = 'gt',
     nonceEquals = 'nonceEquals',
     arbitraryStaticCall = 'arbitraryStaticCall',
+    remaining = 'remaining',
 }
 
 export enum LimitOrderProtocolMethods {
@@ -214,9 +215,7 @@ export enum LimitOrderProtocolMethods {
     lt = 'lt',
     gt = 'gt',
     nonceEquals = 'nonceEquals',
-    remaining = 'remaining',
     transferFrom = 'transferFrom',
-    remainingsRaw = 'remainingsRaw',
     simulate = 'simulate',
 }
 

@@ -183,17 +183,6 @@ export class LimitOrderProtocolFacade
         return this.makeViewCall(calldata, BigInt);
     }
 
-    remaining(maker: Address, orderHash: string): Promise<bigint> {
-        const calldata = this.getContractCallData(
-            LimitOrderProtocolMethods.remaining,
-            [
-            maker,
-            orderHash,
-        ]);
-
-        return this.makeViewCall(calldata, BigInt);
-    }
-
     // https://github.com/1inch/limit-order-protocol/blob/v3-prerelease/test/helpers/eip712.js#L22
     domainSeparator(): Promise<string> {
         const hex = '0x' + TypedDataUtils.hashStruct(

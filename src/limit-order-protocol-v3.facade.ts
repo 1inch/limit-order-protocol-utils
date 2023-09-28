@@ -1,5 +1,6 @@
 import {AbstractSmartcontractFacade} from "./utils/abstract-facade";
 import {
+    LimitOrderHash,
     LimitOrderLegacy,
     LimitOrderProtocolMethodsV3
 } from "./model/limit-order-protocol.model";
@@ -62,5 +63,32 @@ export class LimitOrderProtocolV3Facade
         return this.getContractCallData(
             LimitOrderProtocolMethodsV3.increaseNonce
         );
+    }
+
+    remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
+        const callData = this.getContractCallData(
+            LimitOrderProtocolMethodsV3.remaining,
+            [orderHash]
+        );
+
+        return this.providerConnector
+            .ethCall(this.contractAddress, callData)
+            .then((result) => {
+                const response = this.parseRemainingResponse(result);
+
+                if (response !== null) {
+                    return response;
+                }
+
+                return Promise.reject(result);
+            });
+    }
+
+    parseRemainingResponse(response: string): BigNumber | null {
+        if (response.length === 66) {
+            return BigNumber.from(response);
+        }
+
+        return null;
     }
 }
