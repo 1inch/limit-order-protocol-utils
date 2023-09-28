@@ -19,7 +19,6 @@ export type LimitOrderSignature = string;
 
 export type LimitOrderHash = string;
 
-// RFQOrderData.expiresInTimestamp | RFQOrderData.id
 
 export interface LimitOrderData {
     maker: Address,
@@ -220,3 +219,5 @@ export enum LimitOrderProtocolMethods {
     remainingsRaw = 'remainingsRaw',
     simulate = 'simulate',
 }
+
+export type TakerTraits = string;

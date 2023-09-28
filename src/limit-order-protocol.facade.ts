@@ -1,29 +1,25 @@
 import {
-    LIMIT_ORDER_PROTOCOL_ABI,
     EIP712_DOMAIN,
+    LIMIT_ORDER_PROTOCOL_ABI,
     PROTOCOL_NAME,
     PROTOCOL_VERSION,
     TypedDataVersion,
 } from './limit-order-protocol.const';
 import {
+    Address,
     LimitOrder,
     LimitOrderProtocolMethods,
+    LimitOrderProtocolMethodsV3,
     LimitOrderSignature,
     MakerTraits,
-    LimitOrderProtocolMethodsV3,
-    Address,
+    TakerTraits,
 } from './model/limit-order-protocol.model';
-import {
-    compactSignature,
-    setN,
-} from './utils/limit-order.utils';
+import {compactSignature, setN,} from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
-import { AbstractSmartcontractFacade } from './utils/abstract-facade';
+import {AbstractSmartcontractFacade} from './utils/abstract-facade';
 import {Series} from "./model/series-nonce-manager.model";
 
 
-export type TakerTraits = string;
-// todo move into model
 export interface FillOrderParamsWithTakerTraits {
     order: LimitOrder;
     signature: LimitOrderSignature;
@@ -56,9 +52,8 @@ export class LimitOrderProtocolFacade
 
     fillLimitOrderWithMakingAmount(
         params: Omit<FillOrderParamsWithTakerTraits, 'takerTraits'>,
-        makingAmount: string | bigint,
     ): string {
-        const takerTraits = fillWithMakingAmount(BigInt(makingAmount));
+        const takerTraits = fillWithMakingAmount(BigInt(params.amount));
         return this.fillLimitOrder({
             ...params,
             takerTraits,
