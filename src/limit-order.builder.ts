@@ -33,6 +33,7 @@ import {
     SERIES_SHIFT
 } from "./utils/maker-traits.const";
 import {BaseLimitOrderBuilder} from "./base-limit-order.builder";
+import {generateSalt} from './utils/generate-salt';
 
 export function generateOrderSalt(): string {
     return Math.round(Math.random() * Date.now()) + '';
@@ -152,7 +153,8 @@ export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
             takerAsset,
             makingAmount,
             takingAmount,
-            makerTraits = LimitOrderBuilder.buildMakerTraits()
+            makerTraits = LimitOrderBuilder.buildMakerTraits(),
+            salt = generateSalt(),
         }: LimitOrderData,
         {
             makerAssetSuffix = '0x',
@@ -186,7 +188,7 @@ export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
             extension += BigInt(offsets).toString(16).padStart(64, '0') + allInteractionsConcat;
         }
 
-        let salt = BigInt(1);
+        salt = BigInt(salt);
         // if extension exists - put its hash to salt and set flag
         if (trim0x(extension).length > 0) {
             salt = BigInt(Web3.utils.keccak256(extension))

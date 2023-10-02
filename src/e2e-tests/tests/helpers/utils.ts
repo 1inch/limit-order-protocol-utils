@@ -167,7 +167,7 @@ export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
 
 export async function getSignedOrder(
     wallet: SignerWithAddress,
-    orderData: LimitOrderData,
+    orderData: Omit<LimitOrderData, 'salt'>,
     {
         chainId,
         verifyingContract,
@@ -175,7 +175,10 @@ export async function getSignedOrder(
     extensionData?: ExtensionParamsWithCustomData,
 ): Promise<{ order: LimitOrderWithExtension, signature: string, orderHash: string }> {
     const builder = getOrderBuilder(wallet);
-    const order = builder.buildLimitOrder(orderData, extensionData);
+    const order = builder.buildLimitOrder({
+        ...orderData,
+        salt: '1',
+    }, extensionData);
 
     const typedData = builder.buildLimitOrderTypedData(
         order.order, chainId, verifyingContract

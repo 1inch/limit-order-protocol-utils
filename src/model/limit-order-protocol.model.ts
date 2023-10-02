@@ -28,6 +28,7 @@ export interface LimitOrderData {
     makingAmount: string,
     takingAmount: string,
     makerTraits?: bigint | string,
+    salt?: string | bigint,
 }
 
 export type LimitOrderDataLegacy = {
