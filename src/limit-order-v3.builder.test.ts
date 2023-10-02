@@ -34,7 +34,7 @@ describe('LimitOrderV3Builder - for build new limit order', () => {
             const dataHash =
                 '7cb7e268d5a5f0d8da9a5904a0084b3c4f17a7826413e83d69784a50d4154878';
 
-            const { interactions, offsets } = limitOrderBuilder.packInteractions({
+            const { interactions, offsets } = LimitOrderV3Builder.packInteractions({
                 makerAssetData: '0xf0',
                 takerAssetData: '0xf1',
                 getMakingAmount: '0xf2',
@@ -84,7 +84,7 @@ describe('LimitOrderV3Builder - for build new limit order', () => {
         });
 
         it('buildLimitOrderHash() must create a hash of order with 0x prefix', () => {
-            const { interactions, offsets } = LimitOrderBuilder.packInteractionsLegacy({
+            const { interactions, offsets } = LimitOrderV3Builder.packInteractions({
                 makerAssetData: '0xf0',
                 takerAssetData: '0xf1',
                 getMakingAmount: '0xf2',
@@ -147,7 +147,7 @@ describe('LimitOrderV3Builder - for build new limit order', () => {
 
     describe("packInteractions", () => {
             it("should pack", () => {
-                const { offsets, interactions } = limitOrderBuilder.packInteractions(largeInteractions);
+                const { offsets, interactions } = LimitOrderV3Builder.packInteractions(largeInteractions);
 
                 expect(offsets).toBe(largeResult.offsets);
                 expect(interactions).toBe(largeResult.interactions);

@@ -5,7 +5,6 @@ import {
 import {
     ExtensionParams,
     ExtensionParamsWithCustomData,
-    InteractionsV3,
     LimitOrder,
     LimitOrderData,
     LimitOrderInteractions,
@@ -75,31 +74,6 @@ export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
             takerAssetSuffix,
             makingAmountGetter,
             takingAmountGetter,
-            predicate,
-            permit,
-            preInteraction,
-            postInteraction,
-        ];
-
-        const { offsets, data: interactions } = this.joinStaticCalls(allInteractions);
-        return { offsets: ZX + offsets.toString(16), interactions };
-    }
-
-    static packInteractionsLegacy({
-                                makerAssetData = ZX,
-                                takerAssetData = ZX,
-                                getMakingAmount = ZX,
-                                getTakingAmount = ZX,
-                                predicate = ZX,
-                                permit = ZX,
-                                preInteraction = ZX,
-                                postInteraction = ZX,
-                            }: Partial<InteractionsV3>): LimitOrderInteractions {
-        const allInteractions = [
-            makerAssetData,
-            takerAssetData,
-            getMakingAmount,
-            getTakingAmount,
             predicate,
             permit,
             preInteraction,

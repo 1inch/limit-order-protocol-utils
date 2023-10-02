@@ -27,7 +27,7 @@ export class LimitOrderV3Builder extends BaseLimitOrderBuilder<LimitOrderLegacy>
         )
     }
 
-    packInteractions({
+    static packInteractions({
                                       makerAssetData = ZX,
                                       takerAssetData = ZX,
                                       getMakingAmount = ZX,
@@ -75,7 +75,7 @@ export class LimitOrderV3Builder extends BaseLimitOrderBuilder<LimitOrderLegacy>
         const makerAssetData = ZX;
         const takerAssetData = ZX;
 
-        const { offsets, interactions } = this.packInteractions({
+        const { offsets, interactions } = LimitOrderV3Builder.packInteractions({
             makerAssetData,
             takerAssetData,
             getMakingAmount,
