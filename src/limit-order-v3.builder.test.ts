@@ -1,5 +1,4 @@
 import {LimitOrderDecoder} from './limit-order.decoder';
-import {LimitOrderBuilder} from './limit-order.builder';
 import {LimitOrderLegacy} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
