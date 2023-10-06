@@ -149,7 +149,8 @@ type FacadeViewCallMethods = Pick<
     'epoch' |
     'remainingInvalidatorForOrder' |
     'checkPredicate' |
-    'rawRemainingInvalidatorForOrder'
+    'rawRemainingInvalidatorForOrder' |
+    'orderHash'
 >;
 type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
 

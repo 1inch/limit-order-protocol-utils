@@ -200,6 +200,16 @@ export class LimitOrderProtocolFacade
         return Promise.resolve(hex);
     }
 
+    orderHash(order: LimitOrder): Promise<string> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.hashOrder,
+            [
+                order
+            ]);
+
+        return this.makeViewCall(calldata);
+    }
+
     private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
         return compactSignature(signature);
     }

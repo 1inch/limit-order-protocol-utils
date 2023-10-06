@@ -210,6 +210,7 @@ export enum LimitOrderProtocolMethods {
     checkPredicate = 'checkPredicate',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',
+    hashOrder = 'hashOrder',
     and = 'and',
     or = 'or',
     eq = 'eq',

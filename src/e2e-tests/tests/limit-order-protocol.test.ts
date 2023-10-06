@@ -294,6 +294,34 @@ describe('LimitOrderProtocol',  () => {
         });
     });
 
+    describe('orderHash should return correct hash', function () {
+        const deployContractsAndInit = async function () {
+            const { dai, weth, swap, chainId } = await deploySwapTokens();
+            await initContracts(dai, weth, swap);
+            return { dai, weth, swap, chainId };
+        };
+
+        it('should fill with correct taker', async function () {
+            const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
+
+            const { order,, orderHash } = await getSignedOrder(addr1, {
+                makerAsset: dai.address,
+                takerAsset: weth.address,
+                makingAmount: '1',
+                takingAmount: '1',
+                maker: addr1.address,
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: addr.address }),
+            }, { chainId, verifyingContract: swap.address });
+
+
+            const orderHashFromViewCall = await getFacadeViewCall('orderHash', [
+                order.order
+            ], addr, chainId, swap);
+
+            expect(orderHash).to.equal(orderHashFromViewCall);
+        });
+    });
+
     describe('Order Cancelation', function () {
         const deployContractsAndInit = async function () {
             const { dai, weth, swap, chainId } = await deploySwapTokens();
