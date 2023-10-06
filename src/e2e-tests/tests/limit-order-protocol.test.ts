@@ -304,7 +304,7 @@ describe('LimitOrderProtocol',  () => {
         it('should fill with correct taker', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
-            const { order,, orderHash } = await getSignedOrder(addr1, {
+            const { order, orderHash } = await getSignedOrder(addr1, {
                 makerAsset: dai.address,
                 takerAsset: weth.address,
                 makingAmount: '1',
