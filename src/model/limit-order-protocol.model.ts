@@ -1,4 +1,4 @@
-import {LimitOrderPredicateCallData} from '../limit-order-predicate.builder';
+import {LimitOrderPredicateCallData} from "../limit-order-predicate.builder";
 
 export enum ChainId {
     etherumMainnet = 1,
@@ -19,10 +19,19 @@ export type LimitOrderSignature = string;
 
 export type LimitOrderHash = string;
 
-// RFQOrderData.expiresInTimestamp | RFQOrderData.id
-export type RFQOrderInfo = string;
 
 export interface LimitOrderData {
+    maker: Address,
+    receiver?: Address,
+    makerAsset: Address,
+    takerAsset: Address,
+    makingAmount: string,
+    takingAmount: string,
+    makerTraits?: bigint | string,
+    salt?: string | bigint,
+}
+
+export type LimitOrderDataLegacy = {
     makerAddress: string;
     receiver?: string; // Optional, by default = ZERO_ADDRESS
     allowedSender?: string; // Optional, by default = ZERO_ADDRESS
@@ -37,29 +46,50 @@ export interface LimitOrderData {
     preInteraction?: string;
     postInteraction?: string;
     salt?: string;
+};
+
+export type ExtensionParamsWithCustomData = Partial<ExtensionParams> & {
+    customData?: string;
 }
 
-export interface RFQOrderData {
-    // Index number of RFQ limit order. Example: 1
-    id: number;
-    wrapEth?: boolean;
-    // Timestamp when the RFQ limit order will expire (seconds). Example: 1623166102
-    expiresInTimestamp: number;
-    makerAssetAddress: string;
-    takerAssetAddress: string;
-    makingAmount: string;
-    takingAmount: string;
-    makerAddress: string;
-    /**
-     * Formerly takerAddress
-     */
-    allowedSender?: string; // Optional, by default = ZERO_ADDRESS
+export interface ExtensionParams {
+    makerAssetSuffix: string;
+    takerAssetSuffix: string;
+    makingAmountGetter: string;
+    takingAmountGetter: string;
+    predicate: string;
+    permit: string;
+    preInteraction: string;
+    postInteraction: string;
 }
+
+export type Address = string;
+
+export type MakerTraits = string;
 
 /**
  * Compatible with EIP712Object
  */
 export type LimitOrder = {
+    salt: string;
+    maker: Address; // maker address
+    receiver: Address;
+    makerAsset: Address; // maker asset address
+    takerAsset: Address; // taker asset address
+    makingAmount: string;
+    takingAmount: string;
+    makerTraits: MakerTraits;
+}
+
+export type LimitOrderWithExtension = {
+    order: LimitOrder;
+    extension: string;
+}
+
+/**
+ * Compatible with EIP712Object
+ */
+export type LimitOrderLegacy = {
     salt: string;
     makerAsset: string; // maker asset address
     takerAsset: string; // taker asset address
@@ -90,7 +120,7 @@ export type Nonce = number | bigint;
  */
 export type PredicateTimestamp = number | bigint;
 
-export const InteractionsFields = {
+export const InteractionsFieldsV3 = {
     makerAssetData: 0,
     takerAssetData: 1,
     getMakingAmount: 2,
@@ -102,45 +132,93 @@ export const InteractionsFields = {
 // cuz enum has numeric keys also
 } as const;
 
+export const InteractionsFields = {
+    makerAssetSuffix: 0,
+    takerAssetSuffix: 1,
+    makingAmountGetter: 2,
+    takingAmountGetter: 3,
+    predicate: 4,
+    permit: 5,
+    preInteraction: 6,
+    postInteraction: 7
+} as const;
+
+export interface ParsedMakerTraits {
+    allowedSender: Address;
+    shouldCheckEpoch: boolean;
+    allowPartialFill: boolean;
+    allowPriceImprovement: boolean;
+    allowMultipleFills: boolean;
+    usePermit2: boolean;
+    unwrapWeth: boolean;
+    expiry: number;
+    nonce: bigint;
+    series: bigint;
+    hasExtension: boolean;
+}
+
 export type InteractionName = keyof typeof InteractionsFields;
 
 export type Interactions = {
     [key in InteractionName]: string;
 };
 
-export interface RFQOrder {
-    info: RFQOrderInfo;
-    makerAsset: string;
-    takerAsset: string;
-    maker: string;
-    allowedSender: string;
-    makingAmount: string;
-    takingAmount: string;
+export interface UnpackedExtension {
+    interactions: Interactions;
+    customData: string;
+}
+
+export type InteractionV3Name = keyof typeof InteractionsFieldsV3;
+
+export type InteractionsV3 = {
+    [key in InteractionV3Name]: string;
+};
+
+export type AllInteractions = typeof InteractionsFields | typeof InteractionsFieldsV3;
+
+
+export enum LimitOrderProtocolMethodsV3 {
+    cancelOrder = 'cancelOrder',
+    timestampBelow = 'timestampBelow',
+    timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
+    checkPredicate = 'checkPredicate',
+    increaseNonce = 'increaseNonce',
+    nonce = 'nonce',
+    advanceNonce = 'advanceNonce',
+    and = 'and',
+    or = 'or',
+    eq = 'eq',
+    lt = 'lt',
+    gt = 'gt',
+    nonceEquals = 'nonceEquals',
+    arbitraryStaticCall = 'arbitraryStaticCall',
+    remaining = 'remaining',
 }
 
 export enum LimitOrderProtocolMethods {
     getMakingAmount = 'getMakingAmount',
     getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
-    fillOrder = 'fillOrder',
-    fillOrderToWithPermit = 'fillOrderToWithPermit',
-    fillOrderRFQ = 'fillOrderRFQ',
+    fillOrder = 'fillOrder', // +
+    fillOrderExt = 'fillOrderExt', // +
+    fillOrderToWithPermit = 'fillOrderToWithPermit', // +
     cancelOrder = 'cancelOrder',
-    cancelOrderRFQ = 'cancelOrderRFQ',
-    nonce = 'nonce',
+    increaseEpoch = 'increaseEpoch',
+    remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',
+    rawRemainingInvalidatorForOrder = 'rawRemainingInvalidatorForOrder',
+    epoch = 'epoch',
+    checkPredicate = 'checkPredicate',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',
+    hashOrder = 'hashOrder',
     and = 'and',
     or = 'or',
     eq = 'eq',
     lt = 'lt',
     gt = 'gt',
-    timestampBelow = 'timestampBelow',
-    timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
     nonceEquals = 'nonceEquals',
-    remaining = 'remaining',
     transferFrom = 'transferFrom',
-    checkPredicate = 'checkPredicate',
-    remainingsRaw = 'remainingsRaw',
     simulate = 'simulate',
 }
+
+export type TakerTraits = string;

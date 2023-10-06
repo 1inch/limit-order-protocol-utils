@@ -45,7 +45,7 @@ yarn add @1inch/limit-order-protocol-utils
 
 | Statements                                                               | Branches                                                                    | Functions                                                               | Lines                                                               |
 | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-87.13%25-yellow.svg) | ![Branches](https://img.shields.io/badge/Coverage-89.55%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-83.74%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-87.13%25-yellow.svg) |
+| ![Statements](https://img.shields.io/badge/Coverage-87.48%25-yellow.svg) | ![Branches](https://img.shields.io/badge/Coverage-89.55%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-83.74%25-yellow.svg) | ![Lines](https://img.shields.io/badge/Coverage-87.48%25-yellow.svg) |
 
 <br />
 

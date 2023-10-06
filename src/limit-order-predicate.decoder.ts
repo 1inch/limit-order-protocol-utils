@@ -1,11 +1,8 @@
-
-import { LIMIT_ORDER_PROTOCOL_ABI, ZX } from "./limit-order-protocol.const";
+import { ZX } from "./limit-order-protocol.const";
 import {
-    SERIES_NONCE_MANAGER_ABI,
-    seriesNonceManagerContractAddresses,
+    seriesNonceManagerContractAddresses
 } from "./series-nonce-manager.const";
-import { FunctionFragment, Interface, Result } from '@ethersproject/abi'
-
+import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
 
 import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
@@ -159,19 +156,27 @@ export class LimitOrderPredicateDecoder<
 
     defaultAddress: string;
 
+    private readonly limitOrderABI: AbiItem[];
+
+    private readonly seriesNonceManagerABI: AbiItem[];
+
     constructor(
         private readonly chainId: T,
+        limitOrderABI: AbiItem[],
+        seriesNonceManagerABI: AbiItem[],
         decodableContracts: DecodableContracts<Decoders> = {},
     ) {
+        this.limitOrderABI = limitOrderABI;
+        this.seriesNonceManagerABI = seriesNonceManagerABI;
         this.defaultAddress = limitOrderProtocolAddresses[this.chainId].toLowerCase();
 
         this.decodableInterfaces = {
             [this.defaultAddress]: {
-                iface: new Interface(LIMIT_ORDER_PROTOCOL_ABI),
+                iface: new Interface(this.limitOrderABI),
                 decoders: new LimitOrderPredicateDecoders(),
             },
             [seriesNonceManagerContractAddresses[this.chainId].toLowerCase()]: {
-                iface: new Interface(SERIES_NONCE_MANAGER_ABI),
+                iface: new Interface(this.seriesNonceManagerABI),
                 decoders: new SeriesNonceManagerDecoders(),
             },
 
@@ -227,16 +232,17 @@ export class LimitOrderPredicateDecoder<
 
     // eslint-disable-next-line
     private parseCalldata = (calldata: string, address: Address): PredicateAstNode => {
-        const sig = calldata.substring(0, 10);
+        const selector = calldata.substring(0, 10);
         const decodableIface = this.decodableInterfaces[address];
 
         if (!decodableIface) return new PredicateBytes(calldata, address);
 
         let fn: FunctionFragment;
         try {
-            fn = decodableIface.iface.getFunction(sig);
+            fn = decodableIface.iface.getFunction(selector);
         } catch (e) {
-            console.warn(`Tried to decode unknown function with signature ${sig} on ${address}.`);
+            // eslint-disable-next-line max-len
+            console.warn(`Tried to decode unknown function with signature ${selector} on ${address}.`);
             return new PredicateBytes(calldata, address);
         }
 
@@ -245,8 +251,8 @@ export class LimitOrderPredicateDecoder<
         type decoderKey = keyof typeof decodableIface.decoders
         const decoder = (
             decodableIface.decoders[fn.name as decoderKey]
-            || decodableIface.decoders[sig as decoderKey]
-            || decodableIface.decoders[sig.substring(2) as decoderKey]
+            || decodableIface.decoders[selector as decoderKey]
+            || decodableIface.decoders[selector.substring(2) as decoderKey]
         ) as Decoder;
 
         if (!decoder) return new PredicateBytes(calldata, address);
@@ -270,7 +276,6 @@ export class LimitOrderPredicateDecoder<
         }
 
         return result
-
     }
 
     private parseDecodableCall = (call: DecodableCall): PredicateAstNode => {

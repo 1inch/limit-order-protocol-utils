@@ -4,3 +4,4 @@ coverage
 jest.config.ts
 .eslintrc.js
 test
+src/e2e-tests/smart-contracts/

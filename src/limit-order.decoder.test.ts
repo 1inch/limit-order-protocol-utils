@@ -1,18 +1,77 @@
 import { ZX } from './limit-order-protocol.const';
 import { LimitOrderBuilder } from './limit-order.builder';
 import {LimitOrderDecoder} from './limit-order.decoder';
-import {largeInteractions, largeResult} from './test/mocks';
+import {
+    commonMakerTraits,
+    difficultMakerTraits,
+    extensionWithPermit,
+    extensionWithPermitAndPredicate,
+    extensionWithPermitOnly,
+    extensionWithPredicate,
+    largeInteractions,
+    largeResult,
+    orderWithExtension,
+} from './test/mocks';
 
 describe('LimitOrderDecoder', () => {
 
-    describe('unpackInteractions', () => {
-        describe("unpackInteractions", () => {
+    describe('unpackInteractionsV3', () => {
+        describe("unpackInteractionsV3", () => {
             it("should unpack", () => {
-                const interactions = LimitOrderDecoder.unpackInteractions(largeResult.offsets, largeResult.interactions);
-    
+                const interactions = LimitOrderDecoder.unpackInteractionsV3(largeResult.offsets, largeResult.interactions);
                 expect(interactions).toMatchObject(largeInteractions);
             })
         })
+    });
+
+    describe('unpackInteractions', () => {
+        describe("unpackInteractions", () => {
+            it("should unpack predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPredicate.result);
+            });
+
+            it("should unpack permit", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermit.extension);
+                expect(interactions).toMatchObject(extensionWithPermit.result);
+            });
+
+            it("should unpack permit & predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitAndPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
+            });
+
+            it("should unpack permit", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitOnly.extension);
+                expect(interactions).toMatchObject(extensionWithPermitOnly.result);
+            });
+
+            it("should unpack permit & predicate", () => {
+                const interactions = LimitOrderDecoder.unpackExtension(extensionWithPermitAndPredicate.extension);
+                expect(interactions).toMatchObject(extensionWithPermitAndPredicate.result);
+            });
+        })
+    });
+
+    describe('unpackMakerTraits', () => {
+        it('should unpack default maker traits', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(commonMakerTraits.hex)).toMatchObject(commonMakerTraits.result)
+        });
+
+        it('should unpack with allowedSender and expiry, nonce, series', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(difficultMakerTraits.hex)).toMatchObject(difficultMakerTraits.result)
+        });
+    });
+
+    describe('isSaltCorrect', () => {
+        it('check that the salt contains 160 lowest bits of extension hash', () => {
+            expect(LimitOrderDecoder.isSaltCorrect(orderWithExtension.order.salt, orderWithExtension.extension))
+                .toBeTruthy()
+        });
+
+        it('should unpack with allowedSender and expiry, nonce, series', () => {
+            expect(LimitOrderDecoder.unpackMakerTraits(difficultMakerTraits.hex)).toMatchObject(difficultMakerTraits.result)
+        });
     });
 
     describe("unpackStaticCalls", () => {
@@ -56,6 +115,6 @@ describe('LimitOrderDecoder', () => {
             expect(calls[3].length).toBe(MAX_STRING_SIZE - REST_STRINGS_LENGTH);
             expect(calls[4]).toBe('44444444');
         })
-    
+
     });
 });

@@ -1,6 +1,7 @@
 import { Series } from '../model/series-nonce-manager.model';
 import {ZX} from '../limit-order-protocol.const';
 import { ErrorResponse } from '../limit-order-protocol.facade';
+import {splitSignature} from 'ethers/lib/utils';
 
 export const UINT32_BITS = BigInt(32);
 export const UINT32_BITMASK = BigInt('0xFFFFFFFF');
@@ -16,7 +17,7 @@ export function trim0x(hexString: string): string {
     return hexString;
 }
 
-export function getOffsets(data: string[]): string {
+export function getOffsets(data: string[]): bigint {
     const cumulativeSum = ((sum: bigint) => (value: bigint) => {
         sum += value;
         return sum;
@@ -34,7 +35,6 @@ export function getOffsets(data: string[]): string {
         .reduce((bytesAccumularot, offset, index) => {
             return bytesAccumularot + (BigInt(offset) << ((UINT32_BITS * BigInt(index))));
         }, BigInt(0))
-        .toString();
 }
 
 export function parseInteractionForField(
@@ -47,7 +47,7 @@ export function parseInteractionForField(
     return '0x' + trim0x(interactions).slice(fromByte * 2, toByte * 2)
 }
 
-function getOffsetForInteraction(offsets: bigint, field: number) {
+export function getOffsetForInteraction(offsets: bigint, field: number) {
     const fromByteBN = field === 0
         ? '0'
         : offsets >> BigInt((field - 1) * 32) & UINT32_BITMASK;
@@ -64,9 +64,13 @@ export function getMakingAmountForRFQ(amount: string): string {
     return setN(BigInt(amount), 255, true).toString();
 }
 
-function setN(value: bigint, bitNumber: number, flag: boolean): bigint {
+export function setN(value: bigint, bitNumber: number | bigint, flag: boolean): bigint {
     const bit = flag ? 1 : 0;
     return value | (BigInt(bit) << BigInt(bitNumber));
+}
+
+export function getN(value: bigint, n: bigint): bigint {
+    return (value >> BigInt(n)) & BigInt(1);
 }
 
 export const TIMESTAMP_AND_NOUNCE_SELECTOR = '2cc2878d'; // timestampBelowAndNonceEquals(uint256)
@@ -182,4 +186,12 @@ export function extractWeb3OriginalErrorData(error: ErrorResponse | Error | stri
     }
 
     return null;
+}
+
+export function compactSignature(signature: string): { r: string, vs: string } {
+    const sig = splitSignature(signature);
+    return {
+        r: sig.r,
+        vs: sig._vs,
+    };
 }

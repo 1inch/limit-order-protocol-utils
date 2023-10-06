@@ -1,236 +1,186 @@
 import {
-    LIMIT_ORDER_PROTOCOL_ABI,
     EIP712_DOMAIN,
+    LIMIT_ORDER_PROTOCOL_ABI,
     PROTOCOL_NAME,
     PROTOCOL_VERSION,
-    ZX,
     TypedDataVersion,
 } from './limit-order-protocol.const';
 import {
+    Address,
     LimitOrder,
     LimitOrderProtocolMethods,
-    LimitOrderHash,
+    LimitOrderProtocolMethodsV3,
     LimitOrderSignature,
-    RFQOrderInfo,
-    RFQOrder,
+    MakerTraits,
+    TakerTraits,
 } from './model/limit-order-protocol.model';
-import {BigNumber} from '@ethersproject/bignumber';
-import {
-    extractWeb3OriginalErrorData,
-    getMakingAmountForRFQ,
-    packSkipPermitAndThresholdAmount,
-} from './utils/limit-order.utils';
-import {getABIFor} from './utils/abi';
+import {compactSignature, setN,} from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
-import { AbstractSmartcontractFacade } from './utils/abstract-facade';
+import {AbstractSmartcontractFacade} from './utils/abstract-facade';
+import {Series} from "./model/series-nonce-manager.model";
 
-// todo move into model
-export interface FillOrderParams {
+
+export interface FillOrderParamsWithTakerTraits {
     order: LimitOrder;
     signature: LimitOrderSignature;
-    interaction?: string;
-    makingAmount: string;
-    takingAmount: string;
-    thresholdAmount: string;
-    skipPermit?: boolean;
+    amount: string;
+    takerTraits: TakerTraits;
 }
 
-export type FillLimitOrderWithPermitParams = FillOrderParams & {
-    targetAddress: string;
+export type FillOrderToExtParams = FillOrderParamsWithTakerTraits & {
+    extension: string;
+}
+
+export type FillOrderToWithPermitParams = FillOrderParamsWithTakerTraits & {
+    target: Address;
     permit: string;
+    interaction: string;
 }
 
 export interface ErrorResponse extends Error {
     data: string,
 }
 
+export function fillWithMakingAmount (amount: bigint): string {
+    return setN(amount, 255, true).toString();
+}
+
 export class LimitOrderProtocolFacade
-    extends AbstractSmartcontractFacade<LimitOrderProtocolMethods>
+    extends AbstractSmartcontractFacade<LimitOrderProtocolMethods | LimitOrderProtocolMethodsV3>
 {
     ABI = LIMIT_ORDER_PROTOCOL_ABI;
 
-    fillLimitOrder(params: FillOrderParams): string {
+    fillLimitOrderWithMakingAmount(
+        params: Omit<FillOrderParamsWithTakerTraits, 'takerTraits'>,
+    ): string {
+        const takerTraits = fillWithMakingAmount(BigInt(params.amount));
+        return this.fillLimitOrder({
+            ...params,
+            takerTraits,
+        })
+    }
+
+    fillLimitOrder(params: FillOrderParamsWithTakerTraits): string {
         const {
             order,
-            interaction = ZX,
             signature,
-            makingAmount,
-            takingAmount,
-            thresholdAmount,
-            skipPermit = false,
+            amount,
+            takerTraits
         } = params;
+
+        const { r, vs } = compactSignature(signature);
 
         return this.getContractCallData(LimitOrderProtocolMethods.fillOrder, [
             order,
-            signature,
-            interaction,
-            makingAmount,
-            takingAmount,
-            // skipPermitAndThresholdAmount
-            packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
+            r,
+            vs,
+            amount,
+            takerTraits,
         ]);
     }
 
-    /**
-     * @param params.interaction pre-interaction in fact.
-     * @param params.skipPermit skip maker's permit evaluation if it was evaluated before.
-     * Useful if multiple orders was created with same nonce.
-     * 
-     * Tip: you can just check if allowance exsists and then set it to `true`.
-     */
-    fillOrderToWithPermit(params: FillLimitOrderWithPermitParams): string {
+    fillLimitOrderExt(params: FillOrderToExtParams): string {
         const {
             order,
             signature,
-            makingAmount,
-            takingAmount,
-            interaction = ZX,
-            thresholdAmount,
-            skipPermit = false,
-            targetAddress,
-            permit,
+            amount,
+            takerTraits,
+            extension
         } = params;
 
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.fillOrderToWithPermit,
-            [
-                order,
-                signature,
-                interaction,
-                makingAmount,
-                takingAmount,
-                // skipPermitAndThresholdAmount
-                packSkipPermitAndThresholdAmount(thresholdAmount, skipPermit),
-                targetAddress,
-                permit
-            ],
-        );
-    }
+        const { r, vs } = compactSignature(signature);
 
-    fillRFQOrder(
-        order: RFQOrder,
-        signature: LimitOrderSignature,
-        makingAmount?: string,
-        takingAmount?: string
-    ): string {
-        let flagsAndAmount = '0';
-        if (makingAmount) {
-            flagsAndAmount = getMakingAmountForRFQ(makingAmount);
-        } else if (takingAmount) {
-            flagsAndAmount = takingAmount;
-        }
-
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.fillOrderRFQ,
-            [order, signature, flagsAndAmount]
-        );
-    }
-
-    cancelLimitOrder(order: LimitOrder): string {
-        return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderExt, [
             order,
+            r,
+            vs,
+            amount,
+            takerTraits,
+            extension,
         ]);
     }
 
-    cancelRFQOrder(orderInfo: RFQOrderInfo): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.cancelOrderRFQ,
-            [orderInfo]
-        );
+    fillOrderToWithPermit(params: FillOrderToWithPermitParams): string {
+        const {
+            order,
+            amount,
+            takerTraits,
+            target,
+            permit,
+            interaction,
+        } = params;
+
+        const { r, vs } = this.getCompactSignature(params);
+
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderToWithPermit, [
+            order,
+            r,
+            vs,
+            amount,
+            takerTraits,
+            target,
+            permit,
+            interaction,
+        ]);
     }
 
-    nonce(makerAddress: string): Promise<bigint> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.nonce,
-            [makerAddress]
-        );
-
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .then((nonce) => BigInt(nonce));
+    cancelLimitOrder(makerTraits: MakerTraits, orderHash: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.cancelOrder, [
+            makerTraits,
+            orderHash,
+        ]);
     }
 
-    advanceNonce(count: number): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.advanceNonce,
-            [count]
-        );
+    increaseEpoch(series: Series): string {
+        return this.getContractCallData(LimitOrderProtocolMethods.increaseEpoch, [
+            series
+        ]);
     }
 
-    increaseNonce(): string {
-        return this.getContractCallData(
-            LimitOrderProtocolMethods.increaseNonce
-        );
+    epoch(maker: Address, series: Series): Promise<bigint> {
+        const calldata = this.getContractCallData(LimitOrderProtocolMethods.epoch, [
+            maker,
+            series,
+        ]);
+
+        return this.makeViewCall(calldata, BigInt);
     }
 
-    checkPredicate(order: LimitOrder): Promise<boolean> {
+    async checkPredicate(predicate: string): Promise<boolean> {
         const callData = this.getContractCallData(
             LimitOrderProtocolMethods.checkPredicate,
-            [order]
+            [predicate]
         );
 
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .catch((error) => {
-                console.error(error);
-
-                return false;
-            })
-            .then((result) => {
-                try {
-                    return BigNumber.from(result).toNumber() === 1;
-                } catch (e) {
-                    console.error(e);
-
-                    return false;
-                }
-            });
+        const result = await this.makeViewCall(callData, BigInt);
+        try {
+            return result === BigInt(1);
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
     }
 
-    remaining(orderHash: LimitOrderHash): Promise<BigNumber> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.remaining,
-            [orderHash]
-        );
+    remainingInvalidatorForOrder(maker: Address, orderHash: string): Promise<bigint> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.remainingInvalidatorForOrder,
+            [
+            maker,
+            orderHash,
+        ]);
 
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .then((result) => {
-                const response = this.parseRemainingResponse(result);
-
-                if (response !== null) {
-                    return response;
-                }
-
-                return Promise.reject(result);
-            });
+        return this.makeViewCall(calldata, BigInt);
     }
 
-    simulate(
-        targetAddress: string,
-        data: unknown,
-    ): Promise<{
-        success: boolean,
-        rawResult: string,
-    }> {
-        const callData = this.getContractCallData(
-            LimitOrderProtocolMethods.simulate,
-            [targetAddress, data]
-        );
+    rawRemainingInvalidatorForOrder(maker: Address, orderHash: string): Promise<bigint> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.rawRemainingInvalidatorForOrder,
+            [
+            maker,
+            orderHash,
+        ]);
 
-        return this.providerConnector
-            .ethCall(this.contractAddress, callData)
-            .then(() => {
-                throw new Error('call was successful but revert was expected');
-            })
-            .catch((result) => {
-                const parsedResult = this.parseSimulateTransferError(result);
-                if (parsedResult) {
-                    return parsedResult;
-                }
-
-                throw { success: false, rawResult: result };
-            });
+        return this.makeViewCall(calldata, BigInt);
     }
 
     // https://github.com/1inch/limit-order-protocol/blob/v3-prerelease/test/helpers/eip712.js#L22
@@ -250,42 +200,26 @@ export class LimitOrderProtocolFacade
         return Promise.resolve(hex);
     }
 
-    parseRemainingResponse(response: string): BigNumber | null {
-        if (response.length === 66) {
-            return BigNumber.from(response);
-        }
+    orderHash(order: LimitOrder): Promise<string> {
+        const calldata = this.getContractCallData(
+            LimitOrderProtocolMethods.hashOrder,
+            [
+                order
+            ]);
 
-        return null;
+        return this.makeViewCall(calldata);
     }
 
-    parseSimulateTransferError(
-        error: ErrorResponse | Error | string,
-    ): { success: boolean, rawResult: string } | null {
-        const simulationResultsAbi = getABIFor(LIMIT_ORDER_PROTOCOL_ABI, 'SimulationResults');
-        const revertionData = extractWeb3OriginalErrorData(error);
-
-        if (simulationResultsAbi && revertionData) {
-            const parsed = this.providerConnector.decodeABICallParameters(
-                simulationResultsAbi.inputs as [],
-                revertionData,
-            );
-            const parsedResult = parsed.res as string | null;
-
-            const success = parsed.success as boolean
-                && this.isSimulationResultResponseSuccessfull(parsedResult);
-            
-            return {
-                success,
-                rawResult: parsed.res as string,
-            };
-        }
-
-        return null;
+    private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
+        return compactSignature(signature);
     }
 
-    private isSimulationResultResponseSuccessfull(res: string | null) {
-        if (!res || !res.length) return true;
-
-        return this.providerConnector.decodeABIParameter<boolean>('bool', res)
+    private makeViewCall<T = string>(
+        calldata: string,
+        parser?: (result: string) => T
+    ): Promise<T> {
+        return this.providerConnector
+            .ethCall(this.contractAddress, calldata)
+            .then(parser ? parser : undefined);
     }
 }

@@ -1,9 +1,6 @@
 import {
     LimitOrderProtocolMethods,
-    Nonce,
-    PredicateTimestamp,
 } from './model/limit-order-protocol.model';
-import {ZX} from './limit-order-protocol.const';
 import {LimitOrderProtocolFacade} from './limit-order-protocol.facade';
 import { AbstractSmartcontractFacade } from './utils/abstract-facade';
 import { LimitOrderBuilder } from './limit-order.builder';
@@ -68,51 +65,6 @@ export class LimitOrderPredicateBuilder {
         ]);
     };
 
-    nonce = (makerAddress: string): LimitOrderPredicateCallData => {
-        return this.facade.getContractCallData(
-            LimitOrderProtocolMethods.nonce,
-            [makerAddress]
-        );
-    }
-
-    nonceEquals = (
-        makerAddress: string,
-        makerNonce: Nonce,
-    ): LimitOrderPredicateCallData => {
-        return this.facade.getContractCallData(
-            LimitOrderProtocolMethods.nonceEquals,
-            [makerAddress, makerNonce]
-        );
-    };
-
-    /**
-     * @param timestamp seconds unit
-     */
-    timestampBelow = (timestamp: PredicateTimestamp): LimitOrderPredicateCallData => {
-        return this.facade.getContractCallData(
-            LimitOrderProtocolMethods.timestampBelow,
-            [ZX + timestamp.toString(16)]
-        );
-    };
-
-    /**
-     * @param timestamp seconds unit
-     */
-    timestampBelowAndNonceEquals = (
-        timestamp: PredicateTimestamp,
-        nonce: Nonce,
-        address: string,
-    ): LimitOrderPredicateCallData => {
-        const predicateValue = BigInt(address)
-            + (BigInt(nonce) << BigInt(160))
-            + (BigInt(timestamp) << BigInt(208));
-
-        return this.facade.getContractCallData(
-            LimitOrderProtocolMethods.timestampBelowAndNonceEquals,
-            [ZX + predicateValue.toString(16)]
-        );
-    }
-
     arbitraryStaticCall = (
         target: string | AbstractSmartcontractFacade<string>,
         callData: string
@@ -135,6 +87,4 @@ export class LimitOrderPredicateBuilder {
             callData,
         ]);
     };
-
-    
 }

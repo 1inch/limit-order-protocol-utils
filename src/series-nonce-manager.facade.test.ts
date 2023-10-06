@@ -1,7 +1,7 @@
 
 import { SeriesNonceManagerFacade } from "./series-nonce-manager.facade";
 import { ChainId } from "./model/limit-order-protocol.model";
-import { BETA_CONTRACT_ADDRESSES, mocksForChain } from "./test/helpers";
+import {BETA_CONTRACT_ADDRESSES, mocksForV3Chain} from "./test/helpers";
 import { NonceSeriesV2 } from "./model/series-nonce-manager.model";
 import { SeriesNonceManagerPredicateBuilder } from "./series-nonce-manager-predicate.builder";
 
@@ -11,12 +11,12 @@ describe("SeriesNonceManagerFacade", () => {
 
     let seriesNonceManagerFacade: SeriesNonceManagerFacade;
     let seriesNonceManagerPredicateBuilder: SeriesNonceManagerPredicateBuilder;
-    
+
 
     beforeEach(() => {
         const chainId = ChainId.etherumMainnet;
-        
-        const mocks = mocksForChain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
+
+        const mocks = mocksForV3Chain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
         seriesNonceManagerFacade = mocks.seriesNonceManagerFacade;
         seriesNonceManagerPredicateBuilder = mocks.seriesNonceManagerPredicateBuilder;
     });
@@ -42,7 +42,7 @@ describe("SeriesNonceManagerFacade", () => {
     describe("web3 calls", () => {
         it("nonce", async () => {
             const nonce = await seriesNonceManagerFacade.getNonce(NonceSeriesV2.LimitOrderV3, walletAddress);
-    
+
             expect(nonce).toBe(4n);
         });
     });
