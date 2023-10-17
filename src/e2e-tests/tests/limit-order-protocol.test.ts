@@ -1,5 +1,4 @@
 import {
-    buildTakerTraits,
     fillWithMakingAmount,
     getFacadeTx,
     getFacadeViewCall,
@@ -20,6 +19,7 @@ import {
     SignerWithAddress,
 } from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
 import {Contract} from "ethers";
+import {buildTakerTraits} from "../../utils/build-taker-traits";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
