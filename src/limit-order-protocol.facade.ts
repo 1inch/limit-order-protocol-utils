@@ -18,7 +18,6 @@ import {compactSignature,} from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import {AbstractSmartcontractFacade} from './utils/abstract-facade';
 import {Series} from "./model/series-nonce-manager.model";
-import {fillWithMakingAmount} from "./e2e-tests/tests/helpers/utils";
 import {solidityPack} from "ethers/lib/utils";
 
 
@@ -194,10 +193,6 @@ export class LimitOrderProtocolFacade
             ]);
 
         return this.makeViewCall(calldata);
-    }
-
-    private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
-        return compactSignature(signature);
     }
 
     private makeViewCall<T = string>(

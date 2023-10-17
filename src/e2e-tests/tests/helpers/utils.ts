@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import {Contract, utils} from 'ethers'
 import {EIP712TypedData} from "../../../model/eip712.model";
 import {setN, trim0x} from "../../../utils/limit-order.utils";
 import {
@@ -208,7 +208,7 @@ export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
     txParams: Parameters<FacadeViewCallMethods[M]>,
     filler: SignerWithAddress,
     chainId: number,
-    swap,
+    swap: Contract,
 ): ReturnType<FacadeViewCallMethods[M]> {
     const facade = getOrderFacade(swap.address, chainId, filler);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
