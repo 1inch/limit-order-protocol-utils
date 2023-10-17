@@ -1,6 +1,5 @@
 import {
     buildTakerTraits,
-    compactSignature,
     fillWithMakingAmount,
     getFacadeTx,
     getFacadeViewCall,
