@@ -1,4 +1,5 @@
 import {
+    buildTakerTraits,
     compactSignature,
     fillWithMakingAmount,
     getFacadeTx,
@@ -6,7 +7,6 @@ import {
     getOrderFacade,
     getPredicateBuilder,
     getSignedOrder,
-    skipMakerPermit,
 } from './helpers/utils';
 import { ether } from './helpers/utils';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
@@ -20,6 +20,7 @@ import {ZX} from "../../limit-order-protocol.const";
 import {
     SignerWithAddress,
 } from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
+import {Contract} from "ethers";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
@@ -30,7 +31,7 @@ describe('LimitOrderProtocol',  () => {
         [addr, addr1] = await ethers.getSigners();
     });
 
-    async function initContracts(dai, weth, swap) {
+    async function initContracts(dai: Contract, weth: Contract, swap: Contract) {
         await dai.mint(addr1.address, ether('1000000'));
         await dai.mint(addr.address, ether('1000000'));
         await weth.deposit({ value: ether('100') });
@@ -156,12 +157,12 @@ describe('LimitOrderProtocol',  () => {
             // aa3eef95 - is a decoded RemainingInvalidatedOrder error
             expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
 
-            await getFacadeTx('fillLimitOrder', {
+            await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '1',
                 takerTraits: fillWithMakingAmount(BigInt(1))
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
                 addr1.address,
@@ -170,12 +171,12 @@ describe('LimitOrderProtocol',  () => {
 
             expect(remainingAmount).to.equal(BigInt(2));
 
-            await getFacadeTx('fillLimitOrder', {
+            await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '2',
                 takerTraits: fillWithMakingAmount(BigInt(2))
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
                 addr1.address,
@@ -204,12 +205,12 @@ describe('LimitOrderProtocol',  () => {
             // aa3eef95 - is a decoded RemainingInvalidatedOrder error
             expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
 
-            await getFacadeTx('fillLimitOrder', {
+            await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '1',
                 takerTraits: fillWithMakingAmount(BigInt(1))
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
                 addr1.address,
@@ -218,12 +219,12 @@ describe('LimitOrderProtocol',  () => {
 
             expect(remainingAmount).to.equal(BigInt(2));
 
-            await getFacadeTx('fillLimitOrder', {
+            await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '2',
                 takerTraits: fillWithMakingAmount(BigInt(2))
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
                 addr1.address,
@@ -282,12 +283,12 @@ describe('LimitOrderProtocol',  () => {
             }, { chainId, verifyingContract: swap.address });
 
 
-            const fillTx = getFacadeTx('fillLimitOrder', {
+            const fillTx = getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '1',
                 takerTraits: fillWithMakingAmount(BigInt(1))
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -363,13 +364,14 @@ describe('LimitOrderProtocol',  () => {
 
         it('should cancel own order', async function () {
             const { swap, chainId, order, orderHash } = await loadFixture(orderCancelationInit);
-            const orderFacade = getOrderFacade(swap.address, chainId, addr1);
 
-            const calldata = orderFacade.cancelLimitOrder(order.order.makerTraits, orderHash);
-            await addr1.sendTransaction({
-                to: swap.address,
-                data: calldata
-            });
+            await getFacadeTx(
+                'cancelLimitOrder',
+                [order.order.makerTraits, orderHash],
+                addr1,
+                chainId,
+                swap,
+            );
 
             const result = await getFacadeViewCall(
                 'remainingInvalidatorForOrder',
@@ -387,7 +389,7 @@ describe('LimitOrderProtocol',  () => {
             const { swap, chainId, order, signature } = await loadFixture(orderWithEpochInit);
 
             await getFacadeTx(
-                'increaseEpoch', BigInt(1), addr1, chainId, swap
+                'increaseEpoch', [BigInt(1)], addr1, chainId, swap
             );
 
             await getFacadeViewCall('epoch', [
@@ -397,12 +399,12 @@ describe('LimitOrderProtocol',  () => {
 
             const fillTx = getFacadeTx(
                 'fillLimitOrder',
-                {
+                [{
                     order: order.order,
                     signature,
                     amount: '2',
                     takerTraits: fillWithMakingAmount(BigInt(2))
-                }, addr, chainId, swap);
+                }], addr, chainId, swap);
 
             await expect(fillTx).to.be.revertedWithCustomError(swap, 'WrongSeriesNonce')
         });
@@ -412,7 +414,7 @@ describe('LimitOrderProtocol',  () => {
 
             await getFacadeTx(
                 'increaseEpoch',
-                0,
+                [BigInt(0)],
                 addr,
                 chainId,
                 swap
@@ -431,9 +433,7 @@ describe('LimitOrderProtocol',  () => {
         const deployContractsAndInit = async function () {
             const { dai, weth, swap, chainId } = await deploySwapTokens();
             await initContracts(dai, weth, swap);
-            const TakerIncreaser = await ethers.getContractFactory('TakerIncreaser');
-            const takerIncreaser = await TakerIncreaser.deploy();
-            return { dai, weth, swap, chainId, takerIncreaser };
+            return { dai, weth, swap, chainId };
         };
 
         it('disallow multiple fills', async function () {
@@ -452,12 +452,12 @@ describe('LimitOrderProtocol',  () => {
 
             const fillTx = getFacadeTx(
                 'fillLimitOrder',
-                {
+                [{
                     order: order.order,
                     amount: '4',
                     takerTraits: fillWithMakingAmount(BigInt(1)),
                     signature,
-                },
+                }],
                 addr,
                 chainId,
                 swap
@@ -468,12 +468,12 @@ describe('LimitOrderProtocol',  () => {
 
             const secondFillTx = getFacadeTx(
                 'fillLimitOrder',
-                {
+                [{
                     order: order.order,
                     amount: '4',
                     takerTraits: fillWithMakingAmount(BigInt(1)),
                     signature,
-                },
+                }],
                 addr,
                 chainId,
                 swap
@@ -499,12 +499,12 @@ describe('LimitOrderProtocol',  () => {
 
             const fillTx = getFacadeTx(
         'fillLimitOrder',
-                {
+                [{
                     order: order.order,
                     amount: '10',
                     signature,
                     takerTraits: fillWithMakingAmount(BigInt(2))
-                },
+                }],
                 addr,
                 chainId,
                 swap,
@@ -583,13 +583,19 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            const tx = await getFacadeTx('fillLimitOrderExt', {
-                order: order.order,
-                amount: '1',
-                signature,
-                takerTraits: '1',
+            const { traits, args } = buildTakerTraits({
+                minReturn: BigInt(1),
                 extension: order.extension,
-            }, addr, chainId, swap);
+            });
+            const tx = await getFacadeTx('fillLimitOrderArgs', [
+                {
+                    order: order.order,
+                    amount: '1',
+                    signature,
+                    takerTraits: traits.toString(),
+                    args,
+                }
+            ], addr, chainId, swap);
 
             await tx.wait();
 
@@ -631,13 +637,17 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            const tx = getFacadeTx('fillLimitOrderExt', {
+            const { traits, args } = buildTakerTraits({
+                minReturn: BigInt(1),
+                extension: order.extension,
+            });
+            const tx = getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 amount: '1',
                 signature,
-                takerTraits: '1',
-                extension: order.extension,
-            }, addr, chainId, swap);
+                takerTraits: traits.toString(),
+                args,
+            }], addr, chainId, swap);
 
             await expect(tx).to.be.revertedWithCustomError(swap, 'PredicateIsNotTrue');
         });
@@ -675,13 +685,17 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            const fillTx = getFacadeTx('fillLimitOrderExt', {
+            const { traits, args } = buildTakerTraits({
+                minReturn: BigInt(1),
+                extension: order.extension,
+            });
+            const fillTx = getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 signature,
-                extension: order.extension,
                 amount: '1',
-                takerTraits: '1'
-            }, addr, chainId, swap);
+                takerTraits: traits.toString(),
+                args: args,
+            }], addr, chainId, swap);
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
         });
@@ -719,13 +733,17 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            const fillTx = await getFacadeTx('fillLimitOrderExt', {
+            const { traits, args } = buildTakerTraits({
+                minReturn: BigInt(1),
+                extension: order.extension,
+            });
+            const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 signature,
-                extension: order.extension,
+                takerTraits: traits.toString(),
+                args: args,
                 amount: '1',
-                takerTraits: '1'
-            }, addr, chainId, swap);
+            }], addr, chainId, swap);
 
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -778,13 +796,17 @@ describe('LimitOrderProtocol',  () => {
                 },
             );
 
-            const fillTx = await getFacadeTx('fillLimitOrderExt', {
+            const { traits, args } = buildTakerTraits({
+                minReturn: BigInt(1),
+                extension: order.extension,
+            });
+            const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 amount: '1',
                 signature,
-                takerTraits: fillWithMakingAmount(BigInt(1)),
-                extension: order.extension,
-            }, addr1, chainId, swap);
+                takerTraits: traits.toString(),
+                args,
+            }], addr1, chainId, swap);
 
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -792,7 +814,7 @@ describe('LimitOrderProtocol',  () => {
     })
 
     describe('Permit', function () {
-        describe('fillOrderToWithPermit', function () {
+        describe('Taker Permit', function () {
             const deployContractsAndInitPermit = async function () {
                 const { dai, weth, swap, chainId } = await deploySwapTokens();
                 await initContracts(dai, weth, swap);
@@ -806,6 +828,7 @@ describe('LimitOrderProtocol',  () => {
                 }, {
                     chainId, verifyingContract: swap.address,
                 });
+                await weth.approve(swap.address, '0');
 
                 return { dai, weth, swap, chainId, order, signature };
             };
@@ -815,47 +838,49 @@ describe('LimitOrderProtocol',  () => {
 
                 const permit = await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1');
 
-                const fillTx = await getFacadeTx('fillOrderToWithPermit', {
+                const { traits, args } = buildTakerTraits({
+                    makingAmount: true,
+                    minReturn: BigInt(1),
+                });
+                const fillTx = await getFacadeTx('permitAndCall', [{
                     order: order.order,
                     signature,
                     amount: '1',
-                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    takerTraits: traits.toString(),
+                    args,
                     permit,
                     interaction: ZX,
                     target: addr.address,
-                }, addr, chainId, swap);
+                    permitToken: weth.address,
+                }], addr, chainId, swap);
 
                 expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
 
-            it('DAI => WETH, permit2 maker', async function () {
-                const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInitPermit);
+            it('DAI => WETH, permit2', async function () {
+                const { dai, weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
 
                 const permit2 = await permit2Contract();
-                await dai.connect(addr1).approve(permit2.address, 1);
-                const permit = await getPermit2(addr1, dai.address, chainId, swap.address, BigInt(1));
+                await weth.approve(permit2.address, 1);
+                const permit = await getPermit2(addr, weth.address, chainId, swap.address, BigInt(1));
 
-                const {order, signature } = await getSignedOrder(addr1, {
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
-                    makingAmount: '1',
-                    takingAmount: '1',
-                    maker: addr1.address,
-                    makerTraits: LimitOrderBuilder.buildMakerTraits({ usePermit2: true }),
-                }, {
-                    chainId, verifyingContract: swap.address,
-                },);
-
-                const fillTx = getFacadeTx('fillOrderToWithPermit', {
+                const { traits, args } = buildTakerTraits({
+                    makingAmount: true,
+                    usePermit2: true,
+                    minReturn: BigInt(1),
+                });
+                const fillTx = getFacadeTx('permitAndCall', [{
                     order: order.order,
                     signature,
                     amount: '1',
-                    takerTraits: fillWithMakingAmount(BigInt(1)),
+                    takerTraits: traits.toString(),
+                    args,
                     permit,
                     interaction: ZX,
                     target: addr.address,
-                }, addr, chainId, swap);
+                    permitToken: dai.address,
+                }], addr, chainId, swap);
 
                 await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
@@ -893,30 +918,41 @@ describe('LimitOrderProtocol',  () => {
             it('maker permit works', async function () {
                 const { dai, weth, swap, order, signature, chainId } = await loadFixture(deployContractsAndInitPermit);
 
-                const fillTx = getFacadeTx('fillLimitOrderExt', {
-                    order: order.order,
+                const { traits, args } = buildTakerTraits({
+                    minReturn: BigInt(1),
                     extension: order.extension,
+                });
+                const fillTx = getFacadeTx('fillLimitOrderArgs', [{
+                    order: order.order,
                     amount: '1',
-                    takerTraits: fillWithMakingAmount(BigInt(1)),
                     signature,
-                }, addr1, chainId, swap);
+                    takerTraits: traits.toString(),
+                    args,
+                }], addr1, chainId, swap);
 
                 await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
                 await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
 
             it('skips order permit flag', async function () {
-                const { dai, weth, swap, order, signature, permit } = await loadFixture(deployContractsAndInitPermit);
+                const { dai, weth, swap, order, signature, permit, chainId } = await loadFixture(deployContractsAndInitPermit);
 
-                const { r, vs } = compactSignature(signature);
                 await addr1.sendTransaction({ to: weth.address, data: '0xd505accf' + permit.substring(42) });
-                // todo facade
-                const filltx = swap.connect(addr1)
-                    .fillOrderExt(
-                        order.order, r, vs, 1, skipMakerPermit(BigInt(0)), order.extension
-                    );
-                await expect(filltx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
-                await expect(filltx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
+
+                const { traits, args } = buildTakerTraits({
+                    minReturn: BigInt(1),
+                    skipMakerPermit: true,
+                    extension: order.extension,
+                });
+                const fillTx = getFacadeTx('fillLimitOrderArgs', [{
+                    order: order.order,
+                    amount: '1',
+                    signature,
+                    takerTraits: traits.toString(),
+                    args,
+                }], addr1, chainId, swap);
+                await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
+                await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
             });
         });
     });
