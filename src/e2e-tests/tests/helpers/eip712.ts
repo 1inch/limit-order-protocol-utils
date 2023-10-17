@@ -1,5 +1,4 @@
 import { cutSelector } from './utils';
-import { ethers } from 'hardhat'
 import {Address} from "../../../model/limit-order-protocol.model";
 import {
     SignerWithAddress,
