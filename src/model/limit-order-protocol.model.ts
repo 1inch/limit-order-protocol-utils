@@ -199,10 +199,10 @@ export enum LimitOrderProtocolMethods {
     getMakingAmount = 'getMakingAmount',
     getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',
-    fillOrder = 'fillOrder', // +
-    fillOrderExt = 'fillOrderExt', // +
-    fillOrderToWithPermit = 'fillOrderToWithPermit', // +
+    fillOrder = 'fillOrder',
+    fillOrderArgs = 'fillOrderArgs',
     cancelOrder = 'cancelOrder',
+    permitAndCall = 'permitAndCall',
     increaseEpoch = 'increaseEpoch',
     remainingInvalidatorForOrder = 'remainingInvalidatorForOrder',
     rawRemainingInvalidatorForOrder = 'rawRemainingInvalidatorForOrder',
@@ -218,7 +218,6 @@ export enum LimitOrderProtocolMethods {
     gt = 'gt',
     nonceEquals = 'nonceEquals',
     transferFrom = 'transferFrom',
-    simulate = 'simulate',
 }
 
 export type TakerTraits = string;

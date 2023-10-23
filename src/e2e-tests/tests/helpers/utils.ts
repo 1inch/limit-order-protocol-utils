@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import {Contract, utils} from 'ethers'
 import {EIP712TypedData} from "../../../model/eip712.model";
 import {setN} from "../../../utils/limit-order.utils";
 import {
@@ -18,6 +18,7 @@ import {
     LimitOrderWithExtension,
 } from "../../../model/limit-order-protocol.model";
 import { ethers } from 'hardhat'
+import {buildTakerTraits} from "../../../utils/build-taker-traits";
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
@@ -44,7 +45,8 @@ export function ether(num: string): BigNumber {
 }
 
 export function fillWithMakingAmount(amount: bigint): string {
-    return setN(amount, 255, true).toString();
+    const result = BigInt(amount) | buildTakerTraits({ makingAmount: true }).traits;
+    return `0x${result.toString(16)}`;
 }
 
 export function skipMakerPermit (amount: bigint): string {
@@ -123,19 +125,20 @@ export function getOrderBuilder(
 
 type FacadeTxMethods = Pick<
     LimitOrderProtocolFacade,
-    'fillLimitOrder' | 'fillLimitOrderExt' | 'fillOrderToWithPermit' | 'increaseEpoch'
+    'fillLimitOrder' | 'fillLimitOrderArgs' | 'permitAndCall' | 'increaseEpoch' | 'cancelLimitOrder'
 >;
 type AllowedFacadeTxMethods = keyof FacadeTxMethods;
 
 export function getFacadeTx<M extends AllowedFacadeTxMethods>(
     method: M,
-    txParams: Parameters<FacadeTxMethods[M]>[0],
+    txParams: Parameters<FacadeTxMethods[M]>,
     filler: SignerWithAddress,
     chainId: number,
     swap,
     ) {
     const facade = getOrderFacade(swap.address, chainId, filler);
-    const callData = (facade as FacadeTxMethods)[method](txParams as never);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const callData = (facade as any)[method](...txParams);
     return filler.sendTransaction({
         to: swap.address,
         data: callData
@@ -159,7 +162,7 @@ export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
     txParams: Parameters<FacadeViewCallMethods[M]>,
     filler: SignerWithAddress,
     chainId: number,
-    swap,
+    swap: Contract,
 ): ReturnType<FacadeViewCallMethods[M]> {
     const facade = getOrderFacade(swap.address, chainId, filler);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

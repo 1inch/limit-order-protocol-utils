@@ -14,10 +14,11 @@ import {
     MakerTraits,
     TakerTraits,
 } from './model/limit-order-protocol.model';
-import {compactSignature, setN,} from './utils/limit-order.utils';
+import {compactSignature,} from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import {AbstractSmartcontractFacade} from './utils/abstract-facade';
 import {Series} from "./model/series-nonce-manager.model";
+import {solidityPack} from "ethers/lib/utils";
 
 
 export interface FillOrderParamsWithTakerTraits {
@@ -27,12 +28,13 @@ export interface FillOrderParamsWithTakerTraits {
     takerTraits: TakerTraits;
 }
 
-export type FillOrderToExtParams = FillOrderParamsWithTakerTraits & {
-    extension: string;
+export type FillOrderArgs = FillOrderParamsWithTakerTraits & {
+    args: string;
 }
 
-export type FillOrderToWithPermitParams = FillOrderParamsWithTakerTraits & {
+export type PermitAndCallParams = FillOrderArgs & {
     target: Address;
+    permitToken: Address;
     permit: string;
     interaction: string;
 }
@@ -41,24 +43,11 @@ export interface ErrorResponse extends Error {
     data: string,
 }
 
-export function fillWithMakingAmount (amount: bigint): string {
-    return setN(amount, 255, true).toString();
-}
 
 export class LimitOrderProtocolFacade
     extends AbstractSmartcontractFacade<LimitOrderProtocolMethods | LimitOrderProtocolMethodsV3>
 {
     ABI = LIMIT_ORDER_PROTOCOL_ABI;
-
-    fillLimitOrderWithMakingAmount(
-        params: Omit<FillOrderParamsWithTakerTraits, 'takerTraits'>,
-    ): string {
-        const takerTraits = fillWithMakingAmount(BigInt(params.amount));
-        return this.fillLimitOrder({
-            ...params,
-            takerTraits,
-        })
-    }
 
     fillLimitOrder(params: FillOrderParamsWithTakerTraits): string {
         const {
@@ -79,49 +68,45 @@ export class LimitOrderProtocolFacade
         ]);
     }
 
-    fillLimitOrderExt(params: FillOrderToExtParams): string {
+    fillLimitOrderArgs(params: FillOrderArgs): string {
         const {
             order,
             signature,
             amount,
             takerTraits,
-            extension
+            args,
         } = params;
 
         const { r, vs } = compactSignature(signature);
 
-        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderExt, [
+
+        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderArgs, [
             order,
             r,
             vs,
             amount,
             takerTraits,
-            extension,
+            args,
         ]);
     }
 
-    fillOrderToWithPermit(params: FillOrderToWithPermitParams): string {
+    permitAndCall(params: PermitAndCallParams): string {
         const {
-            order,
-            amount,
-            takerTraits,
-            target,
             permit,
-            interaction,
+            permitToken,
         } = params;
 
-        const { r, vs } = this.getCompactSignature(params);
+        const packedPermit = solidityPack(
+            ['address', 'bytes'],
+            [permitToken, permit],
+        );
 
-        return this.getContractCallData(LimitOrderProtocolMethods.fillOrderToWithPermit, [
-            order,
-            r,
-            vs,
-            amount,
-            takerTraits,
-            target,
-            permit,
-            interaction,
-        ]);
+        const fillOrderArgsCalldata = this.fillLimitOrderArgs(params);
+
+        return this.getContractCallData(
+            LimitOrderProtocolMethods.permitAndCall,
+            [packedPermit, fillOrderArgsCalldata]
+        );
     }
 
     cancelLimitOrder(makerTraits: MakerTraits, orderHash: string): string {
@@ -208,10 +193,6 @@ export class LimitOrderProtocolFacade
             ]);
 
         return this.makeViewCall(calldata);
-    }
-
-    private getCompactSignature({ signature }: { signature: string }): { r: string, vs: string } {
-        return compactSignature(signature);
     }
 
     private makeViewCall<T = string>(
