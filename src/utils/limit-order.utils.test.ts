@@ -20,7 +20,7 @@ describe("limit-order.utils", () => {
         const mocks = mocksForV3Chain(chainId);
         limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
 
-        jest.spyOn(console, 'error').mockImplementation();
+        jest.jest.spyOn(console, 'error').mockImplementation();
     });
 
     describe("unpackTimestampAndNoncePredicate", () => {

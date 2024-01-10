@@ -38,7 +38,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
         limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
         contractAddress = mocks.contractAddress;
 
-        jest.spyOn(console, 'error').mockImplementation();
+        jest.jest.spyOn(console, 'error').mockImplementation();
     });
 
     describe('cancelLimitOrder', () => {
