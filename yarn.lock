@@ -6380,10 +6380,10 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-istanbul-badges-readme@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/istanbul-badges-readme/-/istanbul-badges-readme-1.2.1.tgz#aea1891f4515ddfe7f62704cba87bd25cccfcce0"
-  integrity sha512-/rXtmpI0bzdmgaeZrutA5vL6c0NikSRRfBmjVxS0yJgU1o5elQARXiFQTiakkxGCrI2vS/k4X6zjGrV+32FJFQ==
+istanbul-badges-readme@^1.8.5:
+  version "1.8.5"
+  resolved "https://registry.npmjs.org/istanbul-badges-readme/-/istanbul-badges-readme-1.8.5.tgz#60ad443a5bf71493bd4a6088a65d1a3739058510"
+  integrity sha512-VEh90ofuufPZIbLeDF2g14wpe0sebhirG0xHooYKpNPYOkGXm6y+HJFotQqIzCg0NmbCnlKnOPL1B2oxG7/piA==
 
 istanbul-lib-coverage@^3.0.0:
   version "3.0.0"
