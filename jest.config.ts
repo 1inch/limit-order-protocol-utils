@@ -2,6 +2,7 @@
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/en/configuration.html
  */
+import {defaults} from 'jest-config';
 
 export default {
     clearMocks: true,
@@ -22,5 +23,6 @@ export default {
     ],
     testPathIgnorePatterns: [
         'src/e2e-tests/'
-    ]
+    ],
+    moduleFileExtensions: [...defaults.moduleFileExtensions],
 };
