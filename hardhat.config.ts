@@ -3,7 +3,6 @@ import "@nomiclabs/hardhat-etherscan";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-dependency-compiler";
 import "hardhat-deploy";
-import "hardhat-gas-reporter";
 import { HardhatUserConfig } from "hardhat/types";
 
 const config: HardhatUserConfig = {
