@@ -66,7 +66,7 @@ describe('LimitOrderV3Builder - for build new limit order', () => {
             const signTypedDataSpy = jest.spyOn(
                 providerConnector,
                 'signTypedData'
-            ).and.callThrough();
+            );
 
             const signature = await limitOrderBuilder.buildOrderSignature(
                 walletAddress,

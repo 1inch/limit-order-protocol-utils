@@ -52,7 +52,7 @@
         "@nomiclabs/hardhat-etherscan": "3.1.7",
         "@openzeppelin/contracts": "4.9.0",
         "@types/jest": "^29.5.11",
-        "@types/prompts": "^2.0.12",
+        "@types/prompts": "^2.4.9",
         "@typescript-eslint/eslint-plugin": "6.18.1",
         "babel-jest": "^29.7.0",
         "chai": "4.3.7",
