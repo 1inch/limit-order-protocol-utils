@@ -4883,7 +4883,7 @@ ethereumjs-util@^7.0.10, ethereumjs-util@^7.1.0:
     ethjs-util "0.1.6"
     rlp "^2.2.4"
 
-ethers@5.7.2, ethers@^5.3.1, ethers@^5.5.3, ethers@^5.6.1, ethers@^5.7.1:
+ethers@5.7.2, ethers@^5.3.1, ethers@^5.6.1, ethers@^5.7.0, ethers@^5.7.1:
   version "5.7.2"
   resolved "https://registry.npmjs.org/ethers/-/ethers-5.7.2.tgz#3a7deeabbb8c030d4126b24f84e525466145872e"
   integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
@@ -5655,10 +5655,10 @@ hardhat-dependency-compiler@1.1.3:
   resolved "https://registry.npmjs.org/hardhat-dependency-compiler/-/hardhat-dependency-compiler-1.1.3.tgz#1e49e23f68878bd713f860c66648a711bc4a4a79"
   integrity sha512-bCDqsOxGST6WkbMvj4lPchYWidNSSBm5CFnkyAex1T11cGmr9otZTGl81W6f9pmrtBXbKCvr3OSuNJ6Q394sAw==
 
-hardhat-deploy@0.11.30:
-  version "0.11.30"
-  resolved "https://registry.npmjs.org/hardhat-deploy/-/hardhat-deploy-0.11.30.tgz#d47203b584446dce8136ac6d0a96fce2827fb532"
-  integrity sha512-FpMP1zSa24NEARVh/vwFCJJa9Gws3SBRZbVIDYMIvleoH3yOwFcdWY68zfGoxrm4kRHNcaiVNAXVFTm0enKR0A==
+hardhat-deploy@0.11.45:
+  version "0.11.45"
+  resolved "https://registry.npmjs.org/hardhat-deploy/-/hardhat-deploy-0.11.45.tgz#bed86118175a38a03bb58aba2ce1ed5e80a20bc8"
+  integrity sha512-aC8UNaq3JcORnEUIwV945iJuvBwi65tjHVDU3v6mOcqik7WAzHVCJ7cwmkkipsHrWysrB5YvGF1q9S1vIph83w==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-signer" "^5.7.0"
@@ -5677,7 +5677,7 @@ hardhat-deploy@0.11.30:
     chokidar "^3.5.2"
     debug "^4.3.2"
     enquirer "^2.3.6"
-    ethers "^5.5.3"
+    ethers "^5.7.0"
     form-data "^4.0.0"
     fs-extra "^10.0.0"
     match-all "^1.2.6"
@@ -5685,12 +5685,13 @@ hardhat-deploy@0.11.30:
     qs "^6.9.4"
     zksync-web3 "^0.14.3"
 
-hardhat-tracer@2.3.2:
-  version "2.3.2"
-  resolved "https://registry.npmjs.org/hardhat-tracer/-/hardhat-tracer-2.3.2.tgz#c972a82974d4db0fbe99d9b809b9c462a79d36a6"
-  integrity sha512-Sw//tVU/Qyng5rKULONIuYpr4yEobjfh5seIaRT8gYXKDo22eUllTMlJEV2ejsZ92X2x+PSWy1/H27aejV31/w==
+hardhat-tracer@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.npmjs.org/hardhat-tracer/-/hardhat-tracer-2.7.0.tgz#af04e5cd7ec2525c24a70634f6d1051252992d03"
+  integrity sha512-H+30jj6bCyX7NfhY7Umbzq535jhi9Wd5fGNli9qWcQ+5iOB477Nm8XdGtPtgOV1vQ7VQzIwKFzoEbqy+BuxTlg==
   dependencies:
     chalk "^4.1.2"
+    debug "^4.3.4"
     ethers "^5.6.1"
 
 hardhat@2.19.4:
