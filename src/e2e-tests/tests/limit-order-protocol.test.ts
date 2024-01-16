@@ -7,38 +7,37 @@ import {
     getSignedOrder,
 } from './helpers/utils';
 import { ether } from './helpers/utils';
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { deployArbitraryPredicate, deploySwapTokens } from './helpers/fixtures';
-import { ethers } from 'hardhat'
 import { expect } from 'chai';
 import {getPermit} from "./helpers/eip712";
 import {getPermit2, permit2Contract, withTarget, } from "@1inch/solidity-utils";
 import {LimitOrderBuilder} from "../../limit-order.builder";
 import {ZX} from "../../limit-order-protocol.const";
-import {
-    SignerWithAddress,
-} from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
-import {Contract} from "ethers";
+import { ethers } from "hardhat"
 import {buildTakerTraits} from "../../utils/build-taker-traits";
+import {Contract} from "ethers";
 
 const getCurrentTime = () => Math.floor(Date.now() / 1000);
 
-describe('LimitOrderProtocol',  () => {
-    let addr: SignerWithAddress, addr1: SignerWithAddress;
+type Signer = Awaited<ReturnType<typeof ethers.getSigners>>[0];
 
-    beforeEach(async function () {
+describe('LimitOrderProtocol',  () => {
+    let addr: Signer, addr1: Signer;
+
+    beforeEach(async () => {
         [addr, addr1] = await ethers.getSigners();
     });
 
     async function initContracts(dai: Contract, weth: Contract, swap: Contract) {
-        await dai.mint(addr1.address, ether('1000000'));
-        await dai.mint(addr.address, ether('1000000'));
+        await dai.mint(await addr1.getAddress(), ether('1000000'));
+        await dai.mint(await addr.getAddress(), ether('1000000'));
         await weth.deposit({ value: ether('100') });
         await weth.connect(addr1).deposit({ value: ether('100') });
-        await dai.approve(swap.address, ether('1000000'));
-        await dai.connect(addr1).approve(swap.address, ether('1000000'));
-        await weth.approve(swap.address, ether('100'));
-        await weth.connect(addr1).approve(swap.address, ether('100'));
+        await dai.approve(await swap.getAddress(), ether('1000000'));
+        await dai.connect(addr1).approve(await swap.getAddress(), ether('1000000'));
+        await weth.approve(await swap.getAddress(), ether('100'));
+        await weth.connect(addr1).approve(await swap.getAddress(), ether('100'));
     }
 
     describe('wip', function () {
@@ -51,24 +50,24 @@ describe('LimitOrderProtocol',  () => {
         it('transferFrom', async function () {
             const { dai } = await loadFixture(deployContractsAndInit);
 
-            await dai.connect(addr1).approve(addr.address, '2');
-            await dai.transferFrom(addr1.address, addr.address, '1');
+            await dai.connect(addr1).approve(await addr.getAddress(), '2');
+            await dai.transferFrom(await addr1.getAddress(), await addr.getAddress(), '1');
         });
 
         it('should not swap with bad signature', async function () {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { order, signature } = await getSignedOrder(addr, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr.address,
+                maker: await addr.getAddress(),
             }, {
-                chainId, verifyingContract: swap.address,
+                chainId, verifyingContract: await swap.getAddress(),
             });
 
-            const facade = getOrderFacade(swap.address, chainId, addr1)
+            const facade = getOrderFacade(await swap.getAddress(), chainId, addr1)
 
             const calldata = facade.fillLimitOrder({
                 order: order.order,
@@ -78,16 +77,16 @@ describe('LimitOrderProtocol',  () => {
             });
 
             const tx = await addr1.sendTransaction({
-                to: swap.address,
+                to: await swap.getAddress(),
                 data: calldata
             });
 
             await tx.wait();
 
-            const makerDai = await dai.balanceOf(addr.address);
-            const takerDai = await dai.balanceOf(addr1.address);
-            const makerWeth = await weth.balanceOf(addr.address);
-            const takerWeth = await weth.balanceOf(addr1.address);
+            const makerDai = await dai.balanceOf(await addr.getAddress());
+            const takerDai = await dai.balanceOf(await addr1.getAddress());
+            const makerWeth = await weth.balanceOf(await addr.getAddress());
+            const takerWeth = await weth.balanceOf(await addr1.getAddress());
             expect(makerDai.toString()).to.equal('999999999999999999999999')
             expect(takerDai.toString()).to.equal('1000000000000000000000001')
             expect(makerWeth.toString()).to.equal('100000000000000000001')
@@ -98,19 +97,19 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({
                     expiry: getCurrentTime() + 3600
                 }),
             }, {
-                chainId, verifyingContract: swap.address,
+                chainId, verifyingContract: await swap.getAddress(),
             });
 
-            const facade = getOrderFacade(swap.address, chainId, addr)
+            const facade = getOrderFacade(await swap.getAddress(), chainId, addr)
 
             const calldata = facade.fillLimitOrder({
                 order: order.order,
@@ -120,16 +119,16 @@ describe('LimitOrderProtocol',  () => {
             });
 
             const tx = await addr.sendTransaction({
-                to: swap.address,
+                to: await swap.getAddress(),
                 data: calldata
             });
 
             await tx.wait();
 
-            const makerDai = await dai.balanceOf(addr1.address);
-            const takerDai = await dai.balanceOf(addr.address);
-            const makerWeth = await weth.balanceOf(addr1.address);
-            const takerWeth = await weth.balanceOf(addr.address);
+            const makerDai = await dai.balanceOf(await addr1.getAddress());
+            const takerDai = await dai.balanceOf(await addr.getAddress());
+            const makerWeth = await weth.balanceOf(await addr1.getAddress());
+            const takerWeth = await weth.balanceOf(await addr.getAddress());
 
             expect(makerDai.toString()).to.equal('999999999999999999999999')
             expect(takerDai.toString()).to.equal('1000000000000000000000001')
@@ -141,20 +140,17 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { signature, order, orderHash } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '3',
                 takingAmount: '3',
-                maker: addr1.address,
-            }, { chainId, verifyingContract: swap.address });
+                maker: await addr1.getAddress(),
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
-            const beforeFillRemaining = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+            await expect(getFacadeViewCall('remainingInvalidatorForOrder', [
+                await addr1.getAddress(),
                 orderHash,
-            ], addr, chainId, swap)
-
-            // aa3eef95 - is a decoded RemainingInvalidatedOrder error
-            expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
+            ], addr, chainId, swap)).to.be.revertedWithCustomError(swap, 'RemainingInvalidatedOrder');
 
             await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
@@ -164,7 +160,7 @@ describe('LimitOrderProtocol',  () => {
             }], addr, chainId, swap);
 
             const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+                await addr1.getAddress(),
                 orderHash,
             ], addr, chainId, swap);
 
@@ -178,7 +174,7 @@ describe('LimitOrderProtocol',  () => {
             }], addr, chainId, swap);
 
             const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+                await addr1.getAddress(),
                 orderHash,
             ], addr, chainId, swap);
 
@@ -189,20 +185,17 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { signature, order, orderHash } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '3',
                 takingAmount: '3',
-                maker: addr1.address,
-            }, { chainId, verifyingContract: swap.address });
+                maker: await addr1.getAddress(),
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
-            const beforeFillRemaining = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+            await expect(getFacadeViewCall('remainingInvalidatorForOrder', [
+                await addr1.getAddress(),
                 orderHash,
-            ], addr, chainId, swap);
-
-            // aa3eef95 - is a decoded RemainingInvalidatedOrder error
-            expect(beforeFillRemaining).to.equal(BigInt('0xaa3eef95'))
+            ], addr, chainId, swap)).to.be.revertedWithCustomError(swap, 'RemainingInvalidatedOrder');
 
             await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
@@ -212,7 +205,7 @@ describe('LimitOrderProtocol',  () => {
             }], addr, chainId, swap);
 
             const remainingAmount = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+                await addr1.getAddress(),
                 orderHash,
             ], addr, chainId, swap);
 
@@ -226,7 +219,7 @@ describe('LimitOrderProtocol',  () => {
             }], addr, chainId, swap);
 
             const remainingAfterFullFill = await getFacadeViewCall('remainingInvalidatorForOrder', [
-                addr1.address,
+                await addr1.getAddress(),
                 orderHash,
             ], addr, chainId, swap);
 
@@ -238,15 +231,15 @@ describe('LimitOrderProtocol',  () => {
 
 
             const { order, signature } = await getSignedOrder(addr1,{
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({ expiry: 0xff0000 }),
-            }, { chainId, verifyingContract: swap.address });
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
-            const facade = getOrderFacade(swap.address, chainId, addr);
+            const facade = getOrderFacade(await swap.getAddress(), chainId, addr);
 
             const calldata = facade.fillLimitOrder({
                 order: order.order,
@@ -256,7 +249,7 @@ describe('LimitOrderProtocol',  () => {
             });
 
             await expect(addr.sendTransaction({
-                to: swap.address,
+                to: await swap.getAddress(),
                 data: calldata
             })).to.be.revertedWithCustomError(swap, 'OrderExpired');
         });
@@ -273,16 +266,16 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr1.address,
-                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: addr.address }),
-            }, { chainId, verifyingContract: swap.address });
+                maker: await addr1.getAddress(),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: await addr.getAddress() }),
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
 
-            const fillTx = getFacadeTx('fillLimitOrder', [{
+            const fillTx = await getFacadeTx('fillLimitOrder', [{
                 order: order.order,
                 signature,
                 amount: '1',
@@ -305,13 +298,13 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { order, orderHash } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr1.address,
-                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: addr.address }),
-            }, { chainId, verifyingContract: swap.address });
+                maker: await addr1.getAddress(),
+                makerTraits: LimitOrderBuilder.buildMakerTraits({ allowedSender: await addr.getAddress() }),
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
 
             const orderHashFromViewCall = await getFacadeViewCall('orderHash', [
@@ -332,13 +325,13 @@ describe('LimitOrderProtocol',  () => {
         const orderCancelationInit = async function () {
             const { dai, weth, swap, chainId } = await deployContractsAndInit();
             const { order, orderHash, signature } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await addr.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: true }),
-            }, { chainId, verifyingContract: swap.address });
+            }, { chainId, verifyingContract: await swap.getAddress() });
             return { dai, weth, swap, chainId, order, orderHash, signature };
         };
 
@@ -346,18 +339,18 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await deployContractsAndInit();
 
             const { order, orderHash, signature } = await getSignedOrder(addr1,{
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await addr.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '2',
                 takingAmount: '2',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({
                     allowMultipleFills: true,
                     shouldCheckEpoch: true,
                     nonce: BigInt(0),
                     series: BigInt(1),
                 }),
-            }, { chainId, verifyingContract: swap.address });
+            }, { chainId, verifyingContract: await swap.getAddress() });
             return { dai, weth, swap, chainId, order, orderHash, signature };
         };
 
@@ -374,7 +367,7 @@ describe('LimitOrderProtocol',  () => {
 
             const result = await getFacadeViewCall(
                 'remainingInvalidatorForOrder',
-                [addr1.address, orderHash],
+                [await addr1.getAddress(), orderHash],
                 addr,
                 chainId,
                 swap,
@@ -392,7 +385,7 @@ describe('LimitOrderProtocol',  () => {
             );
 
             await getFacadeViewCall('epoch', [
-                addr1.address,
+                await addr1.getAddress(),
                 BigInt(1),
             ], addr1, chainId, swap);
 
@@ -420,7 +413,7 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const epochViewCall = await getFacadeViewCall(
-                'epoch', [addr.address, BigInt(0)], addr, chainId, swap,
+                'epoch', [await addr.getAddress(), BigInt(0)], addr, chainId, swap,
             );
 
             expect(epochViewCall).to.equal(epochViewCall);
@@ -441,15 +434,15 @@ describe('LimitOrderProtocol',  () => {
             // Swap:  4 DAI => 1 WETH
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '10',
                 takingAmount: '2',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({ allowMultipleFills: false }),
-            }, { chainId, verifyingContract: swap.address });
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
-            const fillTx = getFacadeTx(
+            const fillTx = await getFacadeTx(
                 'fillLimitOrder',
                 [{
                     order: order.order,
@@ -488,15 +481,15 @@ describe('LimitOrderProtocol',  () => {
             // Swap:  10 DAI => 2 ETH
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: dai.address,
-                takerAsset: weth.address,
+                makerAsset: await dai.getAddress(),
+                takerAsset: await weth.getAddress(),
                 makingAmount: '10',
                 takingAmount: '2',
-                maker: addr1.address,
+                maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({ unwrapWeth: true }),
-            }, { chainId, verifyingContract: swap.address });
+            }, { chainId, verifyingContract: await swap.getAddress() });
 
-            const fillTx = getFacadeTx(
+            const fillTx = await getFacadeTx(
         'fillLimitOrder',
                 [{
                     order: order.order,
@@ -528,11 +521,11 @@ describe('LimitOrderProtocol',  () => {
             const {  swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr1
+                await swap.getAddress(), chainId, addr1
             )
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -552,11 +545,11 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr1
+                await swap.getAddress(), chainId, addr1
             );
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -567,15 +560,15 @@ describe('LimitOrderProtocol',  () => {
 
             const { order, signature} = await getSignedOrder(addr1,
                 {
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
+                    makerAsset: await dai.getAddress(),
+                    takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr1.address,
+                    maker: await addr1.getAddress(),
                 },
                 {
                     chainId,
-                    verifyingContract: swap.address,
+                    verifyingContract: await swap.getAddress(),
                 },
                 {
                     predicate,
@@ -603,14 +596,14 @@ describe('LimitOrderProtocol',  () => {
         });
 
         it('arbitrary call predicate should fail', async function () {
-            const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
+            const { weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr1
+                await swap.getAddress(), chainId, addr1
             );
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -621,15 +614,15 @@ describe('LimitOrderProtocol',  () => {
 
             const { order, signature } = await getSignedOrder(addr1,
                 {
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
+                    makerAsset: await addr.getAddress(),
+                    takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr1.address,
+                    maker: await addr1.getAddress(),
                 },
                 {
                     chainId,
-                    verifyingContract: swap.address,
+                    verifyingContract: await swap.getAddress(),
                 },
                 {
                     predicate,
@@ -637,7 +630,7 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
+                threshold: BigInt(1),
                 extension: order.extension,
             });
             const tx = getFacadeTx('fillLimitOrderArgs', [{
@@ -655,11 +648,11 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr1
+                await swap.getAddress(), chainId, addr1
             );
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -670,14 +663,14 @@ describe('LimitOrderProtocol',  () => {
 
             const { order, signature } = await getSignedOrder(addr1,
                 {
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
+                    makerAsset: await dai.getAddress(),
+                    takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr1.address,
+                    maker: await addr1.getAddress(),
                 },
                 {
-                    chainId, verifyingContract: swap.address,
+                    chainId, verifyingContract: await swap.getAddress(),
                 },
                 {
                     predicate,
@@ -688,7 +681,7 @@ describe('LimitOrderProtocol',  () => {
                 minReturn: BigInt(1),
                 extension: order.extension,
             });
-            const fillTx = getFacadeTx('fillLimitOrderArgs', [{
+            const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 signature,
                 amount: '1',
@@ -703,11 +696,11 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr1
+                await swap.getAddress(), chainId, addr1
             );
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -718,14 +711,14 @@ describe('LimitOrderProtocol',  () => {
 
             const { order, signature } = await getSignedOrder(addr1,
                 {
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
+                    makerAsset: await dai.getAddress(),
+                    takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr1.address,
+                    maker: await addr1.getAddress(),
                 },
                 {
-                    chainId, verifyingContract: swap.address,
+                    chainId, verifyingContract: await swap.getAddress(),
                 },
                 {
                     predicate,
@@ -761,11 +754,11 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId, arbitraryPredicate } = await loadFixture(deployContractsAndInit);
 
             const predicateBuilder = getPredicateBuilder(
-                swap.address, chainId, addr
+                await swap.getAddress(), chainId, addr
             )
 
             const arbitraryCalldata = predicateBuilder.arbitraryStaticCall(
-                arbitraryPredicate.address,
+                await arbitraryPredicate.getAddress(),
                 arbitraryPredicate.interface.encodeFunctionData('copyArg', [1]),
             );
 
@@ -775,19 +768,19 @@ describe('LimitOrderProtocol',  () => {
             )
 
             const permit = withTarget(
-                weth.address,
-                await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
+                await weth.getAddress(),
+                await getPermit(await addr.getAddress(), addr, weth, '1', chainId, await swap.getAddress(), '1'),
             );
 
             const {order, signature } = await getSignedOrder(addr,
                 {
-                    makerAsset: weth.address,
-                    takerAsset: dai.address,
+                    makerAsset: await weth.getAddress(),
+                    takerAsset: await dai.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr.address,
+                    maker: await addr.getAddress(),
                 },{
-                    chainId, verifyingContract: swap.address,
+                    chainId, verifyingContract: await swap.getAddress(),
                 },
                 {
                     predicate,
@@ -819,15 +812,15 @@ describe('LimitOrderProtocol',  () => {
                 await initContracts(dai, weth, swap);
 
                 const {order, signature } = await getSignedOrder(addr1,{
-                    makerAsset: dai.address,
-                    takerAsset: weth.address,
+                    makerAsset: await dai.getAddress(),
+                    takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
-                    maker: addr1.address,
+                    maker: await addr1.getAddress(),
                 }, {
-                    chainId, verifyingContract: swap.address,
+                    chainId, verifyingContract: await swap.getAddress(),
                 });
-                await weth.approve(swap.address, '0');
+                await weth.approve(await swap.getAddress(), '0');
 
                 return { dai, weth, swap, chainId, order, signature };
             };
@@ -835,7 +828,7 @@ describe('LimitOrderProtocol',  () => {
             it('DAI => WETH', async function () {
                 const { dai, weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
 
-                const permit = await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1');
+                const permit = await getPermit(await addr.getAddress(), addr, weth, '1', chainId, await swap.getAddress(), '1');
 
                 const { traits, args } = buildTakerTraits({
                     makingAmount: true,
@@ -849,8 +842,8 @@ describe('LimitOrderProtocol',  () => {
                     args,
                     permit,
                     interaction: ZX,
-                    target: addr.address,
-                    permitToken: weth.address,
+                    target: await addr.getAddress(),
+                    permitToken: await weth.getAddress(),
                 }], addr, chainId, swap);
 
                 expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
@@ -861,15 +854,15 @@ describe('LimitOrderProtocol',  () => {
                 const { dai, weth, swap, chainId, order, signature } = await loadFixture(deployContractsAndInitPermit);
 
                 const permit2 = await permit2Contract();
-                await weth.approve(permit2.address, 1);
-                const permit = await getPermit2(addr, weth.address, chainId, swap.address, BigInt(1));
+                await weth.approve(await permit2.getAddress(), 1);
+                const permit = await getPermit2(addr, await weth.getAddress(), chainId, await swap.getAddress(), BigInt(1));
 
                 const { traits, args } = buildTakerTraits({
                     makingAmount: true,
                     usePermit2: true,
                     minReturn: BigInt(1),
                 });
-                const fillTx = getFacadeTx('permitAndCall', [{
+                const fillTx = await getFacadeTx('permitAndCall', [{
                     order: order.order,
                     signature,
                     amount: '1',
@@ -877,8 +870,8 @@ describe('LimitOrderProtocol',  () => {
                     args,
                     permit,
                     interaction: ZX,
-                    target: addr.address,
-                    permitToken: dai.address,
+                    target: await addr.getAddress(),
+                    permitToken: await dai.getAddress(),
                 }], addr, chainId, swap);
 
                 await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [1, -1]);
@@ -892,19 +885,19 @@ describe('LimitOrderProtocol',  () => {
                 await initContracts(dai, weth, swap);
 
                 const permit = withTarget(
-                    weth.address,
-                    await getPermit(addr.address, addr, weth, '1', chainId, swap.address, '1'),
+                    await weth.getAddress(),
+                    await getPermit(await addr.getAddress(), addr, weth, '1', chainId, await swap.getAddress(), '1'),
                 );
 
                 const {order, signature } = await getSignedOrder(addr,
                     {
-                        makerAsset: weth.address,
-                        takerAsset: dai.address,
+                        makerAsset: await weth.getAddress(),
+                        takerAsset: await dai.getAddress(),
                         makingAmount: '1',
                         takingAmount: '1',
-                        maker: addr.address,
+                        maker: await addr.getAddress(),
                     },{
-                        chainId, verifyingContract: swap.address,
+                        chainId, verifyingContract: await swap.getAddress(),
                     },
                     {
                         permit,
@@ -921,7 +914,7 @@ describe('LimitOrderProtocol',  () => {
                     minReturn: BigInt(1),
                     extension: order.extension,
                 });
-                const fillTx = getFacadeTx('fillLimitOrderArgs', [{
+                const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
                     order: order.order,
                     amount: '1',
                     signature,
@@ -936,14 +929,14 @@ describe('LimitOrderProtocol',  () => {
             it('skips order permit flag', async function () {
                 const { dai, weth, swap, order, signature, permit, chainId } = await loadFixture(deployContractsAndInitPermit);
 
-                await addr1.sendTransaction({ to: weth.address, data: '0xd505accf' + permit.substring(42) });
+                await addr1.sendTransaction({ to: await weth.getAddress(), data: '0xd505accf' + permit.substring(42) });
 
                 const { traits, args } = buildTakerTraits({
                     minReturn: BigInt(1),
                     skipMakerPermit: true,
                     extension: order.extension,
                 });
-                const fillTx = getFacadeTx('fillLimitOrderArgs', [{
+                const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
                     order: order.order,
                     amount: '1',
                     signature,

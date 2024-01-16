@@ -1,4 +1,3 @@
-import {Contract, utils} from 'ethers'
 import {EIP712TypedData} from "../../../model/eip712.model";
 import {setN} from "../../../utils/limit-order.utils";
 import {
@@ -8,10 +7,6 @@ import {ProviderConnector} from "../../../connector/provider.connector";
 import {AbiItem} from "../../../model/abi.model";
 import {LimitOrderBuilder} from "../../../limit-order.builder";
 import {LimitOrderPredicateBuilder} from "../../../limit-order-predicate.builder";
-import {BigNumber} from "@ethersproject/bignumber";
-import {
-    SignerWithAddress,
-} from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
 import {
     ExtensionParamsWithCustomData,
     LimitOrderData,
@@ -19,6 +14,9 @@ import {
 } from "../../../model/limit-order-protocol.model";
 import { ethers } from 'hardhat'
 import {buildTakerTraits} from "../../../utils/build-taker-traits";
+import {Contract} from "ethers";
+
+type Signer = Awaited<ReturnType<typeof ethers.getSigners>>[0];
 
 const testDomainSettings = {
     domainName: '1inch Limit Order Protocol',
@@ -26,9 +24,9 @@ const testDomainSettings = {
 };
 export async function signOrder(
     typedData: EIP712TypedData,
-    wallet: SignerWithAddress
+    wallet: Signer,
 ): Promise<string> {
-    return await wallet._signTypedData(
+    return await wallet.signTypedData(
         typedData.domain,
         { Order: typedData.types.Order },
         typedData.message
@@ -40,8 +38,8 @@ export function cutSelector(data: string): string {
     return hexPrefix + data.substring(hexPrefix.length + 8);
 }
 
-export function ether(num: string): BigNumber {
-    return utils.parseUnits(num);
+export function ether(num: string): bigint {
+    return ethers.parseUnits(num);
 }
 
 export function fillWithMakingAmount(amount: bigint): string {
@@ -54,20 +52,20 @@ export function skipMakerPermit (amount: bigint): string {
 }
 
 export function compactSignature (signature: string): { r: string, vs: string } {
-    const sig = utils.splitSignature(signature);
+    const sig = ethers.Signature.from(signature);//
     return {
         r: sig.r,
-        vs: sig._vs,
+        vs: sig.yParityAndS,
     };
 }
 
-export function getProviderConnector(signer: SignerWithAddress): ProviderConnector {
+export function getProviderConnector(signer: Signer): ProviderConnector {
     return {
         signTypedData(
             _: string,
             typedData: EIP712TypedData,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            typedDataHash: string
+            _typedDataHash: string
         ): Promise<string> {
             return signOrder(typedData, signer)
         },
@@ -77,7 +75,7 @@ export function getProviderConnector(signer: SignerWithAddress): ProviderConnect
             methodName: string,
             methodParams: unknown[]
         ): string {
-            const iface = new utils.Interface(abi);
+            const iface = new ethers.Interface(abi);
             return iface.encodeFunctionData(methodName, methodParams);
         },
         ethCall(contractAddress: string, callData: string): Promise<string> {
@@ -92,28 +90,28 @@ export function getProviderConnector(signer: SignerWithAddress): ProviderConnect
 
 export function getOrderFacade(
     contractAddress: string,
-    chainId: number,
-    wallet: SignerWithAddress,
+    chainId: bigint,
+    wallet: Signer,
 ): LimitOrderProtocolFacade {
     const takerProviderConnector = getProviderConnector(wallet);
     return new LimitOrderProtocolFacade(
         contractAddress,
-        +chainId,
+        chainId,
         takerProviderConnector
     );
 }
 
 export function getPredicateBuilder(
     contractAddress: string,
-    chainId: number,
-    wallet: SignerWithAddress,
+    chainId: bigint,
+    wallet: Signer,
 ): LimitOrderPredicateBuilder {
     const facade = getOrderFacade(contractAddress, chainId, wallet);
     return new LimitOrderPredicateBuilder(facade);
 }
 
 export function getOrderBuilder(
-    wallet: SignerWithAddress
+    wallet: Signer
 ): LimitOrderBuilder {
     const makerProviderConnector = getProviderConnector(wallet);
 
@@ -129,18 +127,18 @@ type FacadeTxMethods = Pick<
 >;
 type AllowedFacadeTxMethods = keyof FacadeTxMethods;
 
-export function getFacadeTx<M extends AllowedFacadeTxMethods>(
+export async function getFacadeTx<M extends AllowedFacadeTxMethods>(
     method: M,
     txParams: Parameters<FacadeTxMethods[M]>,
-    filler: SignerWithAddress,
-    chainId: number,
-    swap,
+    filler: Signer,
+    chainId: bigint,
+    swap: Contract,
     ) {
-    const facade = getOrderFacade(swap.address, chainId, filler);
+    const facade = getOrderFacade(await swap.getAddress(), chainId, filler);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const callData = (facade as any)[method](...txParams);
     return filler.sendTransaction({
-        to: swap.address,
+        to: await swap.getAddress(),
         data: callData
     });
 }
@@ -157,25 +155,25 @@ type FacadeViewCallMethods = Pick<
 >;
 type AllowedFacadeViewCallMethods = keyof FacadeViewCallMethods;
 
-export function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
+export async function getFacadeViewCall<M extends AllowedFacadeViewCallMethods>(
     method: M,
     txParams: Parameters<FacadeViewCallMethods[M]>,
-    filler: SignerWithAddress,
-    chainId: number,
+    filler: Signer,
+    chainId: bigint,
     swap: Contract,
-): ReturnType<FacadeViewCallMethods[M]> {
-    const facade = getOrderFacade(swap.address, chainId, filler);
+): Promise<ReturnType<FacadeViewCallMethods[M]>> {
+    const facade = getOrderFacade(await swap.getAddress(), chainId, filler);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (facade as any)[method](...txParams);
 }
 
 export async function getSignedOrder(
-    wallet: SignerWithAddress,
+    wallet: Signer,
     orderData: Omit<LimitOrderData, 'salt'>,
     {
         chainId,
         verifyingContract,
-    }: { chainId: number, verifyingContract: string },
+    }: { chainId: bigint, verifyingContract: string },
     extensionData?: ExtensionParamsWithCustomData,
 ): Promise<{ order: LimitOrderWithExtension, signature: string, orderHash: string }> {
     const builder = getOrderBuilder(wallet);
@@ -188,7 +186,7 @@ export async function getSignedOrder(
         order.order, chainId, verifyingContract
     );
 
-    const signature = await builder.buildOrderSignature(wallet.address, typedData);
+    const signature = await builder.buildOrderSignature(await wallet.getAddress(), typedData);
     const orderHash = builder.buildLimitOrderHash(typedData);
 
     return {

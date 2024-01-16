@@ -1,14 +1,13 @@
-import "@nomiclabs/hardhat-ethers";
-import "@nomiclabs/hardhat-etherscan";
+import "@nomicfoundation/hardhat-verify";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-dependency-compiler";
+import "@nomicfoundation/hardhat-ethers";
 import "hardhat-deploy";
-import "hardhat-gas-reporter";
 import { HardhatUserConfig } from "hardhat/types";
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: '0.8.19',
+        version: '0.8.23',
         settings: {
             optimizer: {
                 enabled: true,
@@ -23,7 +22,6 @@ const config: HardhatUserConfig = {
         }
     },
     defaultNetwork: "hardhat",
-
     namedAccounts: {
         deployer: {
             default: 0,
