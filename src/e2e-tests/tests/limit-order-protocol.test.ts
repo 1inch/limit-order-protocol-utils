@@ -298,7 +298,7 @@ describe('LimitOrderProtocol',  () => {
             const { dai, weth, swap, chainId } = await loadFixture(deployContractsAndInit);
 
             const { order, orderHash } = await getSignedOrder(addr1, {
-                makerAsset: await addr.getAddress(),
+                makerAsset: await dai.getAddress(),
                 takerAsset: await weth.getAddress(),
                 makingAmount: '1',
                 takingAmount: '1',
