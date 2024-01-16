@@ -1,10 +1,9 @@
 import { cutSelector } from './utils';
 import {Address} from "../../../model/limit-order-protocol.model";
-import {
-    SignerWithAddress,
-} from "@1inch/solidity-utils/node_modules/@nomiclabs/hardhat-ethers/signers";
-import {Contract} from "ethers";
-import {splitSignature} from "ethers/lib/utils";
+import {Contract, Signature} from "ethers";
+import {ethers} from "hardhat";
+
+type Signer = Awaited<ReturnType<typeof ethers.getSigners>>[0];
 
 const Permit = [
     { name: 'owner', type: 'address' },
@@ -38,10 +37,10 @@ const defaultDeadline = '18446744073709551615';
 // eslint-disable-next-line max-params
 export async function getPermit(
     owner: Address,
-    wallet: SignerWithAddress,
+    wallet: Signer,
     token: Contract,
     tokenVersion: string,
-    chainId: number,
+    chainId: bigint,
     spender: Address,
     value: string,
     deadline = defaultDeadline
@@ -49,10 +48,18 @@ export async function getPermit(
     const nonce = await token.nonces(owner);
     const name = await token.name();
     const data = buildData(
-        owner, name, tokenVersion, chainId, token.address, spender, nonce, value, deadline
+        owner,
+        name,
+        tokenVersion,
+        Number(chainId),
+        await token.getAddress(),
+        spender,
+        nonce,
+        value,
+        deadline
     );
-    const signature = await wallet._signTypedData(data.domain, data.types, data.value);
-    const { v, r, s } = splitSignature(signature);
+    const signature = await wallet.signTypedData(data.domain, data.types, data.value);
+    const { v, r, s } = Signature.from(signature);
     const permitCall = token.interface.encodeFunctionData(
         'permit', [owner, spender, value, deadline, v, r, s]
     );

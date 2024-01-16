@@ -33,7 +33,7 @@ export abstract class BaseLimitOrderBuilder<OrderType extends EIP712Object> {
 
     buildLimitOrderTypedData(
         order: OrderType,
-        chainId: number,
+        chainId: bigint,
         verifyingContract: Address,
     ): EIP712TypedData {
         return {
@@ -45,7 +45,7 @@ export abstract class BaseLimitOrderBuilder<OrderType extends EIP712Object> {
             domain: {
                 name: this.eip712ParamsExtended.domainName,
                 version: this.eip712ParamsExtended.version,
-                chainId: chainId,
+                chainId: Number(chainId),
                 verifyingContract: verifyingContract,
             },
             message: order,
@@ -54,7 +54,7 @@ export abstract class BaseLimitOrderBuilder<OrderType extends EIP712Object> {
 
     buildTypedDataAndSign(
         order: OrderType,
-        chainId: number,
+        chainId: bigint,
         verifyingContract: Address,
         wallet: Address,
     ): Promise<LimitOrderSignature> {

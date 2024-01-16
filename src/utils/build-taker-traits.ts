@@ -1,5 +1,5 @@
 import {trim0x} from "./limit-order.utils";
-import {solidityPack} from "ethers/lib/utils";
+import {solidityPacked} from "ethers";
 
 const TakerTraitsConstants = {
     _MAKER_AMOUNT_FLAG: BigInt(1) << BigInt(255),
@@ -22,10 +22,10 @@ export function buildTakerTraits({
                                      target = '0x',
                                      extension = '0x',
                                      interaction = '0x',
-                                     minReturn = BigInt(0),
+                                     threshold = BigInt(0),
                                  } = {}): { traits: bigint, args: string } {
     return {
-        traits: BigInt(minReturn) | (
+        traits: BigInt(threshold) | (
             (makingAmount ? TakerTraitsConstants._MAKER_AMOUNT_FLAG : BigInt(0)) |
             (unwrapWeth ? TakerTraitsConstants._UNWRAP_WETH_FLAG : BigInt(0)) |
             (skipMakerPermit ? TakerTraitsConstants._SKIP_ORDER_PERMIT_FLAG : BigInt(0)) |
@@ -40,7 +40,7 @@ export function buildTakerTraits({
                 << TakerTraitsConstants._ARGS_INTERACTION_LENGTH_OFFSET
             )
         ),
-        args: solidityPack(
+        args: solidityPacked(
             ['bytes', 'bytes', 'bytes'],
             [target, extension, interaction],
         ),

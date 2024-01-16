@@ -18,7 +18,7 @@ import {compactSignature,} from './utils/limit-order.utils';
 import {TypedDataUtils} from '@metamask/eth-sig-util';
 import {AbstractSmartcontractFacade} from './utils/abstract-facade';
 import {Series} from "./model/series-nonce-manager.model";
-import {solidityPack} from "ethers/lib/utils";
+import { solidityPacked } from "ethers"
 
 
 export interface FillOrderParamsWithTakerTraits {
@@ -96,7 +96,7 @@ export class LimitOrderProtocolFacade
             permitToken,
         } = params;
 
-        const packedPermit = solidityPack(
+        const packedPermit = solidityPacked(
             ['address', 'bytes'],
             [permitToken, permit],
         );
