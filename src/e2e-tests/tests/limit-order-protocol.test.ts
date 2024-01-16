@@ -389,7 +389,7 @@ describe('LimitOrderProtocol',  () => {
                 BigInt(1),
             ], addr1, chainId, swap);
 
-            const fillTx = await getFacadeTx(
+            const fillTx = getFacadeTx(
                 'fillLimitOrder',
                 [{
                     order: order.order,
@@ -434,7 +434,7 @@ describe('LimitOrderProtocol',  () => {
             // Swap:  4 DAI => 1 WETH
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: await addr.getAddress(),
+                makerAsset: await dai.getAddress(),
                 takerAsset: await weth.getAddress(),
                 makingAmount: '10',
                 takingAmount: '2',
@@ -458,7 +458,7 @@ describe('LimitOrderProtocol',  () => {
             await expect(fillTx).to.changeTokenBalances(dai, [addr, addr1], [4, -4]);
             await expect(fillTx).to.changeTokenBalances(weth, [addr, addr1], [-1, 1]);
 
-            const secondFillTx = await getFacadeTx(
+            const secondFillTx = getFacadeTx(
                 'fillLimitOrder',
                 [{
                     order: order.order,
@@ -481,7 +481,7 @@ describe('LimitOrderProtocol',  () => {
             // Swap:  10 DAI => 2 ETH
 
             const { order, signature } = await getSignedOrder(addr1, {
-                makerAsset: await addr.getAddress(),
+                makerAsset: await dai.getAddress(),
                 takerAsset: await weth.getAddress(),
                 makingAmount: '10',
                 takingAmount: '2',
@@ -560,7 +560,7 @@ describe('LimitOrderProtocol',  () => {
 
             const { order, signature} = await getSignedOrder(addr1,
                 {
-                    makerAsset: await addr.getAddress(),
+                    makerAsset: await dai.getAddress(),
                     takerAsset: await weth.getAddress(),
                     makingAmount: '1',
                     takingAmount: '1',
@@ -630,10 +630,10 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
+                threshold: BigInt(1),
                 extension: order.extension,
             });
-            const tx = await getFacadeTx('fillLimitOrderArgs', [{
+            const tx = getFacadeTx('fillLimitOrderArgs', [{
                 order: order.order,
                 amount: '1',
                 signature,
