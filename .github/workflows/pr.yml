@@ -14,11 +14,6 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Use 1inch npm registry
-        shell: bash
-        run: |
-          echo "@1inch:registry=https://npm.pkg.github.com" >> .npmrc
-
       - name: Install yarn
         run: npm install --global yarn
 
