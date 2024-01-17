@@ -4,7 +4,7 @@
     "exclude": ["src/**/*.test.ts", "test/*", "src/e2e-tests/*"],
     "compilerOptions": {
         "baseUrl": "./",
-        "module": "esnext",
+        "module": "commonjs",
         "target": "es2015",
         "outDir": "./dist",
         "sourceMap": true,

@@ -1,9 +1,6 @@
-import {LimitOrderPredicateCallData} from "../limit-order-predicate.builder";
-
 export type LimitOrderSignature = string;
 
 export type LimitOrderHash = string;
-
 
 export interface LimitOrderData {
     maker: Address,
@@ -24,7 +21,7 @@ export type LimitOrderDataLegacy = {
     takerAssetAddress: string;
     makingAmount: string;
     takingAmount: string;
-    predicate?: LimitOrderPredicateCallData;
+    predicate?: string;
     permit?: string;
     getMakingAmount?: string;
     getTakingAmount?: string;
