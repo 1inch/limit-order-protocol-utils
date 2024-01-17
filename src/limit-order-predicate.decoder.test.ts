@@ -12,10 +12,10 @@ import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predi
 import {mocksForV3Chain} from './test/helpers';
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
 import {
-    LIMIT_ORDER_PROTOCOL_V3_ABI,
-    limitOrderProtocolAddresses
+    LIMIT_ORDER_PROTOCOL_V3_ABI
 } from "./limit-order-protocol.const";
 import {SERIES_NONCE_MANAGER_ABI} from "./series-nonce-manager.const";
+import {limitOrderProtocolAddresses} from "./limit-order-protocol-addresses.const";
 
 
 // eslint-disable-next-line max-len

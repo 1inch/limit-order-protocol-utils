@@ -6,13 +6,11 @@ import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
 import { seriesNonceManagerContractAddresses } from "../series-nonce-manager.const";
 import { SeriesNonceManagerPredicateBuilder } from "../series-nonce-manager-predicate.builder";
-import {
-    limitOrderProtocolAddresses
-} from "../limit-order-protocol.const";
 import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";
 import {LimitOrderProtocolV3Facade} from "../limit-order-protocol-v3.facade";
 import {LimitOrderV3Builder} from "../limit-order-v3.builder";
 import {rpcUrls} from "../utils/rpc-url.const";
+import {limitOrderProtocolAddresses} from "../limit-order-protocol-addresses.const";
 
 
 export function mocksForV3Chain(
