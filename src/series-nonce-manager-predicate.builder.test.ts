@@ -14,7 +14,7 @@ describe("SeriesNonceManagerFacade", () => {
     let providerConnector: ProviderConnector;
 
     beforeEach(() => {
-        const chainId = ChainId.etherumMainnet;
+        const chainId = ChainId.ethereumMainnet;
 
         const mocks = mocksForV3Chain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
         providerConnector = mocks.providerConnector;

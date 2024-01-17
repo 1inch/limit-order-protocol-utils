@@ -30,7 +30,7 @@ describe('LimitOrderProtocolV3Facade - facade for Limit order protocol contract'
     }
 
     beforeEach(() => {
-        const chainId = ChainId.etherumMainnet;
+        const chainId = ChainId.ethereumMainnet;
 
         const mocks = mocksForV3Chain(chainId, BETA_CONTRACT_ADDRESSES[chainId]);
         facade = mocks.facade;

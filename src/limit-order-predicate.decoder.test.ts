@@ -52,7 +52,7 @@ const GASLESS_AST = {
 };
 
 describe("LimitOrderPredicateDecoder", () => {
-    const chainId = ChainId.etherumMainnet;
+    const chainId = ChainId.ethereumMainnet;
     const limitOrderPredicateDecoder = new LimitOrderPredicateDecoder(
         limitOrderProtocolAddresses[chainId],
         chainId,

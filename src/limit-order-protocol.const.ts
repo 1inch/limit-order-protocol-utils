@@ -31,7 +31,7 @@ export const EIP712_DOMAIN = [
 ];
 
 export const limitOrderProtocolAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
+    [ChainId.ethereumMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.binanceMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.polygonMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',
     [ChainId.optimismMainnet]: '0x1111111254eeb25477b68fb85ed929f73a960582',

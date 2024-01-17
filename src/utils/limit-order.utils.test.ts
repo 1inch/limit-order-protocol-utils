@@ -15,7 +15,7 @@ describe("limit-order.utils", () => {
 
 
     beforeAll(() => {
-        const chainId = ChainId.etherumMainnet;
+        const chainId = ChainId.ethereumMainnet;
 
         const mocks = mocksForV3Chain(chainId);
         limitOrderPredicateBuilder = mocks.limitOrderPredicateBuilder;
