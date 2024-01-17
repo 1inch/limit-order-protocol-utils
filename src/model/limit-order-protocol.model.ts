@@ -159,7 +159,7 @@ export type InteractionsV3 = {
 export type AllInteractions = typeof InteractionsFields | typeof InteractionsFieldsV3;
 
 
-export enum LimitOrderProtocolMethodsV3 {
+export const enum LimitOrderProtocolMethodsV3 {
     cancelOrder = 'cancelOrder',
     timestampBelow = 'timestampBelow',
     timestampBelowAndNonceEquals = 'timestampBelowAndNonceEquals',
@@ -177,7 +177,7 @@ export enum LimitOrderProtocolMethodsV3 {
     remaining = 'remaining',
 }
 
-export enum LimitOrderProtocolMethods {
+export const enum LimitOrderProtocolMethods {
     getMakingAmount = 'getMakingAmount',
     getTakingAmount = 'getTakingAmount',
     arbitraryStaticCall = 'arbitraryStaticCall',

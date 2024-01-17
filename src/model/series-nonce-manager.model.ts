@@ -4,7 +4,7 @@
 export type Series = bigint;
 
 /**
- * @deprecated 
+ * @deprecated
  */
 export const NonceSeriesLegacyV1 = {
     P2Pv2: <Series>BigInt(1),
@@ -14,7 +14,7 @@ export const NonceSeriesLegacyV1 = {
 export const NonceSeriesV2 = {
     /**
      * This is not a valid option.
-     * 
+     *
      * @deprecated Gasless should use main contract's built-in nonce manager
      * to avoid arbitraryStaticCall() and save gas.
      */
@@ -26,7 +26,7 @@ export const NonceSeriesV2 = {
     P2PV3: <Series>BigInt(1),
 } as const;
 
-export enum SeriesNonceManagerMethods {
+export const enum SeriesNonceManagerMethods {
     nonce = 'nonce',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',
