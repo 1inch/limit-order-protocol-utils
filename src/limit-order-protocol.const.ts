@@ -3,7 +3,6 @@ import LimitOrderProtocolABISource from './abi/LimitOrderProtocol.json';
 import LimitOrderProtocolV3ABISource from './abi/LimitOrderProtocolV3.json';
 import ERC20ABISource from './abi/ERC20ABI.json';
 import {SignTypedDataVersion} from '@metamask/eth-sig-util';
-import {limitOrderProtocolAddresses} from "./limit-order-protocol-addresses.const";
 
 export const PROTOCOL_NAME = '1inch Aggregation Router';
 
