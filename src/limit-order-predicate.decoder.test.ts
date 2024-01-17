@@ -12,7 +12,6 @@ import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predi
 import {mocksForV3Chain} from './test/helpers';
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
 import {
-    contractAddresses,
     LIMIT_ORDER_PROTOCOL_V3_ABI,
     limitOrderProtocolAddresses
 } from "./limit-order-protocol.const";
