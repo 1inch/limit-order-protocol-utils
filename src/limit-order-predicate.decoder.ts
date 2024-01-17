@@ -7,7 +7,6 @@ import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
 import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
 import { AbiItem } from "./model/abi.model";
-import { limitOrderProtocolAddresses } from "./limit-order-protocol.const";
 import { isIterable, mapObject } from "./utils/helpers";
 import { LimitOrderPredicateDecoders } from "./utils/decoders/limit-order-predicate-decoders";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -161,6 +160,7 @@ export class LimitOrderPredicateDecoder<
     private readonly seriesNonceManagerABI: AbiItem[];
 
     constructor(
+        private readonly contractAddress: Address,
         private readonly chainId: T,
         limitOrderABI: AbiItem[],
         seriesNonceManagerABI: AbiItem[],
@@ -168,7 +168,7 @@ export class LimitOrderPredicateDecoder<
     ) {
         this.limitOrderABI = limitOrderABI;
         this.seriesNonceManagerABI = seriesNonceManagerABI;
-        this.defaultAddress = limitOrderProtocolAddresses[this.chainId].toLowerCase();
+        this.defaultAddress = this.contractAddress;
 
         this.decodableInterfaces = {
             [this.defaultAddress]: {

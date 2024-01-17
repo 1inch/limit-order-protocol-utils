@@ -1,7 +1,7 @@
 import {ChainId} from "../model/limit-order-protocol.model";
 
 export const rpcUrls: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: 'https://web3-node.1inch.io',
+    [ChainId.ethereumMainnet]: 'https://web3-node.1inch.io',
     [ChainId.binanceMainnet]: 'https://bsc-dataseed.binance.org',
     [ChainId.polygonMainnet]: 'https://bor-nodes.1inch.io',
     [ChainId.optimismMainnet]: 'https://optimism-nodes.1inch.io',

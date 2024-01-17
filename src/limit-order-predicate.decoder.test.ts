@@ -11,7 +11,10 @@ import { NonceSeriesV2 } from './model/series-nonce-manager.model';
 import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predicate.builder';
 import {mocksForV3Chain} from './test/helpers';
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
-import {LIMIT_ORDER_PROTOCOL_V3_ABI} from "./limit-order-protocol.const";
+import {
+    LIMIT_ORDER_PROTOCOL_V3_ABI,
+    limitOrderProtocolAddresses
+} from "./limit-order-protocol.const";
 import {SERIES_NONCE_MANAGER_ABI} from "./series-nonce-manager.const";
 
 
@@ -49,8 +52,9 @@ const GASLESS_AST = {
 };
 
 describe("LimitOrderPredicateDecoder", () => {
-    const chainId = ChainId.etherumMainnet;
+    const chainId = ChainId.ethereumMainnet;
     const limitOrderPredicateDecoder = new LimitOrderPredicateDecoder(
+        limitOrderProtocolAddresses[chainId],
         chainId,
         LIMIT_ORDER_PROTOCOL_V3_ABI,
         SERIES_NONCE_MANAGER_ABI,

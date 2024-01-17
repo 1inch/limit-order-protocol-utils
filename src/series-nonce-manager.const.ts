@@ -5,7 +5,7 @@ import SeriesNonceManagerABISource from './abi/SeriesNonceManagerABI.json';
 export const SERIES_NONCE_MANAGER_ABI: AbiItem[] = SeriesNonceManagerABISource;
 
 export const seriesNonceManagerContractAddresses: {[key in ChainId]: string} = {
-    [ChainId.etherumMainnet]: '0x303389f541ff2d620e42832f180a08e767b28e10',
+    [ChainId.ethereumMainnet]: '0x303389f541ff2d620e42832f180a08e767b28e10',
     [ChainId.binanceMainnet]: '0x58ce0e6ef670c9a05622f4188faa03a9e12ee2e4',
     [ChainId.polygonMainnet]: '0xa5eb255ef45dfb48b5d133d08833def69871691d',
     [ChainId.optimismMainnet]: '0x32d12a25f539e341089050e2d26794f041fc9df8',

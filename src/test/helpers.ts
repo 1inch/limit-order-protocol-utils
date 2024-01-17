@@ -68,6 +68,6 @@ export function mocksForV3Chain(
 
 export const BETA_CONTRACT_ADDRESSES = {
     // V3 prerelease
-    [ChainId.etherumMainnet]: '0x9b934b33fef7a899f502bc191e820ae655797ed3',
+    [ChainId.ethereumMainnet]: '0x9b934b33fef7a899f502bc191e820ae655797ed3',
     [ChainId.auroraMainnet]: '0x8266c553f269b2eEb2370539193bCD0Eff8cC2De'.toLowerCase(),
 }
