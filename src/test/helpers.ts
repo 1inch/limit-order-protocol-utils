@@ -1,6 +1,5 @@
 import { PrivateKeyProviderConnector } from "../connector/private-key-provider.connector";
 import {EIP712Params} from "../limit-order.builder";
-import { ChainId } from "../model/limit-order-protocol.model";
 import Web3 from "web3";
 import { Erc20Facade } from "../erc20.facade";
 import { SeriesNonceManagerFacade } from "../series-nonce-manager.facade";
@@ -10,7 +9,7 @@ import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder"
 import {LimitOrderProtocolV3Facade} from "../limit-order-protocol-v3.facade";
 import {LimitOrderV3Builder} from "../limit-order-v3.builder";
 import {rpcUrls} from "../utils/rpc-url.const";
-import {limitOrderProtocolAddresses} from "../limit-order-protocol-addresses.const";
+import {ChainId, limitOrderProtocolAddresses} from "../limit-order-protocol-addresses.const";
 
 
 export function mocksForV3Chain(

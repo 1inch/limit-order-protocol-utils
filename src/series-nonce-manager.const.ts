@@ -1,6 +1,6 @@
 import { AbiItem } from "src/model/abi.model";
-import { ChainId } from "./model/limit-order-protocol.model";
 import SeriesNonceManagerABISource from './abi/SeriesNonceManagerABI.json';
+import {ChainId} from "./limit-order-protocol-addresses.const";
 
 export const SERIES_NONCE_MANAGER_ABI: AbiItem[] = SeriesNonceManagerABISource;
 

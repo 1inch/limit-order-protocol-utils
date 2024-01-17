@@ -1,6 +1,6 @@
-import { ChainId } from './model/limit-order-protocol.model';
 import {mocksForV3Chain} from './test/helpers';
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
+import {ChainId} from "./limit-order-protocol-addresses.const";
 
 describe('PredicateBuilderV3 - for build limit order v3 predicate', () => {
     const chainId = ChainId.binanceMainnet;

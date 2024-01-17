@@ -29,8 +29,3 @@ export const EIP712_DOMAIN = [
     {name: 'chainId', type: 'uint256'},
     {name: 'verifyingContract', type: 'address'},
 ];
-
-/**
- * @deprecated Change to `limitOrderProtocolAddresses`
- */
-export const contractAddresses = limitOrderProtocolAddresses;

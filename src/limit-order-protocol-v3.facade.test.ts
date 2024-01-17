@@ -1,5 +1,4 @@
 import {
-    ChainId,
     LimitOrderLegacy,
     LimitOrderProtocolMethodsV3,
 } from './model/limit-order-protocol.model';
@@ -7,6 +6,7 @@ import {BETA_CONTRACT_ADDRESSES, mocksForV3Chain} from './test/helpers';
 import {LimitOrderProtocolV3Facade} from "./limit-order-protocol-v3.facade";
 import {LimitOrderPredicateV3Builder} from "./limit-order-predicate-v3.builder";
 import {LimitOrderV3Builder} from "./limit-order-v3.builder";
+import {ChainId} from "./limit-order-protocol-addresses.const";
 
 
 // eslint-disable-next-line max-lines-per-function

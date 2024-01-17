@@ -4,9 +4,6 @@ import {
     PredicateAstNode,
     PredicateAstMatcher,
 } from './limit-order-predicate.decoder';
-import {
-    ChainId
-} from './model/limit-order-protocol.model';
 import { NonceSeriesV2 } from './model/series-nonce-manager.model';
 import { SeriesNonceManagerPredicateBuilder } from './series-nonce-manager-predicate.builder';
 import {mocksForV3Chain} from './test/helpers';
@@ -15,7 +12,7 @@ import {
     LIMIT_ORDER_PROTOCOL_V3_ABI
 } from "./limit-order-protocol.const";
 import {SERIES_NONCE_MANAGER_ABI} from "./series-nonce-manager.const";
-import {limitOrderProtocolAddresses} from "./limit-order-protocol-addresses.const";
+import {ChainId, limitOrderProtocolAddresses} from "./limit-order-protocol-addresses.const";
 
 
 // eslint-disable-next-line max-len
