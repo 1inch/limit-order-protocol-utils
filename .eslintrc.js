@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'unused-imports'],
+    plugins: ['@typescript-eslint', 'unused-imports', 'import'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
@@ -20,6 +20,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'error',
         'unused-imports/no-unused-imports': 'error',
         'unused-imports/no-unused-vars': 0,
+        'import/no-cycle': 'error'
     },
     overrides: [
         {

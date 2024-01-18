@@ -26,7 +26,7 @@ export const NonceSeriesV2 = {
     P2PV3: <Series>BigInt(1),
 } as const;
 
-export const enum SeriesNonceManagerMethods {
+export enum SeriesNonceManagerMethods {
     nonce = 'nonce',
     advanceNonce = 'advanceNonce',
     increaseNonce = 'increaseNonce',

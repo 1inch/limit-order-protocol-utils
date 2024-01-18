@@ -13,7 +13,7 @@
     "scripts": {
         "prebuild": "rm -rf dist && yarn run test:coverage && yarn run test:e2e:ci && yarn run make-badges && yarn run lint",
         "build": "tsc --module commonjs",
-        "test-build": "rm -rf dist && yarn run test:e2e:ci && yarn run make-badges && tsc  && yarn run postbuild",
+        "test-build": "yarn run lint && rm -rf dist && yarn run test:e2e:ci && yarn run make-badges && tsc  && yarn run postbuild",
         "install-submodules": "git submodule update --init --recursive",
         "test:e2e": "hardhat test --tsconfig tsconfig.hardhat.json",
         "test:e2e:ci": "yarn run install-submodules && yarn run test:e2e",
@@ -76,7 +76,7 @@
         "ts-mockito": "^2.6.1",
         "ts-node": "10.9.2",
         "tslib": "2.6.2",
-        "typescript": "5.3.3"
+        "typescript": "4.9.5"
     },
     "bin": {
         "limit-order-rfq-utils": "./utils/limit-order-rfq.utils.js"

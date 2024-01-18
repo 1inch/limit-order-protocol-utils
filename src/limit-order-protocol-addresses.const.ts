@@ -1,4 +1,4 @@
-export const enum ChainId {
+export enum ChainId {
     ethereumMainnet = 1,
     binanceMainnet = 56,
     polygonMainnet = 137,

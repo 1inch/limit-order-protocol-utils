@@ -1,7 +1,7 @@
 import {ERC20_ABI} from './limit-order-protocol.const';
 import {ProviderConnector} from './connector/provider.connector';
 
-export const enum Erc20Methods {
+export enum Erc20Methods {
     transferFrom = 'transferFrom',
     balanceOf = 'balanceOf',
 }
