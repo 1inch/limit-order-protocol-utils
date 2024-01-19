@@ -1,4 +1,4 @@
-import {ChainId} from "../model/limit-order-protocol.model";
+import {ChainId} from "../limit-order-protocol-addresses.const";
 
 export const rpcUrls: {[key in ChainId]: string} = {
     [ChainId.ethereumMainnet]: 'https://web3-node.1inch.io',

@@ -4,7 +4,6 @@ import {
 } from "./series-nonce-manager.const";
 import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
 
-import { ChainId } from "./model/limit-order-protocol.model";
 import { Address } from "./model/eth.model";
 import { AbiItem } from "./model/abi.model";
 import { isIterable, mapObject } from "./utils/helpers";
@@ -12,6 +11,7 @@ import { LimitOrderPredicateDecoders } from "./utils/decoders/limit-order-predic
 import { BigNumber } from "@ethersproject/bignumber";
 import { SeriesNonceManagerDecoders } from "./utils/decoders/series-nonce-manager-decoders";
 import { trim0x } from "./utils/limit-order.utils";
+import {ChainId} from "./limit-order-protocol-addresses.const";
 
 type Bytes = string;
 

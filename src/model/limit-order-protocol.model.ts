@@ -1,24 +1,6 @@
-import {LimitOrderPredicateCallData} from "../limit-order-predicate.builder";
-
-export enum ChainId {
-    ethereumMainnet = 1,
-    binanceMainnet = 56,
-    polygonMainnet = 137,
-    optimismMainnet = 10,
-    arbitrumMainnet = 42161,
-    gnosisMainnet = 100,
-    avalancheMainnet = 43114,
-    fantomMainnet = 250,
-    auroraMainnet = 1313161554,
-    klaytnMainnet = 8217,
-    zkSyncEraMainnet = 324,
-    baseMainnet = 8453,
-}
-
 export type LimitOrderSignature = string;
 
 export type LimitOrderHash = string;
-
 
 export interface LimitOrderData {
     maker: Address,
@@ -39,7 +21,7 @@ export type LimitOrderDataLegacy = {
     takerAssetAddress: string;
     makingAmount: string;
     takingAmount: string;
-    predicate?: LimitOrderPredicateCallData;
+    predicate?: string;
     permit?: string;
     getMakingAmount?: string;
     getTakingAmount?: string;
@@ -175,7 +157,6 @@ export type InteractionsV3 = {
 };
 
 export type AllInteractions = typeof InteractionsFields | typeof InteractionsFieldsV3;
-
 
 export enum LimitOrderProtocolMethodsV3 {
     cancelOrder = 'cancelOrder',

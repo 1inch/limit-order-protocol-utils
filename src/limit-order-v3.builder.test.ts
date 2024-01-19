@@ -2,9 +2,9 @@ import {LimitOrderDecoder} from './limit-order.decoder';
 import {LimitOrderLegacy} from './model/limit-order-protocol.model';
 import Web3 from 'web3';
 import {PrivateKeyProviderConnector} from './connector/private-key-provider.connector';
-import {limitOrderProtocolAddresses} from './limit-order-protocol.const';
 import {largeInteractions, largeResult} from './test/mocks';
 import {LimitOrderV3Builder} from "./limit-order-v3.builder";
+import {limitOrderProtocolAddresses} from "./limit-order-protocol-addresses.const";
 
 describe('LimitOrderV3Builder - for build new limit order', () => {
     const chainId = 56;

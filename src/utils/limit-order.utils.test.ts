@@ -1,5 +1,4 @@
 import { ZX } from "../limit-order-protocol.const";
-import { ChainId } from "../model/limit-order-protocol.model";
 import {mocksForV3Chain} from "../test/helpers";
 import {
     packSkipPermitAndThresholdAmount,
@@ -7,6 +6,7 @@ import {
     unpackTimestampAndNoncePredicate,
 } from "./limit-order.utils";
 import {LimitOrderPredicateV3Builder} from "../limit-order-predicate-v3.builder";
+import {ChainId} from "../limit-order-protocol-addresses.const";
 
 describe("limit-order.utils", () => {
     const walletAddress = '0xfb3c7eb936cAA12B5A884d612393969A557d4307';

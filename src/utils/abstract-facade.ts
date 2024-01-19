@@ -1,6 +1,7 @@
 import { ProviderConnector } from "src/connector/provider.connector";
 import { AbiItem } from "src/model/abi.model";
-import { ChainId } from "src/model/limit-order-protocol.model";
+
+import {ChainId} from "../limit-order-protocol-addresses.const";
 
 
 export abstract class AbstractSmartcontractFacade<ABI_METHODS extends string> {

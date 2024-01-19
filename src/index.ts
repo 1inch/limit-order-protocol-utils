@@ -36,3 +36,4 @@ export {_NO_PRICE_IMPROVEMENT_FLAG} from "./utils/maker-traits.const";
 export {_ALLOW_MULTIPLE_FILLS_FLAG} from "./utils/maker-traits.const";
 export {_NO_PARTIAL_FILLS_FLAG} from "./utils/maker-traits.const";
 export * from './utils/build-taker-traits';
+export {ChainId} from "./limit-order-protocol-addresses.const";

@@ -12,10 +12,10 @@
     },
     "scripts": {
         "prebuild": "rm -rf dist && yarn run test:coverage && yarn run test:e2e:ci && yarn run make-badges && yarn run lint",
-        "build": "tsc --module commonjs",
-        "test-build": "rm -rf dist && yarn run test:e2e:ci && yarn run make-badges && tsc --module commonjs && yarn run postbuild",
+        "build": "tsc --module es2020",
+        "test-build": "yarn run lint && rm -rf dist && yarn run test:e2e:ci && yarn run make-badges && tsc --module es2020 && yarn run postbuild",
         "install-submodules": "git submodule update --init --recursive",
-        "test:e2e": "hardhat test",
+        "test:e2e": "hardhat test --tsconfig tsconfig.hardhat.json",
         "test:e2e:ci": "yarn run install-submodules && yarn run test:e2e",
         "test:stack-trace": "hardhat test --show-stack-traces",
         "postbuild": "cp package.json dist && cp README.md dist && chmod +x dist/utils/limit-order-rfq.utils.js",

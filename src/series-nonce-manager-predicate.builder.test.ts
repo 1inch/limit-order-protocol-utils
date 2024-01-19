@@ -1,9 +1,9 @@
 
-import { ChainId } from "./model/limit-order-protocol.model";
 import {BETA_CONTRACT_ADDRESSES, mocksForV3Chain} from "./test/helpers";
 import { NonceSeriesV2 } from "./model/series-nonce-manager.model";
 import { SeriesNonceManagerPredicateBuilder } from "./series-nonce-manager-predicate.builder";
 import { ProviderConnector } from "./connector/provider.connector";
+import {ChainId} from "./limit-order-protocol-addresses.const";
 
 
 describe("SeriesNonceManagerFacade", () => {
