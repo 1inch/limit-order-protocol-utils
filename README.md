@@ -3,7 +3,7 @@
     <img src="./.github/1inch_github_b.svg#gh-dark-mode-only">
 </div>
 
-# Utils library for 1inch Limit Orders Protocol V3
+# Utils library for 1inch Limit Orders Protocol V4
 
 ![example branch parameter](https://github.com/1inch/limit-order-protocol-utils/actions/workflows/pr.yml/badge.svg?branch=master)
 ![NPM Downloads](https://img.shields.io/npm/dw/@1inch/limit-order-protocol-utils)
