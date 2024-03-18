@@ -91,4 +91,17 @@ export class LimitOrderProtocolV3Facade
 
         return null;
     }
+
+    hashOrder(order: LimitOrderLegacy): string {
+        return this.getContractCallData(LimitOrderProtocolMethodsV3.hashOrder, [
+            order,
+        ]);
+    }
+
+    isValidSignature(orderHash: string, signature: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethodsV3.isValidSignature, [
+            orderHash,
+            signature
+        ]);
+    }
 }

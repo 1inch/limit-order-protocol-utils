@@ -174,6 +174,8 @@ export enum LimitOrderProtocolMethodsV3 {
     nonceEquals = 'nonceEquals',
     arbitraryStaticCall = 'arbitraryStaticCall',
     remaining = 'remaining',
+    hashOrder = 'hashOrder',
+    isValidSignature = 'isValidSignature',
 }
 
 export enum LimitOrderProtocolMethods {

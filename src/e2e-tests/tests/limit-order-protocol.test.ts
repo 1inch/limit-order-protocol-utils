@@ -346,7 +346,7 @@ describe('LimitOrderProtocol',  () => {
                 maker: await addr1.getAddress(),
                 makerTraits: LimitOrderBuilder.buildMakerTraits({
                     allowMultipleFills: true,
-                    shouldCheckEpoch: true,
+                    shouldCheckEpoch: false,
                     nonce: BigInt(0),
                     series: BigInt(1),
                 }),
