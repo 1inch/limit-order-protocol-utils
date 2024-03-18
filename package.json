@@ -19,7 +19,7 @@
         "test:e2e:ci": "yarn run install-submodules && yarn run test:e2e",
         "test:stack-trace": "hardhat test --show-stack-traces",
         "postbuild": "cp package.json dist && cp README.md dist && chmod +x dist/utils/limit-order-rfq.utils.js",
-        "lint": "eslint ./src --exf .js,.ts",
+        "lint": "eslint ./src --ext .js,.ts",
         "release": "standard-version",
         "test": "jest",
         "test:coverage": "jest --collectCoverage",
