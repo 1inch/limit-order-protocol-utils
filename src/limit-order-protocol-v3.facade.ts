@@ -93,7 +93,7 @@ export class LimitOrderProtocolV3Facade
     }
 
     hashOrder(order: LimitOrderLegacy): string {
-         this.getContractCallData(LimitOrderProtocolMethodsV3.hashOrder, [
+         return this.getContractCallData(LimitOrderProtocolMethodsV3.hashOrder, [
             order,
         ]);
     }
