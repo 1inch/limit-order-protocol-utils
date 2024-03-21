@@ -576,7 +576,6 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
                 extension: order.extension,
             });
             const tx = await getFacadeTx('fillLimitOrderArgs', [
@@ -678,7 +677,6 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
                 extension: order.extension,
             });
             const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
@@ -726,7 +724,6 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
                 extension: order.extension,
             });
             const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
@@ -789,7 +786,6 @@ describe('LimitOrderProtocol',  () => {
             );
 
             const { traits, args } = buildTakerTraits({
-                minReturn: BigInt(1),
                 extension: order.extension,
             });
             const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
@@ -832,7 +828,6 @@ describe('LimitOrderProtocol',  () => {
 
                 const { traits, args } = buildTakerTraits({
                     makingAmount: true,
-                    minReturn: BigInt(1),
                 });
                 const fillTx = await getFacadeTx('permitAndCall', [{
                     order,
@@ -860,7 +855,6 @@ describe('LimitOrderProtocol',  () => {
                 const { traits, args } = buildTakerTraits({
                     makingAmount: true,
                     usePermit2: true,
-                    minReturn: BigInt(1),
                 });
                 const fillTx = await getFacadeTx('permitAndCall', [{
                     order,
@@ -911,7 +905,6 @@ describe('LimitOrderProtocol',  () => {
                 const { dai, weth, swap, order, signature, chainId } = await loadFixture(deployContractsAndInitPermit);
 
                 const { traits, args } = buildTakerTraits({
-                    minReturn: BigInt(1),
                     extension: order.extension,
                 });
                 const fillTx = await getFacadeTx('fillLimitOrderArgs', [{
@@ -932,7 +925,6 @@ describe('LimitOrderProtocol',  () => {
                 await addr1.sendTransaction({ to: await weth.getAddress(), data: '0xd505accf' + permit.substring(42) });
 
                 const { traits, args } = buildTakerTraits({
-                    minReturn: BigInt(1),
                     skipMakerPermit: true,
                     extension: order.extension,
                 });
