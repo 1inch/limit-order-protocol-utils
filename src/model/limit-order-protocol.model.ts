@@ -63,8 +63,7 @@ export type LimitOrder = {
     makerTraits: MakerTraits;
 }
 
-export type LimitOrderWithExtension = {
-    order: LimitOrder;
+export type LimitOrderWithExtension = LimitOrder & {
     extension: string;
 }
 
