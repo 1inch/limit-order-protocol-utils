@@ -30,6 +30,7 @@
         "limit-order-rfq-utils": "ts-node --project tsconfig.scripts.json ./src/utils/limit-order-rfq.utils.ts"
     },
     "dependencies": {
+        "@1inch/solidity-utils": "3.5.5",
         "@chainlink/contracts": "0.6.1",
         "@ethersproject/abi": "^5.1.1",
         "@ethersproject/bignumber": "^5.1.1",
@@ -40,7 +41,6 @@
         "yargs": "^17.0.1"
     },
     "devDependencies": {
-        "@1inch/solidity-utils": "3.5.5",
         "@babel/core": "7.23.7",
         "@babel/helper-get-function-arity": "^7.16.7",
         "@babel/preset-env": "7.23.8",
