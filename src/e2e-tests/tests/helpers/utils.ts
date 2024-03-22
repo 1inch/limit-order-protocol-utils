@@ -96,7 +96,7 @@ export function getOrderFacade(
     const takerProviderConnector = getProviderConnector(wallet);
     return new LimitOrderProtocolFacade(
         contractAddress,
-        chainId,
+        Number(chainId),
         takerProviderConnector
     );
 }
@@ -183,7 +183,7 @@ export async function getSignedOrder(
     }, extensionData);
 
     const typedData = builder.buildLimitOrderTypedData(
-        order.order, chainId, verifyingContract
+        order, chainId, verifyingContract
     );
 
     const signature = await builder.buildOrderSignature(await wallet.getAddress(), typedData);

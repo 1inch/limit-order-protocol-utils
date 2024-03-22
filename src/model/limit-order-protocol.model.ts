@@ -63,8 +63,7 @@ export type LimitOrder = {
     makerTraits: MakerTraits;
 }
 
-export type LimitOrderWithExtension = {
-    order: LimitOrder;
+export type LimitOrderWithExtension = LimitOrder & {
     extension: string;
 }
 
@@ -174,6 +173,8 @@ export enum LimitOrderProtocolMethodsV3 {
     nonceEquals = 'nonceEquals',
     arbitraryStaticCall = 'arbitraryStaticCall',
     remaining = 'remaining',
+    hashOrder = 'hashOrder',
+    isValidSignature = 'isValidSignature',
 }
 
 export enum LimitOrderProtocolMethods {

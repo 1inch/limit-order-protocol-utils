@@ -91,4 +91,27 @@ export class LimitOrderProtocolV3Facade
 
         return null;
     }
+
+    hashOrder(order: LimitOrderLegacy): string {
+         return this.getContractCallData(LimitOrderProtocolMethodsV3.hashOrder, [
+            order,
+        ]);
+    }
+
+    callHashOrder(order: LimitOrderLegacy): Promise<string> {
+        return this.providerConnector
+            .ethCall(this.contractAddress, this.hashOrder(order));
+    }
+
+    isValidSignature(orderHash: string, signature: string): string {
+        return this.getContractCallData(LimitOrderProtocolMethodsV3.isValidSignature, [
+            orderHash,
+            signature
+        ]);
+    }
+
+    callIsValidSignature(orderHash: string, signature: string): Promise<string> {
+        return this.providerConnector
+            .ethCall(this.contractAddress, this.isValidSignature(orderHash, signature));
+    }
 }

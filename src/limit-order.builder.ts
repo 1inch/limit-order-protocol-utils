@@ -180,16 +180,14 @@ export class LimitOrderBuilder extends BaseLimitOrderBuilder<LimitOrder> {
         }
 
         return {
-            order: {
-                salt: salt.toString(),
-                maker,
-                receiver,
-                makerAsset,
-                takerAsset,
-                makingAmount,
-                takingAmount,
-                makerTraits: `0x${makerTraits.toString(16)}`,
-            },
+            salt: salt.toString(),
+            maker,
+            receiver,
+            makerAsset,
+            takerAsset,
+            makingAmount,
+            takingAmount,
+            makerTraits: `0x${makerTraits.toString(16)}`,
             extension
         };
     }
