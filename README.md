@@ -5,7 +5,7 @@
 
 # Utils library for 1inch Limit Orders Protocol V4
 
-![example branch parameter](https://github.com/1inch/limit-order-protocol-utils/actions/workflows/pr.yml/badge.svg?branch=master)
+[![example branch parameter](https://github.com/1inch/limit-order-protocol-utils/actions/workflows/pr.yml/badge.svg)](https://github.com/1inch/limit-order-protocol-utils/actions)
 ![NPM Downloads](https://img.shields.io/npm/dw/@1inch/limit-order-protocol-utils)
 ![NPM License](https://img.shields.io/npm/l/@1inch/limit-order-protocol-utils)
 
